@@ -1,0 +1,12 @@
+build/
+cache/*
+node_modules/
+tmp/*
+.env
+*.error
+*.log
+!cache/.gitkeep
+!tmp/.gitkeep
+.git/
+postgres-data/
+
