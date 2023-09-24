@@ -1,12 +1,13 @@
 import knex from "knex";
 
-interface Connection {
-  host: string;
-  port: string;
-  user: string;
-  password: string;
-  database: string;
-}
+const connectionOptions = [
+  "host",
+  "port",
+  "user",
+  "password",
+  "database",
+] as const;
+type Connection = Record<(typeof connectionOptions)[number], string>;
 
 export const database = knex({
   client: "pg",
