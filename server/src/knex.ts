@@ -1,19 +1,10 @@
 import knex from "knex";
 
-const connectionOptions = [
-  "host",
-  "port",
-  "user",
-  "password",
-  "database",
-] as const;
-type Connection = Record<(typeof connectionOptions)[number], string>;
-
 export const database = knex({
   client: "pg",
-  connection: <Connection>{
+  connection: {
     host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
+    port: +process.env.POSTGRES_PORT,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
