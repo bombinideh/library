@@ -5,7 +5,12 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "migrate-down": "knex --knexfile ./database/knexfile.ts migrate:down",
+    "migrate-latest": "knex --knexfile ./database/knexfile.ts migrate:latest",
+    "migrate-make": "knex --knexfile ./database/knexfile.ts migrate:make",
+    "migrate-rollback": "knex --knexfile ./database/knexfile.ts migrate:rollback",
+    "migrate-up": "knex --knexfile ./database/knexfile.ts migrate:up"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.4",
