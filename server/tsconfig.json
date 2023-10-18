@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
   },
-  "files": ["src/types/env.d.ts", "src/types/req.d.ts"],
+  "files": ["./src/env.d.ts"],
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "ts-node": {
     "files": true
