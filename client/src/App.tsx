@@ -1,5 +1,5 @@
-function App() {
-  return <>app</>;
-}
+import StylesProvider from "./providers/StylesProvider";
 
-export default App;
+export default function App() {
+  return <StylesProvider>app</StylesProvider>;
+}
