@@ -1,10 +1,10 @@
-import StylesProvider from "./providers/StylesProvider";
+import AppProvider from "./providers";
 import AppRoutes from "./routes";
 
 export default function App() {
   return (
-    <StylesProvider>
+    <AppProvider>
       <AppRoutes />
-    </StylesProvider>
+    </AppProvider>
   );
 }
