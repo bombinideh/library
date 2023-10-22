@@ -1,3 +1,10 @@
+import Head from "../../../components/Head";
+
 export default function SignIn() {
-  return <div>SignIn</div>;
+  return (
+    <div>
+      <Head />
+      SignIn
+    </div>
+  );
 }

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { HelmetProvider } from "react-helmet-async";
 import StylesProvider from "./StylesProvider";
 
 interface AppProviderProps {
@@ -6,5 +7,9 @@ interface AppProviderProps {
 }
 
 export default function AppProvider({ children }: AppProviderProps) {
-  return <StylesProvider>{children}</StylesProvider>;
+  return (
+    <StylesProvider>
+      <HelmetProvider>{children}</HelmetProvider>
+    </StylesProvider>
+  );
 }
