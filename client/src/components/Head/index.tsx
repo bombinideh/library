@@ -1,5 +1,5 @@
+import { appName, appNameAcronym } from "@/config";
 import { Helmet } from "react-helmet-async";
-import { appName, appNameAcronym } from "../../config";
 
 interface HeadProps {
   title?: string;

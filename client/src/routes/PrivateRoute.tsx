@@ -1,5 +1,5 @@
+import SignIn from "@/features/routes/SignIn";
 import { ReactNode } from "react";
-import SignIn from "../features/routes/SignIn";
 
 interface PrivateRouteProps {
   private: ReactNode;
