@@ -10,6 +10,7 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
   fontFamily:
     "Poppins, -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
   fontSizes: {
+    root: "62.5%",
     h1: "5rem",
     h2: "4rem",
     h3: "3rem",

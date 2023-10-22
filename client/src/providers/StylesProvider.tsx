@@ -1,3 +1,4 @@
+import GlobalStyle from "@/styles/GlobalStyle";
 import theme from "@/styles/theme";
 import { ReactNode } from "react";
 import { ThemeProvider } from "styled-components";
@@ -9,5 +10,11 @@ interface StylesProviderProps {
 export default function StylesProvider({ children }: StylesProviderProps) {
   const mode = "light";
 
-  return <ThemeProvider theme={theme(mode)}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme(mode)}>
+      <GlobalStyle />
+
+      {children}
+    </ThemeProvider>
+  );
 }

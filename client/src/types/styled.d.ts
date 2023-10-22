@@ -28,6 +28,7 @@ declare module "styled-components" {
     colors: ThemeColors & StaticColors;
     fontFamily: string;
     fontSizes: {
+      root: string;
       h1: string;
       h2: string;
       h3: string;
