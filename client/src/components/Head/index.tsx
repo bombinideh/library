@@ -36,7 +36,7 @@ export default function Head({
         </>
       )}
 
-      {index || <meta name="robots" content="none" />}
+      {!index && <meta name="robots" content="none" />}
     </Helmet>
   );
 }
