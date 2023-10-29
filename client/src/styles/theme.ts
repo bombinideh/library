@@ -18,6 +18,7 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
     h3: "3rem",
     h4: "2rem",
     body: "1.5rem",
+    bodySm: "1.4rem",
     small: "1.3rem",
   },
   breakpoints: {

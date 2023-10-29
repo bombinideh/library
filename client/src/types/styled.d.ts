@@ -42,6 +42,7 @@ declare module "styled-components" {
       h3: string;
       h4: string;
       body: string;
+      bodySm: string;
       small: string;
     };
     breakpoints: {
