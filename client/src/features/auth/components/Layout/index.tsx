@@ -44,7 +44,7 @@ export default function AuthLayout({
 
           {description && <Styled.Description>{description}</Styled.Description>}
 
-          <Styled.Form>{children}</Styled.Form>
+          {children}
 
           <Link
             SVG={SVGArrowLeft}

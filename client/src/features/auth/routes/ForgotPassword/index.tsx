@@ -1,5 +1,4 @@
-import Button from "@/components/Elements/Button";
-import Field from "@/components/Form/Field";
+import ForgotPasswordForm from "../../components/ForgotPasswordForm";
 import AuthLayout from "../../components/Layout";
 
 export default function ForgotPassword() {
@@ -16,15 +15,7 @@ export default function ForgotPassword() {
         text: `Voltar para o login`,
       }}
     >
-      <Field
-        label="Endereço de e-mail"
-        id="email"
-        type="email"
-        autoComplete="email"
-        autoFocus
-      />
-
-      <Button text="Enviar link para login" align="center" />
+      <ForgotPasswordForm />
     </AuthLayout>
   );
 }

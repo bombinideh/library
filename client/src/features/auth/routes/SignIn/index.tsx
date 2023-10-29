@@ -1,8 +1,6 @@
-import Button from "@/components/Elements/Button";
-import Field from "@/components/Form/Field";
-import Password from "@/components/Form/Password";
 import { appName, appNameAcronym } from "@/config";
 import AuthLayout from "../../components/Layout";
+import SignInForm from "../../components/SignInForm";
 
 export default function SignIn() {
   return (
@@ -19,17 +17,7 @@ export default function SignIn() {
         text: `Voltar para o ${appNameAcronym}`,
       }}
     >
-      <Field
-        label="Endereço de e-mail"
-        id="email"
-        type="email"
-        autoComplete="email"
-        autoFocus
-      />
-
-      <Password showForgotPasswordLink showPasswordDisplayToggle />
-
-      <Button text="Entrar" align="center" />
+      <SignInForm />
     </AuthLayout>
   );
 }

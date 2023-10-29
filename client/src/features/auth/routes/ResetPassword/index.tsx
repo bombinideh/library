@@ -1,6 +1,5 @@
-import Button from "@/components/Elements/Button";
-import Password from "@/components/Form/Password";
 import AuthLayout from "../../components/Layout";
+import ResetPasswordForm from "../../components/ResetPasswordForm";
 
 export default function ResetPassword() {
   return (
@@ -16,9 +15,7 @@ export default function ResetPassword() {
         text: `Voltar para o login`,
       }}
     >
-      <Password autoComplete="new-password" autoFocus showPasswordDisplayToggle />
-
-      <Button text="Redefinir minha senha" align="center" />
+      <ResetPasswordForm />
     </AuthLayout>
   );
 }
