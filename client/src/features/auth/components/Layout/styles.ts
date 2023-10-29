@@ -14,6 +14,7 @@ export const Wrapper = styled.div`
 export const Main = styled.main`
   ${({ theme }) => css`
     max-width: 400px;
+    width: 100%;
     text-align: center;
 
     > * + * {
@@ -33,7 +34,7 @@ export const Logo = styled.img`
 export const Description = styled.p`
   ${({ theme }) => css`
     margin-top: ${theme.spacings[12]};
-    font-size: 1.4rem;
+    font-size: ${theme.fontSizes.bodySm};
     color: ${theme.colors.textSupport2};
   `}
 `;
