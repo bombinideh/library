@@ -1,8 +1,8 @@
 import transientProps from "@/utils/transientProps";
-import { ComponentProps, FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import * as Styled from "./styles";
 
-export interface ButtonProps extends ComponentProps<"button"> {
+export interface ButtonProps {
   variant?: "primary" | "support";
   SVG?: FunctionComponent;
   text: string;

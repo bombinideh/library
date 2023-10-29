@@ -1,12 +1,12 @@
-import { ComponentProps } from "react";
 import * as Form from "../styles";
 import * as Styled from "./styles";
 
-interface PasswordProps extends ComponentProps<"input"> {
+interface PasswordProps {
   label?: string;
   id?: string;
   type?: "password" | "text";
   autoComplete?: "current-password" | "new-password";
+  autoFocus?: boolean;
   showForgotPasswordLink?: boolean;
   showPasswordDisplayToggle?: boolean;
 }
@@ -16,6 +16,7 @@ const defaultProps: PasswordProps = {
   id: "password",
   type: "password",
   autoComplete: "current-password",
+  autoFocus: false,
   showForgotPasswordLink: false,
   showPasswordDisplayToggle: false,
 };

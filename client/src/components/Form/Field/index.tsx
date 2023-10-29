@@ -1,10 +1,11 @@
-import { ComponentProps } from "react";
 import * as Form from "../styles";
 
-interface FieldProps extends ComponentProps<"input"> {
+interface FieldProps {
   label: string;
   id: string;
   type?: "text" | "email";
+  autoComplete?: string;
+  autoFocus?: boolean;
 }
 
 export default function Field({ id, label, type = "text", ...rest }: FieldProps) {

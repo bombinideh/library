@@ -16,7 +16,7 @@ export default function ResetPassword() {
         text: `Voltar para o login`,
       }}
     >
-      <Password autoComplete="new-password" showPasswordDisplayToggle />
+      <Password autoComplete="new-password" autoFocus showPasswordDisplayToggle />
 
       <Button text="Redefinir minha senha" align="center" />
     </AuthLayout>
