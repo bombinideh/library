@@ -1,8 +1,8 @@
 import SVGArrowLeft from "@/assets/arrow-left.svg?react";
 import IMGLogomark from "@/assets/logomark.png";
+import Link from "@/components/Elements/Link";
+import Title from "@/components/Elements/Title";
 import Head, { HeadProps } from "@/components/Head";
-import Link from "@/components/Link";
-import Title from "@/components/Title";
 import { appNameAcronym } from "@/config";
 import { ReactNode } from "react";
 import * as Styled from "./styles";

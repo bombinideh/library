@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Elements/Button";
 import Password from "@/components/Form/Password";
 import AuthLayout from "../../components/Layout";
 

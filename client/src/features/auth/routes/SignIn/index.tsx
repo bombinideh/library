@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button from "@/components/Elements/Button";
 import Field from "@/components/Form/Field";
 import Password from "@/components/Form/Password";
 import { appName, appNameAcronym } from "@/config";

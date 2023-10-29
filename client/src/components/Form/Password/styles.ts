@@ -1,4 +1,4 @@
-import Link from "@/components/Link";
+import Link from "@/components/Elements/Link";
 import styled, { css } from "styled-components";
 import { Input as DefaultInput } from "../styles";
 
