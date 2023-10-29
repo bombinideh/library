@@ -1,6 +1,8 @@
 import SVGArrowLeft from "@/assets/arrow-left.svg?react";
 import IMGLogomark from "@/assets/logomark.png";
 import Head, { HeadProps } from "@/components/Head";
+import Link from "@/components/Link";
+import Title from "@/components/Title";
 import { appNameAcronym } from "@/config";
 import { ReactNode } from "react";
 import * as Styled from "./styles";
@@ -38,17 +40,18 @@ export default function AuthLayout({
             <Styled.Logo src={IMGLogomark} alt={`Logomarca do ${appNameAcronym}`} />
           )}
 
-          <Styled.Title>{title}</Styled.Title>
+          <Title level={4} text={title} align="center" />
 
           {description && <Styled.Description>{description}</Styled.Description>}
 
           <Styled.Form>{children}</Styled.Form>
 
-          <Styled.ReturnLink to={returnLink.to}>
-            <SVGArrowLeft />
-
-            <span>{returnLink.text}</span>
-          </Styled.ReturnLink>
+          <Link
+            SVG={SVGArrowLeft}
+            text={returnLink.text}
+            to={returnLink.to}
+            align="center"
+          />
         </Styled.Main>
       </Styled.Wrapper>
     </>

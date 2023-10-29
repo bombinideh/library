@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import Input from "@/components/Form/Input";
+import Field from "@/components/Form/Field";
 import Password from "@/components/Form/Password";
 import { appName, appNameAcronym } from "@/config";
 import AuthLayout from "../../components/Layout";
@@ -19,7 +19,7 @@ export default function SignIn() {
         text: `Voltar para o ${appNameAcronym}`,
       }}
     >
-      <Input
+      <Field
         label="Endereço de e-mail"
         id="email"
         type="email"
@@ -29,7 +29,7 @@ export default function SignIn() {
 
       <Password showForgotPasswordLink showPasswordDisplayToggle />
 
-      <Button text="Entrar" />
+      <Button text="Entrar" align="center" />
     </AuthLayout>
   );
 }
