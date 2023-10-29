@@ -69,8 +69,8 @@ declare module "styled-components" {
       8: string;
       12: string;
       15: string;
-      2: string;
-      3: string;
+      20: string;
+      30: string;
     };
   }
 }

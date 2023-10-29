@@ -51,8 +51,8 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
     8: "0.8rem",
     12: "1.2rem",
     15: "1.5rem",
-    2: "2rem",
-    3: "3rem",
+    20: "2rem",
+    30: "3rem",
   },
 });
 

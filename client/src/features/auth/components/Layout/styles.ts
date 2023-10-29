@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    padding: ${theme.spacings[3]} ${theme.spacings[15]};
+    padding: ${theme.spacings[30]} ${theme.spacings[15]};
   `}
 `;
 
@@ -33,7 +33,7 @@ export const Logo = styled.img`
 export const Description = styled.p`
   ${({ theme }) => css`
     margin-top: ${theme.spacings[12]};
-    font-size: ${theme.fontSizes.small};
+    font-size: 1.4rem;
     color: ${theme.colors.textSupport2};
   `}
 `;
@@ -41,6 +41,6 @@ export const Description = styled.p`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  row-gap: ${({ theme }) => theme.spacings[2]};
+  row-gap: ${({ theme }) => theme.spacings[20]};
   text-align: left;
 `;
