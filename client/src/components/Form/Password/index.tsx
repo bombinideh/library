@@ -29,21 +29,22 @@ export default function Password(receivedProps: PasswordProps = {}) {
     showPasswordDisplayToggle,
     ...rest
   } = { ...defaultProps, ...receivedProps };
-
   return (
     <Form.Wrapper>
       <Form.Label htmlFor={id}>{label}</Form.Label>
 
       {showForgotPasswordLink && (
-        <Styled.ForgotPassword to="esqueceu-sua-senha">
-          Esqueceu sua senha?
-        </Styled.ForgotPassword>
+        <Styled.ForgotPassword text="Esqueceu sua senha?" to="esqueceu-sua-senha" />
       )}
 
-      <Form.Input id={id} name={id} type={type} {...rest} />
+      {showPasswordDisplayToggle ? (
+        <Styled.PasswordWrapper>
+          <Styled.Input id={id} name={id} type={type} {...rest} />
 
-      {showPasswordDisplayToggle && (
-        <Styled.ToggleShowPassword type="button">Mostrar</Styled.ToggleShowPassword>
+          <Styled.ToggleShowPassword type="button">Exibir</Styled.ToggleShowPassword>
+        </Styled.PasswordWrapper>
+      ) : (
+        <Form.Input id={id} name={id} type={type} {...rest} />
       )}
     </Form.Wrapper>
   );
