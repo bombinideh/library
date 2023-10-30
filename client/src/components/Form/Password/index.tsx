@@ -1,35 +1,36 @@
+import { UseFormRegisterReturn } from "react-hook-form";
 import * as Form from "../styles";
 import * as Styled from "./styles";
 
 interface PasswordProps {
   label?: string;
   id?: string;
-  type?: "password" | "text";
+  registration: UseFormRegisterReturn;
   autoComplete?: "current-password" | "new-password";
   autoFocus?: boolean;
   showForgotPasswordLink?: boolean;
   showPasswordDisplayToggle?: boolean;
 }
 
-const defaultProps: PasswordProps = {
+const defaultProps: Required<Omit<PasswordProps, "registration">> = {
   label: "Senha",
   id: "password",
-  type: "password",
   autoComplete: "current-password",
   autoFocus: false,
   showForgotPasswordLink: false,
   showPasswordDisplayToggle: false,
 };
 
-export default function Password(receivedProps: PasswordProps = {}) {
+export default function Password(props: PasswordProps) {
   const {
     label,
     id,
-    type,
+    registration,
     showForgotPasswordLink,
     showPasswordDisplayToggle,
     ...rest
-  } = { ...defaultProps, ...receivedProps };
+  } = { ...defaultProps, ...props };
+
   return (
     <Form.Wrapper>
       <Form.Label htmlFor={id}>{label}</Form.Label>
@@ -40,12 +41,12 @@ export default function Password(receivedProps: PasswordProps = {}) {
 
       {showPasswordDisplayToggle ? (
         <Styled.PasswordWrapper>
-          <Styled.Input id={id} name={id} type={type} {...rest} />
+          <Styled.Input id={id} type="password" {...registration} {...rest} />
 
           <Styled.ToggleShowPassword type="button">Exibir</Styled.ToggleShowPassword>
         </Styled.PasswordWrapper>
       ) : (
-        <Form.Input id={id} name={id} type={type} {...rest} />
+        <Form.Input id={id} type="password" {...registration} {...rest} />
       )}
     </Form.Wrapper>
   );
