@@ -12,8 +12,9 @@ export async function up(knex: Knex): Promise<void> {
     table.string("publisher").notNullable();
     table.integer("year_publication").notNullable();
     table.integer("number_pages").notNullable();
-    table.dateTime("created_at").notNullable().defaultTo(knex.fn.now());
-    table.dateTime("updated_at").notNullable().defaultTo(knex.fn.now());
+    table.string("observation").notNullable();
+    table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
+    table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
 
     table
       .foreign(["user_id"])
