@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IUser } from "../models/User";
 import { database } from "../knex";
 import bcrypt from "bcryptjs";
-import { existEmail } from "../functions/existEmail";
+import { existUser } from "../functions/existUser";
 
 export const usersGetMany = async (req: Request, res: Response) => {
   try {
@@ -34,7 +34,7 @@ export const usersPostOne = async (req: Request, res: Response) => {
   const user: Pick<IUser, "email" | "name" | "password"> = req.body;
 
   try {
-    if (await existEmail(user.email)) {
+    if (await existUser(user.email)) {
       res.status(400).send({ error: "Email already exists" });
       return;
     }
@@ -69,7 +69,7 @@ export const usersPatchOne = async (req: Request, res: Response) => {
       return;
     }
 
-    if (newData.email && (await existEmail(newData.email))) {
+    if (newData.email && (await existUser(newData.email))) {
       res.status(400).send({ error: "Email already exists" });
       return;
     }
