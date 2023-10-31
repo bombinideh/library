@@ -18,6 +18,10 @@ const GlobalStyle = createGlobalStyle`${({ theme }) => css`
     color: ${theme.colors.text};
     background-color: ${theme.colors.background};
     -webkit-tap-highlight-color: transparent;
+
+    ${theme.breakpoints.sm} {
+      font-size: calc(${theme.fontSizes.body} - 0.1rem);
+    }
   }
   a,
   button,

@@ -1,3 +1,4 @@
+import * as mixins from "@/styles/mixins";
 import "styled-components";
 
 interface ThemeColors {
@@ -16,14 +17,21 @@ interface StaticColors {
   primary: string;
   primaryDark1: string;
   primaryDark2: string;
+  primaryText: string;
   dangerLight1: string;
   danger: string;
   successLight1: string;
   success: string;
 }
 
+interface Transition {
+  duration: number;
+  timingFunction: string;
+}
+
 declare module "styled-components" {
   export interface DefaultTheme {
+    mixins: typeof mixins;
     mode: "light" | "dark";
     colors: ThemeColors & StaticColors;
     fontFamily: string;
@@ -34,6 +42,7 @@ declare module "styled-components" {
       h3: string;
       h4: string;
       body: string;
+      bodySm: string;
       small: string;
     };
     breakpoints: {
@@ -46,6 +55,23 @@ declare module "styled-components" {
     queries: {
       desktop: string;
       animation: string;
+    };
+    borderRadius: {
+      block: string;
+    };
+    borders: {
+      block: string;
+    };
+    transitions: {
+      form: Transition;
+      link: Transition;
+    };
+    spacings: {
+      8: string;
+      12: string;
+      15: string;
+      20: string;
+      30: string;
     };
   }
 }

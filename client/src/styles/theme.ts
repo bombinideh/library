@@ -1,7 +1,9 @@
 import { DefaultTheme } from "styled-components";
 import colorScheme from "./colorScheme";
+import * as mixins from "./mixins";
 
 const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
+  mixins,
   mode,
   colors: {
     ...colorScheme[mode],
@@ -16,6 +18,7 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
     h3: "3rem",
     h4: "2rem",
     body: "1.5rem",
+    bodySm: "1.4rem",
     small: "1.3rem",
   },
   breakpoints: {
@@ -28,6 +31,29 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
   queries: {
     desktop: "@media not all and (hover: none)",
     animation: "@media (preferes-reduced-motion: no-preference)",
+  },
+  borderRadius: {
+    block: "5px",
+  },
+  borders: {
+    block: "1px",
+  },
+  transitions: {
+    form: {
+      duration: 200,
+      timingFunction: "ease-in-out",
+    },
+    link: {
+      duration: 200,
+      timingFunction: "ease-in-out",
+    },
+  },
+  spacings: {
+    8: "0.8rem",
+    12: "1.2rem",
+    15: "1.5rem",
+    20: "2rem",
+    30: "3rem",
   },
 });
 

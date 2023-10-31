@@ -1,7 +1,7 @@
 import { appName, appNameAcronym } from "@/config";
 import { Helmet } from "react-helmet-async";
 
-interface HeadProps {
+export interface HeadProps {
   title?: string;
   description?: string;
   index?: boolean;
@@ -36,7 +36,7 @@ export default function Head({
         </>
       )}
 
-      {index || <meta name="robots" content="none" />}
+      {!index && <meta name="robots" content="none" />}
     </Helmet>
   );
 }
