@@ -11,14 +11,21 @@ export const PasswordWrapper = styled.div`
   display: flex;
 `;
 
-export const Input = styled(DefaultInput)`
-  ${({ theme }) => css`
-    border-right: none;
-    border-radius: ${theme.borderRadius.block} 0 0 ${theme.borderRadius.block};
+interface InputProps {
+  $showPassBtn: boolean;
+}
 
-    &:focus + button {
-      border-color: ${theme.colors.primary};
-    }
+export const Input = styled(DefaultInput)<InputProps>`
+  ${({ theme, $showPassBtn }) => css`
+    ${$showPassBtn &&
+    css`
+      border-right: none;
+      border-radius: ${theme.borderRadius.block} 0 0 ${theme.borderRadius.block};
+
+      &:focus + button {
+        border-color: ${theme.colors.primary};
+      }
+    `}
   `}
 `;
 

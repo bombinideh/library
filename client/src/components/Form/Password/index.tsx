@@ -1,3 +1,4 @@
+import { ChangeEventHandler, useState } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import * as Form from "../styles";
 import * as Styled from "./styles";
@@ -30,6 +31,12 @@ export default function Password(props: PasswordProps) {
     showPasswordDisplayToggle,
     ...rest
   } = { ...defaultProps, ...props };
+  const [showPassBtn, setShowPassBtn] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const toggleShowPassBtn: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    if (target.value.length) setShowPassBtn(true);
+    else setShowPassBtn(false);
+  };
 
   return (
     <Form.Wrapper>
@@ -41,9 +48,23 @@ export default function Password(props: PasswordProps) {
 
       {showPasswordDisplayToggle ? (
         <Styled.PasswordWrapper>
-          <Styled.Input id={id} type="password" {...registration} {...rest} />
+          <Styled.Input
+            id={id}
+            type={showPass ? "text" : "password"}
+            {...registration}
+            {...rest}
+            onChange={toggleShowPassBtn}
+            $showPassBtn={showPassBtn}
+          />
 
-          <Styled.ToggleShowPassword type="button">Exibir</Styled.ToggleShowPassword>
+          {showPassBtn && (
+            <Styled.ToggleShowPassword
+              type="button"
+              onClick={() => setShowPass(!showPass)}
+            >
+              {showPass ? "Ocultar" : "Exibir"}
+            </Styled.ToggleShowPassword>
+          )}
         </Styled.PasswordWrapper>
       ) : (
         <Form.Input id={id} type="password" {...registration} {...rest} />
