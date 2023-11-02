@@ -13,7 +13,7 @@ export const signIn = async (req: Request, res: Response) => {
   const { email, password }: SignInBody = req.body;
 
   try {
-    const user = await existUser(email);
+    const user: IUser = await existUser(email);
     if (!user.active) {
       res.status(400).send({ error: "User not active" });
       return;
@@ -31,9 +31,9 @@ export const signIn = async (req: Request, res: Response) => {
       return;
     }
 
-    delete user.password;
+    const { password: a, ...userWithoutPass } = user;
 
-    res.send({ user, token: generateToken(user.id) });
+    res.send({ user: userWithoutPass, token: generateToken(user.user_id) });
   } catch {
     res.status(500).send({ error: "Internal server error" });
   }
