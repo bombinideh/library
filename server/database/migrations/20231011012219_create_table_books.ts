@@ -10,9 +10,10 @@ export async function up(knex: Knex): Promise<void> {
     table.string("title").notNullable();
     table.string("author").notNullable();
     table.string("publisher").notNullable();
-    table.integer("year_publication").notNullable();
+    table.integer("year_publication");
     table.integer("number_pages").notNullable();
-    table.string("observation").notNullable();
+    table.string("observation");
+    table.integer("amount").notNullable().defaultTo(1);
     table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
     table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
 
