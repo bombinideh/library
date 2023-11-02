@@ -65,6 +65,7 @@ declare module "styled-components" {
     transitions: {
       form: Transition;
       link: Transition;
+      notification: Transition;
     };
     spacings: {
       8: string;
@@ -72,6 +73,9 @@ declare module "styled-components" {
       15: string;
       20: string;
       30: string;
+    };
+    zIndexes: {
+      notification: number;
     };
   }
 }
