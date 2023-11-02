@@ -4,9 +4,13 @@ import { AnimatePresence } from "framer-motion";
 import { ReactNode, createContext, useState } from "react";
 import { useTheme } from "styled-components";
 
+interface Settings extends INotification {
+  id?: string;
+}
+
 interface NotificationContextProps {
-  emitNotification: (settings: INotification) => Promise<unknown>;
-  cancelNotification: () => Promise<unknown>;
+  emitNotification: (settings: Settings) => Promise<unknown>;
+  cancelNotification: (identifier?: Settings["id"]) => Promise<unknown>;
   isShowing: boolean;
 }
 
@@ -20,7 +24,7 @@ export const NotificationContext =
   createContext<NotificationContextProps>(defaultContextProps);
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
-  const [notification, setNotification] = useState(defaultNotification);
+  const [notification, setNotification] = useState<Settings>(defaultNotification);
   const [isShowing, setIsShowing] = useState(defaultContextProps.isShowing);
   const [schedules, setSchedules] = useState<number[]>([]);
   const { transitions } = useTheme();
@@ -40,7 +44,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       defineSchedule(setTimeout(end, transitionDuration));
     });
   };
-  const emitNotification = (settings: INotification) => {
+  const emitNotification = (settings: Settings) => {
     return new Promise(endOfNotification => {
       const props = { ...defaultNotification, ...settings };
       const { duration } = props;
@@ -56,8 +60,12 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       else show();
     });
   };
-  const cancelNotification = () => {
+  const cancelNotification = (identifier?: Settings["id"]) => {
     return new Promise(endOfNotification => {
+      if (!isShowing) return;
+
+      if (identifier && identifier !== notification.id) return;
+
       schedules.forEach(id => clearTimeout(id));
       hide(true, endOfNotification);
     });

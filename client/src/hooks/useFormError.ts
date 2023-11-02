@@ -7,6 +7,7 @@ export default function useFormError<T extends FieldValues>(
 ) {
   const { errors, isSubmitSuccessful } = formState;
   const { emitNotification, cancelNotification } = useContext(NotificationContext);
+  const notificationId = "formError";
 
   useEffect(() => {
     const [firstErrorKey] = Object.keys(errors);
@@ -14,10 +15,14 @@ export default function useFormError<T extends FieldValues>(
 
     if (!firstError || !("message" in firstError)) return;
 
-    emitNotification({ text: firstError.message as string, variant: "error" });
+    emitNotification({
+      text: firstError.message as string,
+      variant: "error",
+      id: notificationId,
+    });
   }, [errors]);
 
   useEffect(() => {
-    if (isSubmitSuccessful) cancelNotification();
+    if (isSubmitSuccessful) cancelNotification(notificationId);
   }, [isSubmitSuccessful]);
 }
