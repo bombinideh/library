@@ -1,28 +1,24 @@
 import styled, { css } from "styled-components";
 
-export const Wrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-`;
+interface InputProps {
+  $error: boolean;
+}
 
-export const Label = styled.label`
-  display: block;
-  padding-bottom: ${({ theme }) => theme.spacings[8]};
-`;
-
-export const Input = styled.input`
-  ${({ theme }) => css`
+export const Input = styled.input<InputProps>`
+  ${({ theme, $error }) => css`
     flex: 1 100%;
     padding: ${theme.spacings[12]};
     border-radius: ${theme.borderRadius.block};
+    border-width: ${theme.borders.block}
+    border-style: solid;
     border: ${theme.borders.block} solid ${theme.colors.stroke};
     background-color: ${theme.colors.block};
     outline: none;
     ${theme.mixins.transition({ properties: ["border-color"], element: "form" })}
 
+    border-color: ${$error ? theme.colors.danger : theme.colors.stroke};
     &:focus {
-      border-color: ${theme.colors.primary};
+      border-color: ${$error ? theme.colors.danger : theme.colors.primary};
     }
   `}
 `;

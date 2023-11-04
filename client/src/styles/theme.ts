@@ -47,13 +47,21 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
       duration: 200,
       timingFunction: "ease-in-out",
     },
+    notification: {
+      duration: 300,
+      timingFunction: "ease-in-out",
+    },
   },
   spacings: {
+    2: "0.2rem",
     8: "0.8rem",
     12: "1.2rem",
     15: "1.5rem",
     20: "2rem",
     30: "3rem",
+  },
+  zIndexes: {
+    notification: 5,
   },
 });
 

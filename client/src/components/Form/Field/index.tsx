@@ -1,19 +1,30 @@
-import * as Form from "../styles";
+import { ChangeEventHandler, FocusEventHandler } from "react";
+import { IField } from "../form";
+import * as Styled from "./styles";
 
-interface FieldProps {
-  label: string;
-  id: string;
-  type?: "text" | "email";
-  autoComplete?: string;
-  autoFocus?: boolean;
+interface FieldProps extends Omit<IField, "label"> {
+  className?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 }
 
-export default function Field({ id, label, type = "text", ...rest }: FieldProps) {
-  return (
-    <Form.Wrapper>
-      <Form.Label htmlFor={id}>{label}</Form.Label>
+export default function Field(props: FieldProps) {
+  const { registration, error, onChange, onBlur, ...rest } = props;
 
-      <Form.Input id={id} name={id} type={type} {...rest} />
-    </Form.Wrapper>
+  return (
+    <Styled.Input
+      name={registration.name}
+      ref={registration.ref}
+      onChange={event => {
+        registration.onChange(event);
+        if (onChange) onChange(event);
+      }}
+      onBlur={event => {
+        registration.onBlur(event);
+        if (onBlur) onBlur(event);
+      }}
+      $error={!!error}
+      {...rest}
+    />
   );
 }

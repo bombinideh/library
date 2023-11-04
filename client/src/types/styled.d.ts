@@ -65,13 +65,18 @@ declare module "styled-components" {
     transitions: {
       form: Transition;
       link: Transition;
+      notification: Transition;
     };
     spacings: {
+      2: string;
       8: string;
       12: string;
       15: string;
       20: string;
       30: string;
+    };
+    zIndexes: {
+      notification: number;
     };
   }
 }

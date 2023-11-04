@@ -1,5 +1,7 @@
+import GlobalContextsProvider from "@/contexts";
 import { ReactNode } from "react";
 import { HelmetProvider } from "react-helmet-async";
+import MotionProvider from "./MotionProvider";
 import StylesProvider from "./StylesProvider";
 
 interface AppProviderProps {
@@ -9,7 +11,11 @@ interface AppProviderProps {
 export default function AppProvider({ children }: AppProviderProps) {
   return (
     <StylesProvider>
-      <HelmetProvider>{children}</HelmetProvider>
+      <HelmetProvider>
+        <MotionProvider>
+          <GlobalContextsProvider>{children}</GlobalContextsProvider>
+        </MotionProvider>
+      </HelmetProvider>
     </StylesProvider>
   );
 }

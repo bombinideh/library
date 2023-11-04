@@ -38,10 +38,3 @@ export const Description = styled.p`
     color: ${theme.colors.textSupport2};
   `}
 `;
-
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  row-gap: ${({ theme }) => theme.spacings[20]};
-  text-align: left;
-`;
