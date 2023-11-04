@@ -53,6 +53,7 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
     },
   },
   spacings: {
+    2: "0.2rem",
     8: "0.8rem",
     12: "1.2rem",
     15: "1.5rem",

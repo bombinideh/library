@@ -68,6 +68,7 @@ declare module "styled-components" {
       notification: Transition;
     };
     spacings: {
+      2: string;
       8: string;
       12: string;
       15: string;
