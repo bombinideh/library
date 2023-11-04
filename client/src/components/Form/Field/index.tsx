@@ -1,27 +1,30 @@
-import { UseFormRegisterReturn } from "react-hook-form";
-import * as Form from "../styles";
+import { ChangeEventHandler, FocusEventHandler } from "react";
+import { IField } from "../form";
+import * as Styled from "./styles";
 
-interface FieldProps {
-  label: string;
-  id: string;
-  type?: "text" | "email";
-  registration: UseFormRegisterReturn;
-  autoComplete?: string;
-  autoFocus?: boolean;
+interface FieldProps extends Omit<IField, "label"> {
+  className?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 }
 
-const defaultProps: Required<Pick<FieldProps, "type">> = {
-  type: "text",
-};
-
 export default function Field(props: FieldProps) {
-  const { label, id, type, registration, ...rest } = { ...defaultProps, ...props };
+  const { registration, error, onChange, onBlur, ...rest } = props;
 
   return (
-    <Form.Wrapper>
-      <Form.Label htmlFor={id}>{label}</Form.Label>
-
-      <Form.Input id={id} type={type} {...registration} {...rest} />
-    </Form.Wrapper>
+    <Styled.Input
+      name={registration.name}
+      ref={registration.ref}
+      onChange={event => {
+        registration.onChange(event);
+        if (onChange) onChange(event);
+      }}
+      onBlur={event => {
+        registration.onBlur(event);
+        if (onBlur) onBlur(event);
+      }}
+      $error={!!error}
+      {...rest}
+    />
   );
 }

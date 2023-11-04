@@ -1,32 +1,35 @@
 import { ChangeEventHandler, useState } from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
-import * as Form from "../styles";
+import Field from "../Field";
+import FieldWrapper from "../FieldWrapper";
+import { IField } from "../form";
 import * as Styled from "./styles";
 
-interface PasswordProps {
-  label?: string;
-  id?: string;
-  registration: UseFormRegisterReturn;
+interface InputPasswordProps {
+  label?: IField["label"];
+  id?: IField["label"];
+  registration: IField["registration"];
+  error: IField["error"];
+  autoFocus?: IField["autoFocus"];
   autoComplete?: "current-password" | "new-password";
-  autoFocus?: boolean;
   showForgotPasswordLink?: boolean;
   showPasswordDisplayToggle?: boolean;
 }
 
-const defaultProps: Required<Omit<PasswordProps, "registration">> = {
+const defaultProps: Required<Omit<InputPasswordProps, "registration" | "error">> = {
   label: "Senha",
   id: "password",
-  autoComplete: "current-password",
   autoFocus: false,
+  autoComplete: "current-password",
   showForgotPasswordLink: false,
   showPasswordDisplayToggle: false,
 };
 
-export default function Password(props: PasswordProps) {
+export default function InputPassword(props: InputPasswordProps) {
   const {
     label,
     id,
     registration,
+    error,
     showForgotPasswordLink,
     showPasswordDisplayToggle,
     ...rest
@@ -37,22 +40,19 @@ export default function Password(props: PasswordProps) {
     if (target.value.length) setShowPassBtn(true);
     else setShowPassBtn(false);
   };
+  const defaultFieldProps = { id, error, registration, ...rest };
 
   return (
-    <Form.Wrapper>
-      <Form.Label htmlFor={id}>{label}</Form.Label>
-
+    <FieldWrapper label={label} id={id} error={error}>
       {showForgotPasswordLink && (
         <Styled.ForgotPassword text="Esqueceu sua senha?" to="esqueceu-sua-senha" />
       )}
 
       {showPasswordDisplayToggle ? (
         <Styled.PasswordWrapper>
-          <Styled.Input
-            id={id}
+          <Styled.Field
+            {...defaultFieldProps}
             type={showPass ? "text" : "password"}
-            {...registration}
-            {...rest}
             onChange={toggleShowPassBtn}
             $showPassBtn={showPassBtn}
           />
@@ -61,14 +61,15 @@ export default function Password(props: PasswordProps) {
             <Styled.ToggleShowPassword
               type="button"
               onClick={() => setShowPass(!showPass)}
+              $error={!!error}
             >
               {showPass ? "Ocultar" : "Exibir"}
             </Styled.ToggleShowPassword>
           )}
         </Styled.PasswordWrapper>
       ) : (
-        <Form.Input id={id} type="password" {...registration} {...rest} />
+        <Field type="password" {...defaultFieldProps} />
       )}
-    </Form.Wrapper>
+    </FieldWrapper>
   );
 }

@@ -1,6 +1,6 @@
 import Link from "@/components/Elements/Link";
 import styled, { css } from "styled-components";
-import { Input as DefaultInput } from "../styles";
+import DefaultField from "../Field";
 
 export const ForgotPassword = styled(Link)`
   margin-left: auto;
@@ -11,32 +11,38 @@ export const PasswordWrapper = styled.div`
   display: flex;
 `;
 
-interface InputProps {
+interface FieldProps {
   $showPassBtn: boolean;
 }
 
-export const Input = styled(DefaultInput)<InputProps>`
-  ${({ theme, $showPassBtn }) => css`
+export const Field = styled(DefaultField)<FieldProps>`
+  ${({ theme, $showPassBtn, error }) => css`
     ${$showPassBtn &&
     css`
       border-right: none;
       border-radius: ${theme.borderRadius.block} 0 0 ${theme.borderRadius.block};
 
       &:focus + button {
-        border-color: ${theme.colors.primary};
+        border-color: ${error ? theme.colors.danger : theme.colors.primary};
       }
     `}
   `}
 `;
 
-export const ToggleShowPassword = styled.button`
-  ${({ theme }) => css`
+interface ToggleShowPasswordProps {
+  $error: boolean;
+}
+
+export const ToggleShowPassword = styled.button<ToggleShowPasswordProps>`
+  ${({ theme, $error }) => css`
     padding: ${theme.spacings[12]};
     padding-left: ${theme.spacings[8]};
-    border: ${theme.borders.block} solid ${theme.colors.stroke};
+    border-width: ${theme.borders.block};
+    border-style: solid;
     border-left: none;
     border-radius: 0 ${theme.borderRadius.block} ${theme.borderRadius.block} 0;
     font-weight: 500;
+    border-color: ${$error ? theme.colors.danger : theme.colors.stroke};
     cursor: pointer;
     ${theme.mixins.buttonColorState({
       properties: ["color"],
