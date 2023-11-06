@@ -8,7 +8,7 @@ export default function auth(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    res.status(401).send({ error: "token not provieded" });
+    res.status(401).send({ error: "token not provided" });
     return;
   }
 
