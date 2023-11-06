@@ -138,3 +138,20 @@ export const resetPassword = async (req: Request, res: Response) => {
     res.status(500).send({ error: "Internal server error" });
   }
 };
+
+export const getAuthenticatedUser = async (req: Request, res: Response) => {
+  try {
+    const user = await database<IUser>("users")
+      .where("user_id", req.user_id)
+      .first();
+
+    if (!user) {
+      res.status(404).send({ error: "Not found" });
+      return;
+    }
+
+    res.send(user);
+  } catch {
+    res.status(500).send({ error: "Internal server error" });
+  }
+};
