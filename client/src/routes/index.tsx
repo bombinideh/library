@@ -1,9 +1,10 @@
+import useAuth from "@/hooks/useAuth";
 import { BrowserRouter } from "react-router-dom";
-import Public from "./Public";
 import Private from "./Private";
+import Public from "./Public";
 
 export default function AppRoutes() {
-  const isAuthenticated = false;
+  const { isAuthenticated } = useAuth();
 
   return <BrowserRouter>{isAuthenticated ? <Private /> : <Public />}</BrowserRouter>;
 }
