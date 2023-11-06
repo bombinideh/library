@@ -1,8 +1,10 @@
 import Button from "@/components/Elements/Button";
 import { default as InputPassword } from "@/components/Form/InputPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 import { z } from "zod";
+import useResetPassword from "../../api/resetPassword";
 import Form from "../Form";
 
 const schema = z.object({
@@ -12,7 +14,7 @@ const schema = z.object({
     .min(6, "A senha deve ter no mínimo 6 caracteres."),
 });
 
-type ResetPasswordData = z.infer<typeof schema>;
+export type ResetPasswordData = z.infer<typeof schema>;
 
 export default function ResetPasswordForm() {
   const {
@@ -23,12 +25,27 @@ export default function ResetPasswordForm() {
     resolver: zodResolver(schema),
     reValidateMode: "onSubmit",
   });
-  const resetPassword: SubmitHandler<ResetPasswordData> = data => {
-    console.log(data);
+  const { resetPasswordMutation } = useResetPassword();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const params = {
+    user_id: Number(searchParams.get("user_id")),
+    token: searchParams.get("token"),
+  };
+  type Params = typeof params;
+
+  // if (!location.search || !params.user_id || !params.token) return null;
+
+  type RequiredParams = {
+    [K in keyof Params]: Exclude<Params[K], null>;
   };
 
   return (
-    <Form onSubmit={handleSubmit(resetPassword)}>
+    <Form
+      onSubmit={handleSubmit(({ password }) => {
+        resetPasswordMutation({ password, ...(params as RequiredParams) });
+      })}
+    >
       <InputPassword
         autoComplete="new-password"
         autoFocus
