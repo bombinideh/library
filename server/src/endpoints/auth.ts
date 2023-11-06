@@ -14,13 +14,14 @@ export const signIn = async (req: Request, res: Response) => {
 
   try {
     const user: IUser = await existUser(email);
-    if (!user.active) {
-      res.status(400).send({ error: "User not active" });
-      return;
-    }
 
     if (!user) {
       res.status(400).send({ error: "User not found" });
+      return;
+    }
+
+    if (!user.active) {
+      res.status(400).send({ error: "User not active" });
       return;
     }
 
