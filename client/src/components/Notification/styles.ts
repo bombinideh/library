@@ -69,11 +69,11 @@ export const Icon = styled.div<VariantProps>`
       max-width: 100%;
 
       path[stroke] {
-        stroke: ${theme.colors.primaryText};
+        stroke: ${theme.colors.white};
         stroke-width: 2px;
       }
       path[fill] {
-        fill: ${theme.colors.primaryText};
+        fill: ${theme.colors.white};
       }
     }
   `}

@@ -1,4 +1,4 @@
-import { transparentize } from "polished";
+import { darken, lighten, transparentize } from "polished";
 import { DefaultTheme, css } from "styled-components";
 import { Mixin } from ".";
 import { TransitionProps } from "./transition";
@@ -6,6 +6,7 @@ import { TransitionProps } from "./transition";
 interface ButtonColorStateProps {
   properties?: string[];
   colors?: (keyof DefaultTheme["colors"])[];
+  polish?: "transparentize" | "darken" | "lighten";
   factor?: number;
   transitionElement?: TransitionProps["element"];
   SVGChildren?: {
@@ -15,14 +16,19 @@ interface ButtonColorStateProps {
   };
 }
 
-const defaultProps: Required<ButtonColorStateProps> = {
+type DefaultProps = Required<ButtonColorStateProps> & {
+  SVGChildren: Required<NonNullable<ButtonColorStateProps["SVGChildren"]>>;
+};
+
+const defaultProps: DefaultProps = {
   properties: ["color"],
   colors: ["primary"],
+  polish: "transparentize",
   factor: 0.2,
   transitionElement: "form",
   SVGChildren: {
     selector: "path",
-    properties: [],
+    properties: ["stroke"],
     colors: [],
   },
 };
@@ -38,7 +44,7 @@ interface StylesPerStateProps {
 export const buttonColorState: Mixin<ButtonColorStateProps> =
   (receivedProps = {}) =>
   ({ theme }) => {
-    const { properties, colors, factor, transitionElement, SVGChildren } = {
+    const { properties, colors, polish, factor, transitionElement, SVGChildren } = {
       ...defaultProps,
       ...receivedProps,
       SVGChildren: {
@@ -46,19 +52,20 @@ export const buttonColorState: Mixin<ButtonColorStateProps> =
         ...receivedProps.SVGChildren,
       },
     };
+    const polishedFn = { lighten, darken, transparentize };
     const color = (color: keyof DefaultTheme["colors"], state: State) => {
       const themeColor = theme.colors[color];
       const colors = {
         standard: themeColor,
-        hover: transparentize(factor, themeColor),
-        active: transparentize(factor * 2, themeColor),
+        hover: polishedFn[polish](factor, themeColor),
+        active: polishedFn[polish](factor * 2, themeColor),
       };
 
       return colors[state];
     };
     const stylesPerState = ({ state, properties, isSVG }: StylesPerStateProps) => {
       const declarations = properties.reduce((acc, property, index) => {
-        const elementColors = isSVG ? SVGChildren.colors! : colors;
+        const elementColors = isSVG ? SVGChildren.colors : colors;
 
         acc.push(
           `${property}: ${color(
@@ -81,14 +88,11 @@ export const buttonColorState: Mixin<ButtonColorStateProps> =
         ${stylesPerState({ state, properties })};
         ${applyTransition && transition({ properties, element: transitionElement })}
 
-        ${SVGProperties.length &&
-        css`
-          ${SVGSelector} {
-            ${stylesPerState({ state, properties: SVGProperties, isSVG: true })};
-            ${applyTransition &&
-            transition({ properties: SVGProperties, element: transitionElement })}
-          }
-        `}
+        ${SVGSelector} {
+          ${stylesPerState({ state, properties: SVGProperties, isSVG: true })};
+          ${applyTransition &&
+          transition({ properties: SVGProperties, element: transitionElement })}
+        }
       `;
     };
 

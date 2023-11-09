@@ -2,25 +2,54 @@ import transientProps from "@/utils/transientProps";
 import { FunctionComponent } from "react";
 import * as Styled from "./styles";
 
-export interface ButtonProps {
+interface ButtonProps {
+  className?: string;
   type?: "button" | "reset" | "submit";
   variant?: "primary" | "support";
-  SVG?: FunctionComponent;
-  text: string;
-  align: "left" | "center" | "right";
+  SVG?: {
+    Component?: FunctionComponent;
+    element?: string;
+    shape?: string;
+  };
+  text?: string;
+  align?: "left" | "center" | "right";
 }
 
-const defaultProps: Required<Pick<ButtonProps, "type" | "variant">> = {
+export type ButtonDefaultProps = Omit<Required<ButtonProps>, "className"> & {
+  SVG: Omit<Required<NonNullable<ButtonProps["SVG"]>>, "Component">;
+};
+
+const defaultProps: ButtonDefaultProps = {
   variant: "primary",
   type: "button",
+  SVG: {
+    element: "path",
+    shape: "stroke",
+  },
+  text: "",
+  align: "left",
 };
 
 export default function Button(props: ButtonProps) {
-  const { type, variant, SVG, text, align } = { ...defaultProps, ...props };
+  const { className, type, variant, SVG, text, align } = {
+    ...defaultProps,
+    ...props,
+    SVG: {
+      ...defaultProps.SVG,
+      ...props.SVG,
+    },
+  };
 
   return (
-    <Styled.Wrapper type={type} {...transientProps({ variant, align })}>
-      {SVG && <SVG />} {text}
+    <Styled.Wrapper
+      className={className}
+      type={type}
+      $SVGElement={SVG.element}
+      $SVGShape={SVG.shape}
+      {...transientProps({ variant, align })}
+    >
+      {SVG.Component && <SVG.Component />}
+      {text && text}
     </Styled.Wrapper>
   );
 }

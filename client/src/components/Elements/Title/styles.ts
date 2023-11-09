@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
-import { TitleProps } from ".";
+import { TitleProps, TitleDefaultProps } from ".";
 
 interface WrapperProps {
   $level: TitleProps["level"];
-  $weight: TitleProps["weight"];
-  $align: TitleProps["align"];
+  $weight: TitleDefaultProps["weight"];
+  $align: TitleDefaultProps["align"];
 }
 
 export const Wrapper = styled.div<WrapperProps>`

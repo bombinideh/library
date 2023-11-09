@@ -6,16 +6,28 @@ export interface TitleProps {
   text: string;
   weight?: 400 | 500 | 700;
   align?: "left" | "center" | "right";
+  isHeadingElement?: boolean;
 }
 
-export default function Title({
-  level,
-  text,
-  weight = 500,
-  align = "left",
-}: TitleProps) {
+export type TitleDefaultProps = Required<Omit<TitleProps, "level" | "text">>;
+
+const defaultProps: TitleDefaultProps = {
+  weight: 500,
+  align: "left",
+  isHeadingElement: true,
+};
+
+export default function Title(props: TitleProps) {
+  const { level, text, weight, align, isHeadingElement } = {
+    ...defaultProps,
+    ...props,
+  };
+
   return (
-    <Styled.Wrapper as={`h${level}`} {...transientProps({ level, weight, align })}>
+    <Styled.Wrapper
+      {...(isHeadingElement && { as: `h${level}` })}
+      {...transientProps({ level, weight, align })}
+    >
       {text}
     </Styled.Wrapper>
   );
