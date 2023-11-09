@@ -32,6 +32,9 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
     desktop: "@media not all and (hover: none)",
     animation: "@media (preferes-reduced-motion: no-preference)",
   },
+  container: {
+    gutter: "15px",
+  },
   borderRadius: {
     block: "5px",
   },
@@ -59,9 +62,11 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
     15: "1.5rem",
     20: "2rem",
     30: "3rem",
+    40: "4rem",
   },
   zIndexes: {
-    notification: 5,
+    sidebar: 5,
+    notification: 10,
   },
 });
 

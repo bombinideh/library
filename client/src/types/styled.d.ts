@@ -17,7 +17,7 @@ interface StaticColors {
   primary: string;
   primaryDark1: string;
   primaryDark2: string;
-  primaryText: string;
+  white: string;
   dangerLight1: string;
   danger: string;
   successLight1: string;
@@ -56,6 +56,9 @@ declare module "styled-components" {
       desktop: string;
       animation: string;
     };
+    container: {
+      gutter: string;
+    };
     borderRadius: {
       block: string;
     };
@@ -74,8 +77,10 @@ declare module "styled-components" {
       15: string;
       20: string;
       30: string;
+      40: string;
     };
     zIndexes: {
+      sidebar: number;
       notification: number;
     };
   }

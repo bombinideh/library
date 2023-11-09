@@ -24,7 +24,7 @@ const colorScheme = {
     primary: "#0289F7",
     primaryDark1: "#196BAA",
     primaryDark2: "#005C9C",
-    primaryText: "#FFFFFF",
+    white: "#FFFFFF",
     dangerLight1: "#FFD6D8",
     danger: "#ED4956",
     successLight1: "#DDFBF0",

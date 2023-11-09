@@ -1,3 +1,4 @@
+import DefaultLogo from "@/components/Elements/Logo";
 import styled, { css } from "styled-components";
 
 export const Wrapper = styled.div`
@@ -7,7 +8,7 @@ export const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    padding: ${theme.spacings[30]} ${theme.spacings[15]};
+    padding: ${theme.spacings[30]} ${theme.container.gutter};
   `}
 `;
 
@@ -27,7 +28,7 @@ export const Main = styled.main`
   `}
 `;
 
-export const Logo = styled.img`
+export const Logo = styled(DefaultLogo)`
   margin: 0 auto;
 `;
 
