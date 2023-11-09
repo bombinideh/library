@@ -44,9 +44,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   const signOut = () => {
-    setIsAuthenticated(defaultContextProps.isAuthenticated);
-    setUser(defaultContextProps.user);
-    setToken(defaultContextProps.token);
+    setIsAuthenticated(false);
+    setUser(null);
+    setToken(null);
     storage.token.clear();
   };
   const autoSignIn = !!storage.token.get();
@@ -55,13 +55,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     isError,
     isSuccess,
-    error,
   } = useGetUser({ enabled: autoSignIn });
 
   useEffect(() => {
     if (!autoSignIn) return;
 
-    if (isError && error.statusCode === 401) storage.token.clear();
+    if (isError) signOut();
 
     if (isSuccess) signIn({ user: authUser });
   }, [isError, isSuccess]);
