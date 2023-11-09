@@ -14,13 +14,14 @@ export const signIn = async (req: Request, res: Response) => {
 
   try {
     const user: IUser = await existUser(email);
-    if (!user.active) {
-      res.status(400).send({ error: "User not active" });
-      return;
-    }
 
     if (!user) {
       res.status(400).send({ error: "User not found" });
+      return;
+    }
+
+    if (!user.active) {
+      res.status(400).send({ error: "User not active" });
       return;
     }
 
@@ -133,6 +134,23 @@ export const resetPassword = async (req: Request, res: Response) => {
     delete user.password;
 
     res.send({ user, token: generateToken(user.user_id) });
+  } catch {
+    res.status(500).send({ error: "Internal server error" });
+  }
+};
+
+export const getAuthenticatedUser = async (req: Request, res: Response) => {
+  try {
+    const user = await database<IUser>("users")
+      .where("user_id", req.user_id)
+      .first();
+
+    if (!user) {
+      res.status(404).send({ error: "Not found" });
+      return;
+    }
+
+    res.send(user);
   } catch {
     res.status(500).send({ error: "Internal server error" });
   }

@@ -1,8 +1,9 @@
 import Button from "@/components/Elements/Button";
 import InputField from "@/components/Form/InputField";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
+import useForgotPassword from "../../api/forgotPassword";
 import Form from "../Form";
 
 const schema = z.object({
@@ -12,7 +13,7 @@ const schema = z.object({
     .email("Formato de e-mail inválido."),
 });
 
-type ForgotPasswordData = z.infer<typeof schema>;
+export type ForgotPasswordData = z.infer<typeof schema>;
 
 export default function ForgotPasswordForm() {
   const {
@@ -22,12 +23,17 @@ export default function ForgotPasswordForm() {
   } = useForm<ForgotPasswordData>({
     resolver: zodResolver(schema),
   });
-  const resetPassword: SubmitHandler<ForgotPasswordData> = data => {
-    console.log(data);
-  };
+  const { forgotPasswordMutation } = useForgotPassword();
 
   return (
-    <Form onSubmit={handleSubmit(resetPassword)}>
+    <Form
+      onSubmit={handleSubmit(({ email }) => {
+        forgotPasswordMutation({
+          email,
+          url: `${location.origin}/esqueceu-sua-senha`,
+        });
+      })}
+    >
       <InputField
         label="Endereço de e-mail"
         id="email"

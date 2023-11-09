@@ -2,8 +2,9 @@ import Button from "@/components/Elements/Button";
 import InputField from "@/components/Form/InputField";
 import InputPassword from "@/components/Form/InputPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
+import useSignIn from "../../api/signIn";
 import Form from "../Form";
 
 const schema = z.object({
@@ -11,10 +12,13 @@ const schema = z.object({
     .string()
     .min(1, "O e-mail é obrigatório.")
     .email("Formato de e-mail inválido."),
-  password: z.string().min(1, "A senha é obrigatória."),
+  password: z
+    .string()
+    .min(1, "A senha é obrigatória.")
+    .min(6, "A senha precisa de no mínimo 6 caracteres."),
 });
 
-type SignInData = z.infer<typeof schema>;
+export type SignInData = z.infer<typeof schema>;
 
 export default function SignInForm() {
   const {
@@ -24,12 +28,10 @@ export default function SignInForm() {
   } = useForm<SignInData>({
     resolver: zodResolver(schema),
   });
-  const signIn: SubmitHandler<SignInData> = data => {
-    console.log(data);
-  };
+  const { signInMutation } = useSignIn();
 
   return (
-    <Form onSubmit={handleSubmit(signIn)}>
+    <Form onSubmit={handleSubmit(data => signInMutation(data))}>
       <InputField
         label="Endereço de e-mail"
         id="email"

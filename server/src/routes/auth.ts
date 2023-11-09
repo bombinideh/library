@@ -5,7 +5,14 @@ import {
   signInPostBody,
 } from "../validations/auth";
 import validation from "../middlewares/validation";
-import { forgotPassword, resetPassword, signIn } from "../endpoints/auth";
+import {
+  forgotPassword,
+  getAuthenticatedUser,
+  resetPassword,
+  signIn,
+} from "../endpoints/auth";
+import auth from "../middlewares/auth";
+
 
 const router = Router();
 
@@ -20,5 +27,6 @@ router.post(
   validation(resetPasswordPostBody),
   resetPassword
 );
+router.get("/me", auth, getAuthenticatedUser);
 
 export default router;
