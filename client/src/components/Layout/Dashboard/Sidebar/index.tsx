@@ -2,7 +2,6 @@ import SVGBook from "@/assets/book.svg?react";
 import SVGDocument from "@/assets/document.svg?react";
 import SVGGear from "@/assets/gear.svg?react";
 import SVGHouse from "@/assets/house.svg?react";
-import SVGResize from "@/assets/resize.svg?react";
 import SVGSignOut from "@/assets/sign-out.svg?react";
 import SVGSun from "@/assets/sun.svg?react";
 import SVGUsers from "@/assets/users.svg?react";
@@ -125,7 +124,7 @@ const Sidebar = forwardRef<HTMLDivElement>((...args) => {
       <Styled.Header>
         <Title level={3} text="Acervo histórico" isHeadingElement={false} />
 
-        <Styled.ResizeSidebar SVG={{ Component: SVGResize }} variant="support" />
+        {/* <Styled.ResizeSidebar SVG={{ Component: SVGResize }} variant="support" /> */}
       </Styled.Header>
 
       <Styled.DesktopNavigation>
