@@ -66,7 +66,8 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
   },
   zIndexes: {
     sidebar: 5,
-    notification: 10,
+    dropdown: 10,
+    notification: 15,
   },
 });
 

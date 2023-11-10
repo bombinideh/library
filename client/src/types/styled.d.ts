@@ -81,6 +81,7 @@ declare module "styled-components" {
     };
     zIndexes: {
       sidebar: number;
+      dropdown: number;
       notification: number;
     };
   }
