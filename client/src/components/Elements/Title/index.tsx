@@ -1,15 +1,23 @@
 import transientProps from "@/utils/transientProps";
+import { HTMLMotionProps, m } from "framer-motion";
 import * as Styled from "./styles";
 
-export interface TitleProps {
-  level: 1 | 2 | 3 | 4;
+export type Level = 1 | 2 | 3 | 4;
+export type Heading = `h${Level}`;
+
+export interface TitleProps extends HTMLMotionProps<Heading> {
+  className?: string;
+  level: Level;
   text: string;
   weight?: 400 | 500 | 700;
   align?: "left" | "center" | "right";
   isHeadingElement?: boolean;
+  title?: string;
 }
 
-export type TitleDefaultProps = Required<Omit<TitleProps, "level" | "text">>;
+export type TitleDefaultProps = Required<
+  Pick<TitleProps, "weight" | "align" | "isHeadingElement">
+>;
 
 const defaultProps: TitleDefaultProps = {
   weight: 500,
@@ -18,15 +26,17 @@ const defaultProps: TitleDefaultProps = {
 };
 
 export default function Title(props: TitleProps) {
-  const { level, text, weight, align, isHeadingElement } = {
+  const { className, level, text, weight, align, isHeadingElement, ...rest } = {
     ...defaultProps,
     ...props,
   };
 
   return (
     <Styled.Wrapper
-      {...(isHeadingElement && { as: `h${level}` })}
+      className={className}
+      {...(isHeadingElement && { as: m[`h${level}`] })}
       {...transientProps({ level, weight, align })}
+      {...rest}
     >
       {text}
     </Styled.Wrapper>

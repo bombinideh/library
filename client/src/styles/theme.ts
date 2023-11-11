@@ -54,6 +54,14 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
       duration: 300,
       timingFunction: "ease-in-out",
     },
+    element: {
+      duration: 200,
+      timingFunction: "ease-in-out",
+    },
+    route: {
+      duration: 200,
+      timingFunction: "ease-in-out",
+    },
   },
   spacings: {
     2: "0.2rem",

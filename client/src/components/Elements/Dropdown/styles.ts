@@ -1,3 +1,4 @@
+import { m } from "framer-motion";
 import styled, { css } from "styled-components";
 import { DropdownDefaultProps, DropdownProps } from ".";
 
@@ -20,14 +21,24 @@ export const Wrapper = styled.div<WrapperProps>`
 `;
 
 export const Button = styled.button`
-  width: 100%;
+  ${({ theme }) => css`
+    width: 100%;
+
+    svg {
+      ${theme.mixins.transition({ properties: ["transform"], element: "element" })};
+    }
+
+    &.open svg:last-child {
+      transform: rotate(180deg);
+    }
+  `}
 `;
 
 interface ContentProps extends WrapperWidth {
   $contentPosition: DropdownDefaultProps["contentPosition"];
 }
 
-export const Content = styled.div<ContentProps>`
+export const Content = styled(m.div)<ContentProps>`
   ${({ theme, $contentPosition, $wrapperWidth }) => css`
     position: absolute;
     ${$contentPosition}: 0;
@@ -36,6 +47,7 @@ export const Content = styled.div<ContentProps>`
     background-color: ${theme.colors.blockSupport1};
     border-radius: ${theme.borderRadius.block};
     border: ${theme.borders.block} solid ${theme.colors.stroke};
+    overflow: hidden;
 
     ${$wrapperWidth &&
     css`
