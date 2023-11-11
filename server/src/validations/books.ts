@@ -8,9 +8,9 @@ export const booksGetManyValidation = Joi.object({
 });
 
 export const booksPostOneValidation = Joi.object({
-  bookcase_id: Joi.number().required(),
-  shelf_id: Joi.number().required(),
-  box_id: Joi.number().required(),
+  bookcase_name: Joi.string().required(),
+  shelf_name: Joi.string().required(),
+  box_name: Joi.string().required(),
   title: Joi.string().required(),
   author: Joi.string().required(),
   publisher: Joi.string().required(),

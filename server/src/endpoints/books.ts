@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { IBook } from "../models/Book";
-import { database } from "../knex";
 import { queryFilter } from "../functions/queryFilter";
+import { database } from "../knex";
+import { Book, PostBook } from "../models/Book";
 
 export const booksGetMany = async (req: Request, res: Response) => {
   try {
@@ -31,33 +31,70 @@ export const booksGetMany = async (req: Request, res: Response) => {
   }
 };
 
-type BookBody = Omit<
-  IBook,
-  "book_id" | "user_id" | "book_id" | "created_at" | "updated_at"
->;
-
 export const booksPostOne = async (req: Request, res: Response) => {
-  const book: BookBody = req.body;
+  const body: PostBook = req.body;
   const { user_id } = req;
 
   try {
-    const findBook = await database("books")
-      .whereILike("title", `%${book.title}%`)
-      .andWhereILike("author", `%${book.author}%`)
+    const book = await database<Book>("books")
+      .whereILike("title", `%${body.title}%`)
+      .andWhereILike("author", `%${body.author}%`)
       .first();
 
-    if (findBook) {
-      res.status(400).send({ error: "Book already exists" });
-      return;
-    }
+    if (book) return res.status(400).send({ error: "Book already exists" });
 
-    const [insertedBook] = await database("books")
-      .insert({ user_id: user_id, ...book })
-      .returning("*");
+    const [insertedBook] = await database.transaction(async db => {
+      const { bookcase_name, shelf_name, box_name, ...bookData } = body;
+      const entities = {
+        bookcases: {
+          name: bookcase_name,
+          id: 0,
+        },
+        shelfs: {
+          name: shelf_name,
+          id: 0,
+        },
+        boxes: {
+          name: box_name,
+          id: 0,
+        },
+      };
+      const handleRelationship = async (entityName: string) => {
+        const entity = entities[entityName as keyof typeof entities];
+        const existingRegister = await db(entityName)
+          .where("name", entity.name)
+          .first();
+        const getId = (register: object) => {
+          return Object.keys(register).filter(key => key.endsWith("_id"))[0];
+        };
+
+        if (existingRegister) {
+          entity.id = existingRegister[getId(existingRegister)];
+        } else {
+          const [insertedRegister] = await db(entityName)
+            .insert({ name: entity.name })
+            .returning("*");
+
+          entity.id = insertedRegister[getId(insertedRegister)];
+        }
+      };
+
+      await Promise.all(Object.keys(entities).map(handleRelationship));
+
+      return await db<Book>("books")
+        .insert({
+          ...bookData,
+          user_id,
+          bookcase_id: entities.bookcases.id,
+          shelf_id: entities.shelfs.id,
+          box_id: entities.boxes.id,
+        })
+        .returning("*");
+    });
 
     await database("logs").insert({
-      user_id: req.user_id,
-      description: `Livro ${book.title} criado com sucesso`,
+      user_id,
+      description: `Livro ${body.title} criado com sucesso`,
       method: "POST",
     });
 
@@ -69,8 +106,7 @@ export const booksPostOne = async (req: Request, res: Response) => {
 
 export const booksPatchOne = async (req: Request, res: Response) => {
   const { book_id } = req.params;
-
-  const book: Partial<BookBody> = req.body;
+  const book: Partial<PostBook> = req.body;
 
   try {
     const existBook = await database("books").where({ book_id }).first();
