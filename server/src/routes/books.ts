@@ -1,13 +1,18 @@
 import { Router } from "express";
-import { booksGetMany, booksPatchOne, booksPostOne } from "../endpoints/books";
+import {
+  booksDeleteOne,
+  booksGetMany,
+  booksPatchOne,
+  booksPostOne,
+} from "../endpoints/books";
+import auth from "../middlewares/auth";
+import validation from "../middlewares/validation";
 import {
   booksGetManyValidation,
   booksGetOneValidation,
   booksPatchOneValidation,
   booksPostOneValidation,
 } from "../validations/books";
-import validation from "../middlewares/validation";
-import auth from "../middlewares/auth";
 
 const router = Router();
 
@@ -24,6 +29,12 @@ router.patch(
   validation(booksGetOneValidation, "params"),
   validation(booksPatchOneValidation),
   booksPatchOne,
+);
+router.delete(
+  "/books/:book_id",
+  auth,
+  validation(booksGetOneValidation, "params"),
+  booksDeleteOne,
 );
 
 export default router;

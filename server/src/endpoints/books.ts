@@ -132,3 +132,55 @@ export const booksPatchOne = async (req: Request, res: Response) => {
     res.status(500).send({ error: "Internal server error" });
   }
 };
+
+export const booksDeleteOne = async (req: Request, res: Response) => {
+  const { book_id } = req.params;
+  const { user_id } = req;
+
+  try {
+    const bookQuery = database<Book>("books").where("book_id", book_id);
+    const book = await bookQuery.first();
+
+    if (!book) return res.status(404).send({ error: "Book not found" });
+
+    const deletedBook = await database.transaction(async db => {
+      const [deletedBook] = await bookQuery.del().returning("*");
+      const entities = {
+        bookcases: {
+          id: deletedBook.bookcase_id,
+          idName: "bookcase_id",
+        },
+        shelfs: {
+          id: deletedBook.shelf_id,
+          idName: "shelf_id",
+        },
+        boxes: {
+          id: deletedBook.box_id,
+          idName: "box_id",
+        },
+      };
+      const handleRelationship = async (entityName: string) => {
+        const { id, idName } = entities[entityName as keyof typeof entities];
+        const [{ count: booksInRelationShip }] = await db("books")
+          .where(idName, id)
+          .count();
+
+        if (!+booksInRelationShip) await db(entityName).where(idName, id).del();
+      };
+
+      await Promise.all(Object.keys(entities).map(handleRelationship));
+
+      return deletedBook;
+    });
+
+    await database("logs").insert({
+      user_id,
+      description: `Livro ${book.title} deletado com sucesso`,
+      method: "DELETE",
+    });
+
+    res.send(deletedBook);
+  } catch {
+    res.status(500).send({ error: "Internal server error" });
+  }
+};
