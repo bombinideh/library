@@ -2,6 +2,7 @@ import useGetUser from "@/features/auth/api/getAuthUser";
 import { AuthUserResponse, User } from "@/features/auth/types";
 import storage from "@/utils/storage";
 import { ReactNode, createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type SignIn = Omit<AuthUserResponse, "token"> &
   Partial<Pick<AuthUserResponse, "token">>;
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
   const [user, setUser] = useState(defaultContextProps.user);
   const [token, setToken] = useState(defaultContextProps.token);
+  const navigate = useNavigate();
   const signIn = ({ user, token }: SignIn) => {
     setIsAuthenticated(true);
     setUser(user);
@@ -48,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setToken(null);
     storage.token.clear();
+    navigate("/");
   };
   const autoSignIn = !!storage.token.get();
   const {
