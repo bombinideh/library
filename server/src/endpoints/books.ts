@@ -16,11 +16,11 @@ export const booksGetMany = async (req: Request, res: Response) => {
       .leftJoin("shelfs as s", "b.shelf_id", "s.shelf_id")
       .leftJoin("boxes as bx", "b.box_id", "bx.box_id")
       .select(
-        "b.*",
+        "u.name as user_name",
         "bc.name as bookcase_name",
         "s.name as shelf_name",
         "bx.name as box_name",
-        "u.name as user_name",
+        "b.*",
       );
 
     const totalItems = await total;
