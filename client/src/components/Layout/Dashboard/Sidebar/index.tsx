@@ -6,6 +6,7 @@ import SVGSignOut from "@/assets/sign-out.svg?react";
 import SVGSun from "@/assets/sun.svg?react";
 import SVGUsers from "@/assets/users.svg?react";
 import Title from "@/components/Elements/Title";
+import { appPrivateName } from "@/config";
 import useAuth from "@/hooks/useAuth";
 import { FunctionComponent, MouseEventHandler, forwardRef } from "react";
 import { NavLink } from "react-router-dom";
@@ -47,25 +48,25 @@ const NavigationItems = ({ pick }: ItemsProps) => {
       SVG: SVGHouse,
       text: "Página inicial",
       to: "/",
-      // disabled: true,
+      disabled: true,
     },
     {
       id: "books",
       SVG: SVGBook,
       text: "Livros",
-      to: "livros",
+      to: "/livros",
     },
     {
       id: "users",
       SVG: SVGUsers,
       text: "Usuários",
-      to: "usuarios",
+      to: "/usuarios",
     },
     {
       id: "logs",
       SVG: SVGDocument,
       text: "Relatórios",
-      to: "relatorios",
+      to: "/relatorios",
     },
   ].filter(({ id }) => {
     if (pick) return pick.includes(id);
@@ -122,7 +123,12 @@ const Sidebar = forwardRef<HTMLDivElement>((...args) => {
   return (
     <Styled.Wrapper ref={args[1]}>
       <Styled.Header>
-        <Title level={3} text="Acervo histórico" isHeadingElement={false} />
+        <Title
+          level={3}
+          text={appPrivateName}
+          isHeadingElement={false}
+          title={appPrivateName}
+        />
 
         {/* <Styled.ResizeSidebar SVG={{ Component: SVGResize }} variant="support" /> */}
       </Styled.Header>
