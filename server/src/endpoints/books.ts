@@ -20,7 +20,7 @@ export const booksGetMany = async (req: Request, res: Response) => {
         "bc.name as bookcase_name",
         "s.name as shelf_name",
         "bx.name as box_name",
-        "u.name as user_name"
+        "u.name as user_name",
       );
 
     const totalItems = await total;
@@ -62,7 +62,7 @@ export const booksPostOne = async (req: Request, res: Response) => {
     });
 
     res.send(insertedBook);
-  } catch (error) {
+  } catch {
     res.status(500).send({ error: "Internal server error" });
   }
 };

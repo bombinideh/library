@@ -3,15 +3,18 @@ import Joi from "joi";
 
 export default function validation(
   JoiSchema: Joi.ObjectSchema,
-  schemaType: "body" | "params" | "query" = "body"
+  schemaType: "body" | "params" | "query" = "body",
 ) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await JoiSchema.validateAsync(req[schemaType]);
 
       next();
-    } catch (err: Joi.ValidationError | any) {
-      res.status(400).send({ error: err.details[0].message });
+    } catch (error) {
+      if (error instanceof Joi.ValidationError)
+        res.status(400).send({ error: error.details[0].message });
+
+      return res.status(400).send({ error: "Erro de validação" });
     }
   };
 }

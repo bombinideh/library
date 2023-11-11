@@ -15,7 +15,7 @@ router.get(
   "/books",
   auth,
   validation(booksGetManyValidation, "query"),
-  booksGetMany
+  booksGetMany,
 );
 router.post("/books", auth, validation(booksPostOneValidation), booksPostOne);
 router.patch(
@@ -23,7 +23,7 @@ router.patch(
   auth,
   validation(booksGetOneValidation, "params"),
   validation(booksPatchOneValidation),
-  booksPatchOne
+  booksPatchOne,
 );
 
 export default router;
