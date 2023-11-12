@@ -1,13 +1,18 @@
 import { Router } from "express";
-import { booksGetMany, booksPatchOne, booksPostOne } from "../endpoints/books";
+import {
+  booksDeleteOne,
+  booksGetMany,
+  booksPatchOne,
+  booksPostOne,
+} from "../endpoints/books";
+import auth from "../middlewares/auth";
+import validation from "../middlewares/validation";
 import {
   booksGetManyValidation,
   booksGetOneValidation,
   booksPatchOneValidation,
   booksPostOneValidation,
 } from "../validations/books";
-import validation from "../middlewares/validation";
-import auth from "../middlewares/auth";
 
 const router = Router();
 
@@ -15,7 +20,7 @@ router.get(
   "/books",
   auth,
   validation(booksGetManyValidation, "query"),
-  booksGetMany
+  booksGetMany,
 );
 router.post("/books", auth, validation(booksPostOneValidation), booksPostOne);
 router.patch(
@@ -23,7 +28,13 @@ router.patch(
   auth,
   validation(booksGetOneValidation, "params"),
   validation(booksPatchOneValidation),
-  booksPatchOne
+  booksPatchOne,
+);
+router.delete(
+  "/books/:book_id",
+  auth,
+  validation(booksGetOneValidation, "params"),
+  booksDeleteOne,
 );
 
 export default router;

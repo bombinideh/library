@@ -26,7 +26,6 @@ export function queryFilter({ queryParams, table }: PaginationProps) {
     ...queryParams,
   };
   const query = database(table)
-    .select("*")
     .limit(items)
     .offset(items * (page - 1));
   let finalQuery = query;

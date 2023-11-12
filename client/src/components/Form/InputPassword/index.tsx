@@ -45,7 +45,10 @@ export default function InputPassword(props: InputPasswordProps) {
   return (
     <FieldWrapper label={label} id={id} error={error}>
       {showForgotPasswordLink && (
-        <Styled.ForgotPassword text="Esqueceu sua senha?" to="esqueceu-sua-senha" />
+        <Styled.ForgotPassword
+          text="Esqueceu sua senha?"
+          to="auth/esqueceu-sua-senha"
+        />
       )}
 
       {showPasswordDisplayToggle ? (

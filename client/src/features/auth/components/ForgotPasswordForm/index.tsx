@@ -30,7 +30,7 @@ export default function ForgotPasswordForm() {
       onSubmit={handleSubmit(({ email }) => {
         forgotPasswordMutation({
           email,
-          url: `${location.origin}/esqueceu-sua-senha`,
+          url: `${location.origin}/auth/esqueceu-sua-senha`,
         });
       })}
     >

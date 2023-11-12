@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
-import { IUser } from "../models/User";
-import { database } from "../knex";
-import { existUser } from "../functions/existUser";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../functions/generateToken";
 import crypto from "crypto";
+import { Request, Response } from "express";
 import nodemailer from "nodemailer";
+import { existUser } from "../functions/existUser";
+import { generateToken } from "../functions/generateToken";
+import { database } from "../knex";
+import { IUser, UserResponse } from "../models/User";
 
 type SignInBody = Pick<IUser, "email" | "password">;
 
@@ -13,7 +13,7 @@ export const signIn = async (req: Request, res: Response) => {
   const { email, password }: SignInBody = req.body;
 
   try {
-    const user: IUser = await existUser(email);
+    const user = await existUser(email);
 
     if (!user) {
       res.status(400).send({ error: "User not found" });
@@ -32,9 +32,9 @@ export const signIn = async (req: Request, res: Response) => {
       return;
     }
 
-    const { password: a, ...userWithoutPass } = user;
+    delete (user as UserResponse).password;
 
-    res.send({ user: userWithoutPass, token: generateToken(user.user_id) });
+    res.send({ user, token: generateToken(user.user_id) });
   } catch {
     res.status(500).send({ error: "Internal server error" });
   }
@@ -84,7 +84,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
       },
     });
 
-    transporter.sendMail(message, (err) => {
+    transporter.sendMail(message, err => {
       if (err) {
         res.status(500).send({ error: "Error to send the email" });
         return;
@@ -126,12 +126,12 @@ export const resetPassword = async (req: Request, res: Response) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    await database.transaction(async (db) => {
+    await database.transaction(async db => {
       await db("users").where({ user_id }).update({ password: passwordHash });
       await db("password_resets").where({ token }).del();
     });
 
-    delete user.password;
+    delete (user as UserResponse).password;
 
     res.send({ user, token: generateToken(user.user_id) });
   } catch {

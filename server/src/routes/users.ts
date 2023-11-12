@@ -21,14 +21,9 @@ router.get(
   "/users/:id",
   auth,
   validation(usersGetOneValidation, "params"),
-  usersGetOne
+  usersGetOne,
 );
 router.post("/users", auth, validation(usersPostValidation), usersPostOne);
-router.patch(
-  "/users/:id",
-  auth,
-  validation(usersPatchValidation),
-  usersPatchOne
-);
+router.patch("/users/:id", auth, validation(usersPatchValidation), usersPatchOne);
 
 export default router;

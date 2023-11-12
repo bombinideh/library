@@ -1,6 +1,7 @@
 import GlobalContextsProvider from "@/contexts";
 import { ReactNode } from "react";
 import { HelmetProvider } from "react-helmet-async";
+import { BrowserRouter } from "react-router-dom";
 import MotionProvider from "./MotionProvider";
 import QueryProvider from "./QueryProvider";
 import StylesProvider from "./StylesProvider";
@@ -15,7 +16,9 @@ export default function AppProvider({ children }: AppProviderProps) {
       <HelmetProvider>
         <MotionProvider>
           <QueryProvider>
-            <GlobalContextsProvider>{children}</GlobalContextsProvider>
+            <BrowserRouter>
+              <GlobalContextsProvider>{children}</GlobalContextsProvider>
+            </BrowserRouter>
           </QueryProvider>
         </MotionProvider>
       </HelmetProvider>

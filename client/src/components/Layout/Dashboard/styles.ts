@@ -16,3 +16,9 @@ export const Wrapper = styled.div<WrapperProps>`
     }
   `}
 `;
+
+export const Content = styled.div`
+  ${({ theme }) => css`
+    padding-bottom: ${theme.spacings[40]};
+  `}
+`;

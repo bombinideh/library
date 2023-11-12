@@ -13,20 +13,11 @@ import {
 } from "../endpoints/auth";
 import auth from "../middlewares/auth";
 
-
 const router = Router();
 
 router.post("/sign-in", validation(signInPostBody), signIn);
-router.post(
-  "/forgot-password",
-  validation(forgotPasswordPostBody),
-  forgotPassword
-);
-router.post(
-  "/reset-password",
-  validation(resetPasswordPostBody),
-  resetPassword
-);
+router.post("/forgot-password", validation(forgotPasswordPostBody), forgotPassword);
+router.post("/reset-password", validation(resetPasswordPostBody), resetPassword);
 router.get("/me", auth, getAuthenticatedUser);
 
 export default router;

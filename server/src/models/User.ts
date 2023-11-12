@@ -7,3 +7,7 @@ export interface IUser {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface UserResponse extends Omit<IUser, "password"> {
+  password?: IUser["password"];
+}

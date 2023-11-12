@@ -3,7 +3,7 @@ import { ComponentProps, RefAttributes } from "react";
 import { NavLink, NavLinkProps } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-export const varMobileSidebar = "md";
+export const varMobileSidebar = "lg";
 
 export const Wrapper = styled.div`
   ${({ theme }) => css`
@@ -15,7 +15,11 @@ export const Wrapper = styled.div`
     inset: 0 auto 0 0;
     z-index: ${theme.zIndexes.sidebar};
     padding: ${theme.spacings[40]} 0;
-    border-right: 1px solid ${theme.colors.stroke};
+    border-right: ${theme.borders.block} solid ${theme.colors.stroke};
+
+    ${theme.breakpoints.xxl} {
+      max-width: 305px;
+    }
 
     ${theme.breakpoints[varMobileSidebar]} {
       flex-direction: initial;
@@ -23,7 +27,7 @@ export const Wrapper = styled.div`
       inset: auto 0 0;
       padding: 0 ${theme.container.gutter};
       border-right: initial;
-      border-top: 1px solid ${theme.colors.stroke};
+      border-top: ${theme.borders.block} solid ${theme.colors.stroke};
     }
   `}
 `;
@@ -32,9 +36,16 @@ export const Header = styled.div`
   ${({ theme }) => css`
     display: flex;
     align-items: center;
+    column-gap: ${theme.spacings[8]};
     position: relative;
     padding: 0 ${theme.spacings[30]} ${theme.spacings[30]};
-    border-bottom: 1px solid ${theme.colors.stroke};
+    border-bottom: ${theme.borders.block} solid ${theme.colors.stroke};
+
+    > div {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
 
     ${theme.breakpoints[varMobileSidebar]} {
       display: none;
@@ -70,7 +81,7 @@ export const DesktopNavigation = styled.nav`
       &:last-child {
         padding-bottom: 0;
         margin-top: auto;
-        border-top: 1px solid ${theme.colors.stroke};
+        border-top: ${theme.borders.block} solid ${theme.colors.stroke};
       }
     }
 
@@ -111,7 +122,7 @@ export const NavigationItem = styled.div<LinkItemProps | ButtonItemProps>`
     column-gap: ${theme.spacings[12]};
     padding: ${theme.spacings[12]} ${theme.spacings[20]};
     border-radius: ${theme.borderRadius.block};
-    white-space: nowrap;
+    line-height: 1.3;
     cursor: pointer;
 
     ${theme.mixins.buttonColorState({
@@ -132,6 +143,16 @@ export const NavigationItem = styled.div<LinkItemProps | ButtonItemProps>`
         stroke: ${theme.colors.text};
         stroke-width: 2px;
       }
+    }
+
+    svg {
+      flex-shrink: 0;
+      width: 25px;
+      height: 25px;
+    }
+    span {
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     ${theme.breakpoints[varMobileSidebar]} {
