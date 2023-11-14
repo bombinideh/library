@@ -16,19 +16,19 @@ export const signIn = async (req: Request, res: Response) => {
     const user = await existUser(email);
 
     if (!user) {
-      res.status(400).send({ error: "User not found" });
+      res.status(400).send({ error: "Usuário não encontrado" });
       return;
     }
 
     if (!user.active) {
-      res.status(400).send({ error: "User not active" });
+      res.status(400).send({ error: "Usuário desativado" });
       return;
     }
 
     const isCorrectPassword = await bcrypt.compare(password, user.password);
 
     if (!isCorrectPassword) {
-      res.status(400).send({ error: "Incorrect password" });
+      res.status(400).send({ error: "Senha incorreta" });
       return;
     }
 
@@ -36,7 +36,7 @@ export const signIn = async (req: Request, res: Response) => {
 
     res.send({ user, token: generateToken(user.user_id) });
   } catch {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -47,7 +47,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     const user = await existUser(email);
 
     if (!user) {
-      res.status(400).send({ error: "User not found" });
+      res.status(400).send({ error: "Usuário não encontrado" });
       return;
     }
 
@@ -86,15 +86,15 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
     transporter.sendMail(message, err => {
       if (err) {
-        res.status(500).send({ error: "Error to send the email" });
+        res.status(500).send({ error: "Erro ao enviar email" });
         return;
       }
 
-      res.send({ message: "Email sent" });
+      res.send({ message: "Email enviado" });
     });
   } catch (err) {
     console.log("error", err);
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -105,7 +105,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     const user = await existUser(user_id);
 
     if (!user) {
-      res.status(400).send({ error: "User not found" });
+      res.status(400).send({ error: "Usuário não encontrado" });
       return;
     }
 
@@ -115,12 +115,12 @@ export const resetPassword = async (req: Request, res: Response) => {
       .first();
 
     if (!passwordChangeRequest || passwordChangeRequest.token !== token) {
-      res.status(401).send({ error: "Invalid token" });
+      res.status(401).send({ error: "Token Inválido" });
       return;
     }
 
     if (passwordChangeRequest.token_expires < new Date()) {
-      res.status(401).send({ error: "token expired" });
+      res.status(401).send({ error: "Token expirado" });
       return;
     }
 
@@ -135,7 +135,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 
     res.send({ user, token: generateToken(user.user_id) });
   } catch {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -146,12 +146,12 @@ export const getAuthenticatedUser = async (req: Request, res: Response) => {
       .first();
 
     if (!user) {
-      res.status(404).send({ error: "Not found" });
+      res.status(404).send({ error: "Não encontrado" });
       return;
     }
 
     res.send(user);
   } catch {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };

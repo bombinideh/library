@@ -8,20 +8,15 @@ import {
 import auth from "../middlewares/auth";
 import validation from "../middlewares/validation";
 import {
-  booksGetManyValidation,
   booksGetOneValidation,
   booksPatchOneValidation,
   booksPostOneValidation,
 } from "../validations/books";
+import { getManyValidation } from "../validations";
 
 const router = Router();
 
-router.get(
-  "/books",
-  auth,
-  validation(booksGetManyValidation, "query"),
-  booksGetMany,
-);
+router.get("/books", auth, validation(getManyValidation, "query"), booksGetMany);
 router.post("/books", auth, validation(booksPostOneValidation), booksPostOne);
 router.patch(
   "/books/:book_id",

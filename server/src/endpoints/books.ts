@@ -27,7 +27,7 @@ export const booksGetMany = async (req: Request, res: Response) => {
 
     res.send({ items: finalQuery, total: Number(totalItems?.count) });
   } catch {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -41,56 +41,11 @@ export const booksPostOne = async (req: Request, res: Response) => {
       .andWhereILike("author", `%${body.author}%`)
       .first();
 
-    if (book) return res.status(400).send({ error: "Book already exists" });
+    if (book) return res.status(400).send({ error: "Livro já existente" });
 
-    const [insertedBook] = await database.transaction(async db => {
-      const { bookcase_name, shelf_name, box_name, ...bookData } = body;
-      const entities = {
-        bookcases: {
-          name: bookcase_name,
-          id: 0,
-        },
-        shelfs: {
-          name: shelf_name,
-          id: 0,
-        },
-        boxes: {
-          name: box_name,
-          id: 0,
-        },
-      };
-      const handleRelationship = async (entityName: string) => {
-        const entity = entities[entityName as keyof typeof entities];
-        const existingRegister = await db(entityName)
-          .where("name", entity.name)
-          .first();
-        const getId = (register: object) => {
-          return Object.keys(register).filter(key => key.endsWith("_id"))[0];
-        };
-
-        if (existingRegister) {
-          entity.id = existingRegister[getId(existingRegister)];
-        } else {
-          const [insertedRegister] = await db(entityName)
-            .insert({ name: entity.name })
-            .returning("*");
-
-          entity.id = insertedRegister[getId(insertedRegister)];
-        }
-      };
-
-      await Promise.all(Object.keys(entities).map(handleRelationship));
-
-      return await db<Book>("books")
-        .insert({
-          ...bookData,
-          user_id,
-          bookcase_id: entities.bookcases.id,
-          shelf_id: entities.shelfs.id,
-          box_id: entities.boxes.id,
-        })
-        .returning("*");
-    });
+    const [insertedBook] = await database("books")
+      .insert({ ...body, user_id })
+      .returning("*");
 
     await database("logs").insert({
       user_id,
@@ -99,8 +54,9 @@ export const booksPostOne = async (req: Request, res: Response) => {
     });
 
     res.send(insertedBook);
-  } catch {
-    res.status(500).send({ error: "Internal server error" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -112,7 +68,7 @@ export const booksPatchOne = async (req: Request, res: Response) => {
     const existBook = await database("books").where({ book_id }).first();
 
     if (!existBook) {
-      res.status(404).send({ error: "Book not found" });
+      res.status(404).send({ error: "Livro não encontrado" });
       return;
     }
 
@@ -129,7 +85,7 @@ export const booksPatchOne = async (req: Request, res: Response) => {
 
     res.send(updatedBook);
   } catch (error) {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -141,7 +97,7 @@ export const booksDeleteOne = async (req: Request, res: Response) => {
     const bookQuery = database<Book>("books").where("book_id", book_id);
     const book = await bookQuery.first();
 
-    if (!book) return res.status(404).send({ error: "Book not found" });
+    if (!book) return res.status(404).send({ error: "Livro não encontrado" });
 
     const deletedBook = await database.transaction(async db => {
       const [deletedBook] = await bookQuery.del().returning("*");
@@ -181,6 +137,6 @@ export const booksDeleteOne = async (req: Request, res: Response) => {
 
     res.send(deletedBook);
   } catch {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
