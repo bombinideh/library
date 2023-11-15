@@ -9,7 +9,7 @@ export const Input = styled.input<InputProps>`
     flex: 1 100%;
     padding: ${theme.spacings[12]};
     border-radius: ${theme.borderRadius.block};
-    border-width: ${theme.borders.block}
+    border-width: ${theme.borders.block};
     border-style: solid;
     border: ${theme.borders.block} solid ${theme.colors.stroke};
     background-color: ${theme.colors.block};

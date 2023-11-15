@@ -57,7 +57,7 @@ export default function Header({ title }: HeaderProps) {
             </Styled.ProfileButton>
           ))}
           items={userOptions}
-          contentPosition="right"
+          contentPositionX="right"
         />
       </Styled.Container>
     </Styled.Wrapper>

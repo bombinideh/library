@@ -7,9 +7,9 @@ import * as Styled from "./styles";
 
 interface FieldWrapperProps {
   children: ReactNode;
-  label: string;
+  label?: string;
   id: IField["id"];
-  error: IField["error"];
+  error?: IField["error"];
 }
 
 export default function FieldWrapper({
@@ -22,7 +22,7 @@ export default function FieldWrapper({
 
   return (
     <Styled.Wrapper>
-      <Styled.Label htmlFor={id}>{label}</Styled.Label>
+      {label && <Styled.Label htmlFor={id}>{label}</Styled.Label>}
 
       {children}
 

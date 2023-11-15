@@ -9,18 +9,20 @@ interface FieldProps extends Omit<IField, "label"> {
 }
 
 export default function Field(props: FieldProps) {
-  const { registration, error, onChange, onBlur, ...rest } = props;
+  const { id, registration, error, onChange, onBlur, ...rest } = props;
 
   return (
     <Styled.Input
-      name={registration.name}
-      ref={registration.ref}
+      {...(registration
+        ? { name: registration.name, ref: registration.ref }
+        : { name: id })}
+      id={id}
       onChange={event => {
-        registration.onChange(event);
+        registration?.onChange(event);
         if (onChange) onChange(event);
       }}
       onBlur={event => {
-        registration.onBlur(event);
+        registration?.onBlur(event);
         if (onBlur) onBlur(event);
       }}
       $error={!!error}

@@ -4,8 +4,9 @@ export interface IField {
   label: string;
   id: string;
   type: string;
-  registration: UseFormRegisterReturn;
-  error: FieldError | undefined;
+  registration?: UseFormRegisterReturn;
+  error?: FieldError | undefined;
+  value?: string;
   autoComplete?: string;
   autoFocus?: boolean;
 }

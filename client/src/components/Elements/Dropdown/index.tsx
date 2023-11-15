@@ -11,28 +11,32 @@ import {
 import { NavLink } from "react-router-dom";
 import { useTheme } from "styled-components";
 import * as Styled from "./styles";
+import transientProps from "@/utils/transientProps";
 
 type OnClick = MouseEventHandler<HTMLButtonElement>;
 
 export interface DropdownProps {
+  className?: string;
   Button: ForwardRefExoticComponent<React.RefAttributes<HTMLButtonElement>>;
   items: Array<{
     text: string;
     to?: string;
     onClick?: OnClick;
   }>;
-  contentPosition?: "left" | "right";
+  contentPositionX?: "left" | "right";
   wrapperWidth?: string;
 }
 
-export type DropdownDefaultProps = Required<Pick<DropdownProps, "contentPosition">>;
+export type DropdownDefaultProps = Required<
+  Pick<DropdownProps, "contentPositionX">
+>;
 
 const defaultProps: DropdownDefaultProps = {
-  contentPosition: "left",
+  contentPositionX: "left",
 };
 
 export default function Dropdown(props: DropdownProps) {
-  const { Button, items, contentPosition, wrapperWidth } = {
+  const { className, Button, items, contentPositionX, wrapperWidth } = {
     ...defaultProps,
     ...props,
   };
@@ -45,7 +49,7 @@ export default function Dropdown(props: DropdownProps) {
   useEscapeKey(closeOptions);
 
   return (
-    <Styled.Wrapper $wrapperWidth={wrapperWidth}>
+    <Styled.Wrapper className={className} $wrapperWidth={wrapperWidth}>
       <Styled.Button
         className={`${show ? "open" : ""}`}
         as={Button}
@@ -61,8 +65,7 @@ export default function Dropdown(props: DropdownProps) {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={motionTransition(transitions.element)}
-            $contentPosition={contentPosition}
-            $wrapperWidth={wrapperWidth}
+            {...transientProps({ contentPositionX, wrapperWidth })}
           >
             {items.map(({ text, to, onClick }) => (
               <Styled.Item

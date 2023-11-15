@@ -35,13 +35,13 @@ export const Button = styled.button`
 `;
 
 interface ContentProps extends WrapperWidth {
-  $contentPosition: DropdownDefaultProps["contentPosition"];
+  $contentPositionX: DropdownDefaultProps["contentPositionX"];
 }
 
 export const Content = styled(m.div)<ContentProps>`
-  ${({ theme, $contentPosition, $wrapperWidth }) => css`
+  ${({ theme, $contentPositionX, $wrapperWidth }) => css`
     position: absolute;
-    ${$contentPosition}: 0;
+    ${$contentPositionX}: 0;
     z-index: ${theme.zIndexes.dropdown};
     margin-top: ${theme.spacings[8]};
     background-color: ${theme.colors.blockSupport1};

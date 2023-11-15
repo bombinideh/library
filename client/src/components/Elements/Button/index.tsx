@@ -1,22 +1,25 @@
 import transientProps from "@/utils/transientProps";
-import { FunctionComponent } from "react";
+import { ComponentProps, FunctionComponent, forwardRef } from "react";
 import * as Styled from "./styles";
+import { DefaultTheme } from "styled-components";
 
-interface ButtonProps {
-  className?: string;
+export interface ButtonProps {
   type?: "button" | "reset" | "submit";
-  variant?: "primary" | "support";
+  variant?: "primary" | "support" | "danger";
   SVG?: {
     Component?: FunctionComponent;
     element?: string;
     shape?: string;
+    color?: keyof DefaultTheme["colors"];
   };
   text?: string;
   align?: "left" | "center" | "right";
 }
 
-export type ButtonDefaultProps = Omit<Required<ButtonProps>, "className"> & {
-  SVG: Omit<Required<NonNullable<ButtonProps["SVG"]>>, "Component">;
+type ButtonComponentProps = ButtonProps & ComponentProps<"button">;
+
+export type ButtonDefaultProps = Required<ButtonProps> & {
+  SVG: Omit<Required<NonNullable<ButtonProps["SVG"]>>, "Component" | "color">;
 };
 
 const defaultProps: ButtonDefaultProps = {
@@ -30,8 +33,8 @@ const defaultProps: ButtonDefaultProps = {
   align: "left",
 };
 
-export default function Button(props: ButtonProps) {
-  const { className, type, variant, SVG, text, align } = {
+const Button = forwardRef<HTMLButtonElement, ButtonComponentProps>((props, ref) => {
+  const { children, type, variant, SVG, text, align, ...rest } = {
     ...defaultProps,
     ...props,
     SVG: {
@@ -42,14 +45,19 @@ export default function Button(props: ButtonProps) {
 
   return (
     <Styled.Wrapper
-      className={className}
       type={type}
       $SVGElement={SVG.element}
       $SVGShape={SVG.shape}
+      $SVGColor={SVG.color}
       {...transientProps({ variant, align })}
+      {...rest}
+      ref={ref}
     >
       {SVG.Component && <SVG.Component />}
-      {text && text}
+      {text && <span>{text}</span>}
+      {children}
     </Styled.Wrapper>
   );
-}
+});
+
+export default Button;
