@@ -1,16 +1,9 @@
 import Joi from "joi";
 
-export const booksGetManyValidation = Joi.object({
-  items: Joi.string(),
-  page: Joi.string(),
-  searchColumn: Joi.string(),
-  searchQuery: Joi.string(),
-});
-
 export const booksPostOneValidation = Joi.object({
-  bookcase_name: Joi.string().required(),
-  shelf_name: Joi.string().required(),
-  box_name: Joi.string().required(),
+  bookcase_id: Joi.number().required(),
+  shelf_id: Joi.number().required(),
+  box_id: Joi.number().required(),
   title: Joi.string().required(),
   author: Joi.string().required(),
   publisher: Joi.string().required(),

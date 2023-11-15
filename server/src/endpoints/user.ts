@@ -10,7 +10,7 @@ export const usersGetMany = async (req: Request, res: Response) => {
 
     res.send(users);
   } catch {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -23,10 +23,10 @@ export const usersGetOne = async (req: Request, res: Response) => {
     if (user) {
       res.send(user);
     } else {
-      res.status(404).send({ error: "User not found" });
+      res.status(404).send({ error: "Usuário não encontrado" });
     }
   } catch {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -35,7 +35,7 @@ export const usersPostOne = async (req: Request, res: Response) => {
 
   try {
     if (await existUser(user.email)) {
-      res.status(400).send({ error: "Email already exists" });
+      res.status(400).send({ error: "Email já existente" });
       return;
     }
 
@@ -53,7 +53,7 @@ export const usersPostOne = async (req: Request, res: Response) => {
 
     res.status(201).send(insertedUser);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Erro Interno no Servidor" });
   }
 };
 
@@ -65,12 +65,12 @@ export const usersPatchOne = async (req: Request, res: Response) => {
     const exist = await database("users").whereRaw(`user_id = ${id}`).first();
 
     if (!exist) {
-      res.status(404).send({ error: "User not found" });
+      res.status(404).send({ error: "Usuário não encontrado" });
       return;
     }
 
     if (newData.email && (await existUser(newData.email))) {
-      res.status(400).send({ error: "Email already exists" });
+      res.status(400).send({ error: "Email já existente" });
       return;
     }
 
@@ -87,6 +87,6 @@ export const usersPatchOne = async (req: Request, res: Response) => {
 
     res.send(updatedUser);
   } catch {
-    res.status(500).send({ error: "Internal server error" });
+    res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
