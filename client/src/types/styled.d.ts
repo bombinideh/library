@@ -18,6 +18,7 @@ interface StaticColors {
   primaryDark1: string;
   primaryDark2: string;
   white: string;
+  black: string;
   dangerLight1: string;
   danger: string;
   successLight1: string;
@@ -75,6 +76,7 @@ declare module "styled-components" {
     spacings: {
       2: string;
       8: string;
+      10: string;
       12: string;
       15: string;
       20: string;
@@ -84,6 +86,7 @@ declare module "styled-components" {
     zIndexes: {
       sidebar: number;
       dropdown: number;
+      modal: number;
       notification: number;
     };
   }

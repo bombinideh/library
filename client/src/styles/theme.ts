@@ -66,6 +66,7 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
   spacings: {
     2: "0.2rem",
     8: "0.8rem",
+    10: "1rem",
     12: "1.2rem",
     15: "1.5rem",
     20: "2rem",
@@ -75,7 +76,8 @@ const theme = (mode: DefaultTheme["mode"]): DefaultTheme => ({
   zIndexes: {
     sidebar: 5,
     dropdown: 10,
-    notification: 15,
+    modal: 15,
+    notification: 20,
   },
 });
 
