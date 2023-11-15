@@ -5,7 +5,7 @@ import { Book, PostBook } from "../models/Book";
 
 export const booksGetMany = async (req: Request, res: Response) => {
   try {
-    const { query, total } = queryFilter({
+    const { query, total } = await queryFilter({
       queryParams: req.query,
       table: "books as b",
     });
@@ -23,9 +23,7 @@ export const booksGetMany = async (req: Request, res: Response) => {
         "b.*",
       );
 
-    const totalItems = await total;
-
-    res.send({ items: finalQuery, total: Number(totalItems?.count) });
+    res.send({ items: finalQuery, total });
   } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }

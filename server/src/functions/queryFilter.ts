@@ -20,7 +20,7 @@ const defaultQueryParams: QueryParams = {
   searchQuery: undefined,
 };
 
-export function queryFilter({ queryParams, table }: PaginationProps) {
+export async function queryFilter({ queryParams, table }: PaginationProps) {
   const { items, page, searchColumn, searchQuery } = {
     ...defaultQueryParams,
     ...queryParams,
@@ -33,10 +33,10 @@ export function queryFilter({ queryParams, table }: PaginationProps) {
   if (searchColumn && searchQuery)
     finalQuery = query.where(searchColumn, "like", `%${searchQuery}%`);
 
-  const tableTotalItems = database(table).count("*").first();
+  const totalItems = await database(table).count("*").first();
 
   return {
     query: finalQuery,
-    total: tableTotalItems,
+    total: Number(totalItems?.count),
   };
 }

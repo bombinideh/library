@@ -1,11 +1,16 @@
 import { Request, Response } from "express";
+import { queryFilter } from "../functions/queryFilter";
 import { database } from "../knex";
 
 export const boxesGetMany = async (req: Request, res: Response) => {
   try {
-    const boxes = await database("boxes").select("*");
+    const { query, total } = await queryFilter({
+      queryParams: req.query,
+      table: "boxes",
+    });
+    const boxes = await query;
 
-    res.send(boxes);
+    res.send({ items: boxes, total });
   } catch (error) {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }
