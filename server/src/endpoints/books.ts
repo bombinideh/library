@@ -99,35 +99,10 @@ export const booksDeleteOne = async (req: Request, res: Response) => {
 
     if (!book) return res.status(404).send({ error: "Livro não encontrado" });
 
-    const deletedBook = await database.transaction(async db => {
-      const [deletedBook] = await bookQuery.del().returning("*");
-      const entities = {
-        bookcases: {
-          id: deletedBook.bookcase_id,
-          idName: "bookcase_id",
-        },
-        shelfs: {
-          id: deletedBook.shelf_id,
-          idName: "shelf_id",
-        },
-        boxes: {
-          id: deletedBook.box_id,
-          idName: "box_id",
-        },
-      };
-      const handleRelationship = async (entityName: string) => {
-        const { id, idName } = entities[entityName as keyof typeof entities];
-        const [{ count: booksInRelationShip }] = await db("books")
-          .where(idName, id)
-          .count();
-
-        if (!+booksInRelationShip) await db(entityName).where(idName, id).del();
-      };
-
-      await Promise.all(Object.keys(entities).map(handleRelationship));
-
-      return deletedBook;
-    });
+    const [deletedBook] = await database("books")
+      .where("book_id", book_id)
+      .del()
+      .returning("*");
 
     await database("logs").insert({
       user_id,
