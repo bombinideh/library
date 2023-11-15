@@ -1,11 +1,12 @@
 import styled, { css } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
-import { ButtonDefaultProps } from ".";
+import { ButtonDefaultProps, ButtonProps } from ".";
 
 interface WrapperProps {
   $variant: ButtonDefaultProps["variant"];
   $SVGElement: ButtonDefaultProps["SVG"]["element"];
   $SVGShape: ButtonDefaultProps["SVG"]["shape"];
+  $SVGColor: NonNullable<ButtonProps["SVG"]>["color"];
   $align: ButtonDefaultProps["align"];
 }
 
@@ -25,10 +26,15 @@ const variants: Variants = {
     background: "blockSupport1",
     border: "stroke",
   },
+  danger: {
+    text: "white",
+    background: "danger",
+    border: "danger",
+  },
 };
 
 export const Wrapper = styled.button<WrapperProps>`
-  ${({ theme, $align, $SVGElement, $SVGShape, $variant }) => css`
+  ${({ theme, $align, $SVGElement, $SVGShape, $SVGColor, $variant }) => css`
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -42,6 +48,14 @@ export const Wrapper = styled.button<WrapperProps>`
     border-style: solid;
     cursor: pointer;
 
+    svg {
+      flex-shrink: 0;
+    }
+    svg:first-child {
+      width: 16px;
+      height: 16px;
+    }
+
     ${() => {
       const { text, background, border } = variants[$variant];
 
@@ -52,7 +66,7 @@ export const Wrapper = styled.button<WrapperProps>`
           SVGChildren: {
             selector: $SVGElement,
             properties: [$SVGShape],
-            colors: [text],
+            colors: [$SVGColor || text],
           },
         })}
       `;
