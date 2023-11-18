@@ -1,6 +1,7 @@
 import useClickOutside from "@/hooks/useClickOutside";
 import useEscapeKey from "@/hooks/useEscapeKey";
 import motionTransition from "@/utils/motionTransition";
+import transientProps from "@/utils/transientProps";
 import { AnimatePresence } from "framer-motion";
 import {
   ForwardRefExoticComponent,
@@ -11,25 +12,22 @@ import {
 import { NavLink } from "react-router-dom";
 import { useTheme } from "styled-components";
 import * as Styled from "./styles";
-import transientProps from "@/utils/transientProps";
 
-type OnClick = MouseEventHandler<HTMLButtonElement>;
+export interface DropdownItem {
+  text: string;
+  to?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}
 
 export interface DropdownProps {
   className?: string;
   Button: ForwardRefExoticComponent<React.RefAttributes<HTMLButtonElement>>;
-  items: Array<{
-    text: string;
-    to?: string;
-    onClick?: OnClick;
-  }>;
+  items: DropdownItem[];
   contentPositionX?: "left" | "right";
   wrapperWidth?: string;
 }
 
-export type DropdownDefaultProps = Required<
-  Pick<DropdownProps, "contentPositionX">
->;
+export type DropdownDefaultProps = Required<Pick<DropdownProps, "contentPositionX">>;
 
 const defaultProps: DropdownDefaultProps = {
   contentPositionX: "left",
@@ -41,26 +39,31 @@ export default function Dropdown(props: DropdownProps) {
     ...props,
   };
   const [show, setShow] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const closeOptions = { state: show, clearState: () => setShow(false) };
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const closeDropdown = () => setShow(false);
+  const closeOptions = { state: show, clearState: closeDropdown };
   const { transitions } = useTheme();
 
-  useClickOutside({ ...closeOptions, ref: buttonRef });
+  useClickOutside({ ...closeOptions, ref: wrapperRef });
   useEscapeKey(closeOptions);
 
   return (
-    <Styled.Wrapper className={className} $wrapperWidth={wrapperWidth}>
+    <Styled.Wrapper
+      className={className}
+      $wrapperWidth={wrapperWidth}
+      ref={wrapperRef}
+    >
       <Styled.Button
         className={`${show ? "open" : ""}`}
         as={Button}
         type="button"
-        ref={buttonRef}
         onClick={() => setShow(!show)}
       />
 
       <AnimatePresence>
         {show && (
           <Styled.Content
+            onClick={closeDropdown}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}

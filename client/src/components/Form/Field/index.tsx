@@ -9,7 +9,7 @@ interface FieldProps extends Omit<IField, "label"> {
 }
 
 export default function Field(props: FieldProps) {
-  const { id, registration, error, onChange, onBlur, ...rest } = props;
+  const { id, registration, error, onChange, onBlur, disabled, ...rest } = props;
 
   return (
     <Styled.Input
@@ -26,6 +26,7 @@ export default function Field(props: FieldProps) {
         if (onBlur) onBlur(event);
       }}
       $error={!!error}
+      {...(disabled && { disabled })}
       {...rest}
     />
   );

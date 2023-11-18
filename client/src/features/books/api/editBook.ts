@@ -14,10 +14,10 @@ export default function useEditBook(bookId: Book["book_id"]) {
   const { mutateAsync, ...rest } = useMutation({
     mutationFn: request,
     onSuccess: book => {
-      queryClient.invalidateQueries({ queryKey: ["books", bookId] });
+      queryClient.invalidateQueries({ queryKey: ["books"] });
 
       emitNotification({
-        text: `O livro ${book.title} foi editado!`,
+        text: `O livro "${book.title}" foi editado!`,
         variant: "success",
       });
     },

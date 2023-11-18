@@ -3,8 +3,14 @@ import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
 import { useMutation } from "@tanstack/react-query";
 import { Book } from "../types";
+import { ModalStateProps } from "@/components/Modal";
 
-export default function useDeleteBook(bookId: Book["book_id"]) {
+interface UseDeleteBookProps {
+  bookId: Book["book_id"],
+  setModalState: ModalStateProps["setShowState"]
+}
+
+export default function useDeleteBook({ bookId, setModalState }: UseDeleteBookProps) {
   const request = useFetch<null, Book>({
     URL: `books/${bookId}`,
     method: "DELETE",
@@ -14,6 +20,7 @@ export default function useDeleteBook(bookId: Book["book_id"]) {
     mutationFn: request,
     onSuccess: book => {
       queryClient.invalidateQueries({ queryKey: ["books"] });
+      setModalState(false);
 
       emitNotification({
         text: `O livro "${book.title}" foi deletado!`,

@@ -1,3 +1,4 @@
+import { InputHTMLAttributes } from "react";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
 export interface IField {
@@ -6,7 +7,8 @@ export interface IField {
   type: string;
   registration?: UseFormRegisterReturn;
   error?: FieldError | undefined;
-  value?: string;
+  value?: InputHTMLAttributes<HTMLInputElement>["value"];
   autoComplete?: string;
   autoFocus?: boolean;
+  disabled?: boolean
 }

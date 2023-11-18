@@ -1,13 +1,14 @@
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
 import Table from "@/components/Elements/Table";
+import useTable from "@/hooks/useTable";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import useGetBooks from "../../api/getBooks";
-import { Book, ResponseBook } from "../../types";
-import CreateBook from "../CreateBook";
-import DeleteBook from "../DeleteBook";
-import EditBook from "../EditBook";
+import useGetBooks from "../api/getBooks";
+import { Book } from "../types";
+import CreateBook from "./CreateBook";
+import DeleteBook from "./DeleteBook";
+import EditBook from "./EditBook";
 
 const columns = [
   {
@@ -55,27 +56,32 @@ const columns = [
     key: "box_name",
   },
   {
-    title: "Cadastrado por",
+    title: "Autor do cadastro",
     key: "user_name",
   },
 ];
 
 export default function BooksList() {
-  const [filter, setFilter] = useState({
-    searchColumn: "title",
-    searchQuery: "",
-  });
-  const { data: books, isLoading, isError } = useGetBooks({ items: 10, page: 1, ...filter });
+  const { filter, setFilter, pagination, setPagination, getManyQueryProps } =
+    useTable({
+      searchColumn: "title",
+    });
+  const result = useGetBooks(getManyQueryProps);
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [bookToChange, setBookToChange] = useState({});
+  const manipulateColumns = columns.filter(({ key }) => {
+    const ignore = [
+      "book_id",
+      "user_name",
+      "bookcase_name",
+      "shelf_name",
+      "box_name",
+    ];
 
-  if (isLoading) return <>Carregando...</>;
-
-  if (isError) return <>Um erro ocorreu.</>;
-
-  if (!books) return <>Nenhum livro para exibir.</>;
+    return !ignore.includes(key);
+  });
 
   return (
     <>
@@ -84,7 +90,7 @@ export default function BooksList() {
           <CreateBook
             showState={createModal}
             setShowState={setCreateModal}
-            columns={columns}
+            columns={manipulateColumns}
           />
         )}
 
@@ -92,7 +98,7 @@ export default function BooksList() {
           <EditBook
             showState={editModal}
             setShowState={setEditModal}
-            columns={columns}
+            columns={manipulateColumns}
             book={bookToChange as Book}
           />
         )}
@@ -106,10 +112,15 @@ export default function BooksList() {
         )}
       </AnimatePresence>
 
-      <Table<ResponseBook>
-        data={books}
+      <Table
+        title="livros"
+        queryResult={result}
         columns={columns}
-        filter={{ filter, setFilter }}
+        filterColumns={["title", "author", "publisher", "observation"]}
+        filter={filter}
+        setFilter={setFilter}
+        pagination={pagination}
+        setPagination={setPagination}
         CreateButton={
           <Button
             SVG={{ Component: SVGPlus }}

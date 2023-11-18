@@ -2,11 +2,12 @@ import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
+import RelationshipFields from "@/features/misc/components/RelationshipFields";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import useCreateBook from "../../api/createBook";
+import useCreateBook from "../api/createBook";
 
 interface CreateBookProps extends ModalStateProps {
   columns: Column[];
@@ -20,9 +21,9 @@ const schema = z.object({
   year_publication: z.string(),
   amount: z.string(),
   observation: z.string(),
-  bookcase_name: z.string().min(1, "Uma estante é obrigatória."),
-  shelf_name: z.string().min(1, "Uma prateleira é obrigatória."),
-  box_name: z.string().min(1, "Uma caixa é obrigatória."),
+  bookcase_id: z.string().min(1, "Uma estante é obrigatória."),
+  shelf_id: z.string().min(1, "Uma prateleira é obrigatória."),
+  box_id: z.string().min(1, "Uma caixa é obrigatória."),
 });
 
 export type CreateBookData = z.infer<typeof schema>;
@@ -32,14 +33,15 @@ export default function CreateBook({ columns, ...rest }: CreateBookProps) {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
+    setValue,
+    trigger,
+    resetField,
   } = useForm<CreateBookData>({
     resolver: zodResolver(schema),
   });
-  const filteredColumns = columns.filter(
-    ({ key }) => key !== "book_id" && key !== "user_name",
-  );
-  const formId = "createBookForm";
   const { createBookMutation } = useCreateBook();
+  const formId = "createBookForm";
 
   return (
     <Modal
@@ -49,26 +51,22 @@ export default function CreateBook({ columns, ...rest }: CreateBookProps) {
     >
       <Form
         id={formId}
-        onSubmit={handleSubmit(data => {
-          const excludeKeys = ["bookcase_name", "shelf_name", "box_name"];
-
-          excludeKeys.forEach(key => delete data[key as keyof typeof data]);
-
-          const reqData = { ...data, bookcase_id: 1, shelf_id: 1, box_id: 1 };
-
-          createBookMutation(nonNullData(reqData));
-        })}
+        onSubmit={handleSubmit(data => createBookMutation(nonNullData(data)))}
       >
-        {filteredColumns.map(({ title, key }) => (
+        {columns.map(({ title, key }) => (
           <InputField
             key={key}
-            label={title}
             id={key}
+            label={title}
             type="text"
             registration={register(key as keyof CreateBookData)}
             error={errors[key as keyof CreateBookData]}
           />
         ))}
+
+        <RelationshipFields
+          {...{ register, errors, getValues, setValue, trigger, resetField }}
+        />
       </Form>
     </Modal>
   );
