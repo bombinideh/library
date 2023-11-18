@@ -8,8 +8,6 @@ interface UseEscapeKeyProps {
 export default function useEscapeKey({ state, clearState }: UseEscapeKeyProps) {
   const callback = useCallback(({ key }: KeyboardEvent) => {
     if (key === "Escape") clearState();
-
-    console.log();
   }, []);
 
   useEffect(() => {
