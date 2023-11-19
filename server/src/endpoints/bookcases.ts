@@ -36,21 +36,11 @@ export const bookcasesPatchOne = async (req: Request, res: Response) => {
   const body: Partial<Bookcase> = req.body;
 
   try {
-    const existBookcase = await database("bookcases").where({ bookcase_id }).first();
+    const bookcase = await database<Bookcase>("bookcases")
+      .where("bookcase_id", bookcase_id)
+      .first();
 
-    if (body.name) {
-      const existName = await database("bookcases").where(body.name).first();
-
-      if (existName) {
-        res.status(409).send({ error: "Estante não encontrada" });
-        return;
-      }
-    }
-
-    if (!existBookcase) {
-      res.status(404).send({ error: "Estante não encontrada" });
-      return;
-    }
+    if (!bookcase) return res.status(404).send({ error: "Estante não encontrada" });
 
     const [updatedBookcase] = await database("bookcases")
       .where({ bookcase_id })
