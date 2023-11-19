@@ -8,14 +8,16 @@ export const boxesGetMany = async (req: Request, res: Response) => {
   try {
     const { query, total } = await queryFilter({
       queryParams: req.query,
-      table: "boxes",
+      table: "boxes as bx",
     });
-    let boxes = query;
+    let boxes = query
+      .leftJoin("shelfs as s", "s.shelf_id", "bx.shelf_id")
+      .select("bx.*", "s.bookcase_id");
 
-    if (shelf_id) boxes = query.where("shelf_id", shelf_id);
+    if (shelf_id) boxes = boxes.where("bx.shelf_id", shelf_id);
 
     res.send({ items: await boxes, total });
-  } catch (error) {
+  } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
