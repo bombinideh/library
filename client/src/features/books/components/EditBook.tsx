@@ -3,16 +3,18 @@ import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
+import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useEditBook from "../api/editBook";
-import { Book } from "../types";
+import { BookResponse } from "../types";
 
 interface EditBookProps extends ModalStateProps {
   columns: Column[];
-  book: Book;
+  book: BookResponse;
+  tableTitle: TableTitle;
 }
 
 const schema = z.object({
@@ -30,9 +32,14 @@ const schema = z.object({
 
 export type EditBookData = z.infer<typeof schema>;
 
-export default function EditBook({ book, columns, ...rest }: EditBookProps) {
+export default function EditBook({
+  tableTitle,
+  book,
+  columns,
+  ...rest
+}: EditBookProps) {
   const defaultValues = columns.reduce((data, { key }, index) => {
-    const value = book[key as keyof Book];
+    const value = book[key as keyof BookResponse];
 
     data[key as keyof EditBookData] = value ? String(value) : "";
 
@@ -40,7 +47,10 @@ export default function EditBook({ book, columns, ...rest }: EditBookProps) {
       const relationshipKeys = ["bookcase_id", "shelf_id", "box_id"];
 
       relationshipKeys.forEach(
-        key => (data[key as keyof EditBookData] = String(book[key as keyof Book])),
+        key =>
+          (data[key as keyof EditBookData] = String(
+            book[key as keyof BookResponse],
+          )),
       );
     }
 
@@ -58,13 +68,13 @@ export default function EditBook({ book, columns, ...rest }: EditBookProps) {
     resolver: zodResolver(schema),
     defaultValues,
   });
-  const { editBookMutation } = useEditBook(book.book_id);
+  const { editBookMutation } = useEditBook({ book_id: book.book_id, tableTitle });
   const formId = "editBookForm";
 
   return (
     <Modal
-      title={`Editar livro #${book.book_id}`}
-      action={{ text: "Editar livro", form: formId }}
+      title={`Editar ${tableTitle.singular.toLowerCase()} #${book.book_id}`}
+      action={{ text: `Editar ${tableTitle.singular.toLowerCase()}`, form: formId }}
       {...rest}
     >
       <Form

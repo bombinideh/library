@@ -4,31 +4,31 @@ import useNotification from "@/hooks/useNotification";
 import { TableTitle } from "@/types/table";
 import { successMessage } from "@/utils/mutationMessages";
 import { useMutation } from "@tanstack/react-query";
-import { EditBookData } from "../components/EditBook";
-import { Book } from "../types";
+import { EditShelfData } from "../components/EditShelf";
+import { Shelf } from "../types";
 
-interface UseEditBookProps {
-  book_id: Book["book_id"];
+interface UseEditShelfProps {
+  shelf_id: Shelf["shelf_id"];
   tableTitle: TableTitle;
 }
 
-export default function useEditBook({ book_id, tableTitle }: UseEditBookProps) {
-  const request = useFetch<EditBookData, Book>({
-    URL: `books/${book_id}`,
+export default function useEditShelf({ shelf_id, tableTitle }: UseEditShelfProps) {
+  const request = useFetch<EditShelfData, Shelf>({
+    URL: `shelfs/${shelf_id}`,
     method: "PATCH",
   });
   const { emitNotification } = useNotification();
   const { mutateAsync, ...rest } = useMutation({
     mutationFn: request,
-    onSuccess: book => {
-      queryClient.invalidateQueries({ queryKey: ["books"] });
+    onSuccess: shelf => {
+      queryClient.invalidateQueries({ queryKey: ["shelfs"] });
 
       emitNotification({
-        text: successMessage(tableTitle, book.title, "PATCH"),
+        text: successMessage(tableTitle, shelf.name, "PATCH"),
         variant: "success",
       });
     },
   });
 
-  return { editBookMutation: mutateAsync, ...rest };
+  return { editShelfMutation: mutateAsync, ...rest };
 }

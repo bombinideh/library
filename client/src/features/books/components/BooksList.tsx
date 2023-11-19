@@ -2,10 +2,11 @@ import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
 import Table from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
+import { TableTitle } from "@/types/table";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import useGetBooks from "../api/getBooks";
-import { Book } from "../types";
+import { BookResponse } from "../types";
 import CreateBook from "./CreateBook";
 import DeleteBook from "./DeleteBook";
 import EditBook from "./EditBook";
@@ -66,11 +67,16 @@ export default function BooksList() {
     useTable({
       searchColumn: "title",
     });
-  const result = useGetBooks(getManyQueryProps);
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [bookToChange, setBookToChange] = useState({});
+  const result = useGetBooks(getManyQueryProps);
+  const tableTitle: TableTitle = {
+    singular: "Livro",
+    plural: "Livros",
+    gender: "O",
+  };
   const manipulateColumns = columns.filter(({ key }) => {
     const ignore = [
       "book_id",
@@ -88,6 +94,7 @@ export default function BooksList() {
       <AnimatePresence>
         {createModal && (
           <CreateBook
+            tableTitle={tableTitle}
             showState={createModal}
             setShowState={setCreateModal}
             columns={manipulateColumns}
@@ -96,24 +103,26 @@ export default function BooksList() {
 
         {editModal && (
           <EditBook
+            tableTitle={tableTitle}
             showState={editModal}
             setShowState={setEditModal}
             columns={manipulateColumns}
-            book={bookToChange as Book}
+            book={bookToChange as BookResponse}
           />
         )}
 
         {deleteModal && (
           <DeleteBook
+            tableTitle={tableTitle}
             showState={deleteModal}
             setShowState={setDeleteModal}
-            book={bookToChange as Book}
+            book={bookToChange as BookResponse}
           />
         )}
       </AnimatePresence>
 
       <Table
-        title="livros"
+        tableTitle={tableTitle}
         queryResult={result}
         columns={columns}
         filterColumns={["title", "author", "publisher", "observation"]}
@@ -124,7 +133,7 @@ export default function BooksList() {
         CreateButton={
           <Button
             SVG={{ Component: SVGPlus }}
-            text="Cadastrar livro"
+            text={`Cadastrar ${tableTitle.singular.toLowerCase()}`}
             onClick={() => setCreateModal(true)}
           />
         }

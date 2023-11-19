@@ -3,6 +3,7 @@ import SVGEllipsisHorizontal from "@/assets/ellipsis-horizontal.svg?react";
 import useAuth from "@/hooks/useAuth";
 import { GetManyQueryResponse } from "@/types/api";
 import { RequestError } from "@/types/react-query";
+import { TableTitle } from "@/types/table";
 import { UseQueryResult } from "@tanstack/react-query";
 import { ReactNode, forwardRef, useEffect } from "react";
 import Spinner from "../Spinner";
@@ -17,7 +18,7 @@ export interface Column {
 }
 
 interface TableProps {
-  title: string;
+  tableTitle: TableTitle;
   queryResult: UseQueryResult<GetManyQueryResponse<any>, RequestError>;
   columns: Column[];
   filterColumns: string[];
@@ -38,7 +39,7 @@ const defaultColumn = {
 
 export default function Table(props: TableProps) {
   const {
-    title,
+    tableTitle,
     queryResult,
     columns,
     filterColumns,
@@ -124,11 +125,19 @@ export default function Table(props: TableProps) {
                 </Styled.ActionTd>
               )}
 
-              {columns.map(({ key }, columnIndex) => (
-                <td key={columnIndex} title={item[key]}>
-                  {item[key] || "-"}
-                </td>
-              ))}
+              {columns.map(({ key }, columnIndex) => {
+                const handleData = (data: any) => {
+                  if (typeof data === "boolean") return data ? "Sim" : "Não";
+
+                  return data;
+                };
+
+                return (
+                  <td key={columnIndex} title={handleData(item[key]) || "Vazio"}>
+                    <span>{handleData(item[key]) || "-"}</span>
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
@@ -139,7 +148,7 @@ export default function Table(props: TableProps) {
         setPagination={setPagination}
         total={data.total}
         currentItems={data.items.length}
-        title={title}
+        tableTitle={tableTitle}
       />
     </Styled.Wrapper>
   );

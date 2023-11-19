@@ -1,16 +1,23 @@
 import queryClient from "@/api";
+import { ModalStateProps } from "@/components/Modal";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
+import { TableTitle } from "@/types/table";
+import { successMessage } from "@/utils/mutationMessages";
 import { useMutation } from "@tanstack/react-query";
 import { Book } from "../types";
-import { ModalStateProps } from "@/components/Modal";
 
 interface UseDeleteBookProps {
-  bookId: Book["book_id"],
-  setModalState: ModalStateProps["setShowState"]
+  bookId: Book["book_id"];
+  setModalState: ModalStateProps["setShowState"];
+  tableTitle: TableTitle;
 }
 
-export default function useDeleteBook({ bookId, setModalState }: UseDeleteBookProps) {
+export default function useDeleteBook({
+  bookId,
+  setModalState,
+  tableTitle,
+}: UseDeleteBookProps) {
   const request = useFetch<null, Book>({
     URL: `books/${bookId}`,
     method: "DELETE",
@@ -23,7 +30,7 @@ export default function useDeleteBook({ bookId, setModalState }: UseDeleteBookPr
       setModalState(false);
 
       emitNotification({
-        text: `O livro "${book.title}" foi deletado!`,
+        text: successMessage(tableTitle, book.title, "DELETE"),
         variant: "success",
       });
     },

@@ -6,6 +6,7 @@ import { forwardRef } from "react";
 import Button from "../../Button";
 import Dropdown from "../../Dropdown";
 import * as Styled from "./styles";
+import { TableTitle } from "@/types/table";
 
 type Pagination = Required<Pick<GetManyQueryProps, "items" | "page">>;
 
@@ -19,7 +20,7 @@ interface PaginationProps {
   setPagination: PaginationState["setPagination"];
   total: number;
   currentItems: number;
-  title: string;
+  tableTitle: TableTitle;
 }
 
 export default function Pagination({
@@ -27,7 +28,7 @@ export default function Pagination({
   setPagination,
   total,
   currentItems,
-  title,
+  tableTitle,
 }: PaginationProps) {
   const { items, page } = pagination;
   const itemOptions = [10, 20, 30, 40, 50].map(option => ({
@@ -56,12 +57,12 @@ export default function Pagination({
           wrapperWidth="65px"
         />
 
-        <span>{title} por página</span>
+        <span>{tableTitle.plural.toLowerCase()} por página</span>
       </Styled.Items>
 
       <Styled.Pages>
         <span>
-          {total} {title}
+          {total} {tableTitle.plural.toLowerCase()}
         </span>
 
         <Styled.PagesNavigation>

@@ -13,6 +13,7 @@ import {
 } from "react-hook-form";
 
 interface RelationshipFieldsProps {
+  pick?: ("bookcase_id" | "shelf_id" | "box_id")[],
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
   getValues: UseFormGetValues<any>;
@@ -22,6 +23,7 @@ interface RelationshipFieldsProps {
 }
 
 export default function RelationshipFields({
+  pick = ["bookcase_id", "shelf_id", "box_id"],
   register,
   errors,
   getValues,
@@ -32,11 +34,11 @@ export default function RelationshipFields({
   const { bookcase_id, shelf_id } = getValues();
   const bookcasesResult = useGetBookcases();
   const shelfsResult = useGetShelfs({
-    queryOptions: { enabled: !!bookcase_id },
+    queryOptions: { enabled: pick.includes("shelf_id") && !!bookcase_id },
     bookcase_id: +bookcase_id,
   });
   const boxesResult = useGetBoxes({
-    queryOptions: { enabled: !!shelf_id },
+    queryOptions: { enabled: pick.includes("box_id") && !!shelf_id },
     shelf_id: +shelf_id,
   });
   const fields = [
@@ -62,30 +64,31 @@ export default function RelationshipFields({
       title: "Caixa",
       options: boxesResult.data?.items,
       disabled: !shelf_id,
+      resetDependency: () => {}
     },
-  ];
+  ] as const;
+  const filteredFields = fields.filter(({ id }) => pick.includes(id))
 
   return (
     <>
-      {fields.map(({ id, title, options, disabled, resetDependency }) => (
+      {filteredFields.map(({ id, title, options, disabled, resetDependency }) => (
         <SelectField
           key={id}
           id={id}
           label={title}
           options={options?.map(option => ({
-            id: Number(option[id as keyof typeof option]),
+            value: String(option[id as keyof typeof option]),
             text: option.name,
             onClick: () => {
-              const idValue = String(option[id as keyof typeof option]);
-
-              setValue(id, idValue);
+              setValue(id, String(option[id as keyof typeof option]));
               trigger(id);
+
               if (resetDependency) resetDependency();
             },
           }))}
           registration={register(id)}
           error={errors[id] as FieldError}
-          currentValueId={getValues(id)}
+          currentValue={getValues(id)}
           disabled={disabled}
         />
       ))}

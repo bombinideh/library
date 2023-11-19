@@ -1,7 +1,6 @@
 import useFetch from "@/hooks/useFetch";
 import { GetManyQueryPropsHook } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { Bookcase, BookcasesResponse } from "../types";
 
 export default function useGetBookcases({
@@ -18,10 +17,6 @@ export default function useGetBookcases({
     queryKey: ["bookcases"],
     queryFn: () => request(),
   });
-
-  useEffect(() => {
-    result.refetch();
-  }, [queryParams.searchColumn, queryParams.searchQuery]);
 
   return result;
 }

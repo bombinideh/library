@@ -1,12 +1,15 @@
 import Modal, { ModalStateProps } from "@/components/Modal";
+import { TableTitle } from "@/types/table";
 import useDeleteBook from "../api/deleteBook";
-import { Book } from "../types";
+import { BookResponse } from "../types";
 
 interface DeleteBookProps extends ModalStateProps {
-  book: Book;
+  book: BookResponse;
+  tableTitle: TableTitle;
 }
 
 export default function DeleteBook({
+  tableTitle,
   book,
   showState,
   setShowState,
@@ -14,13 +17,14 @@ export default function DeleteBook({
   const { deleteBookMutation } = useDeleteBook({
     bookId: book.book_id,
     setModalState: setShowState,
+    tableTitle,
   });
 
   return (
     <Modal
-      title={`Deletar livro #${book.book_id}`}
+      title={`Deletar ${tableTitle.singular.toLowerCase()} #${book.book_id}`}
       action={{
-        text: "Deletar livro",
+        text: `Deletar ${tableTitle.singular.toLowerCase()}`,
         variant: "danger",
         onClick: () => deleteBookMutation(null),
       }}

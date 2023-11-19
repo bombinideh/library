@@ -9,4 +9,8 @@ export interface Box {
   updated_at: Date;
 }
 
-export type BoxesResponse = GetManyQueryResponse<Box>;
+export interface BoxResponse extends Box {
+  bookcase_id: number;
+}
+
+export type BoxesResponse = GetManyQueryResponse<BoxResponse>;

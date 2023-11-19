@@ -8,33 +8,26 @@ import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import useCreateBook from "../api/createBook";
+import useCreateBox from "../api/createBox";
 
-interface CreateBookProps extends ModalStateProps {
+interface CreateBoxProps extends ModalStateProps {
   columns: Column[];
   tableTitle: TableTitle;
 }
 
 const schema = z.object({
-  title: z.string().min(1, "O título é obrigatório."),
-  author: z.string().min(1, "O autor é obrigatório."),
-  publisher: z.string().min(1, "A editora é obrigatória."),
-  number_pages: z.string().min(1, "O nº de páginas é obrigatório."),
-  year_publication: z.string(),
-  amount: z.string(),
-  observation: z.string(),
+  name: z.string().min(1, "O nome é obrigatório."),
   bookcase_id: z.string().min(1, "Uma estante é obrigatória."),
   shelf_id: z.string().min(1, "Uma prateleira é obrigatória."),
-  box_id: z.string().min(1, "Uma caixa é obrigatória."),
 });
 
-export type CreateBookData = z.infer<typeof schema>;
+export type CreateBoxData = z.infer<typeof schema>;
 
-export default function CreateBook({
+export default function CreateBox({
   tableTitle,
   columns,
   ...rest
-}: CreateBookProps) {
+}: CreateBoxProps) {
   const {
     register,
     handleSubmit,
@@ -43,11 +36,11 @@ export default function CreateBook({
     setValue,
     trigger,
     resetField,
-  } = useForm<CreateBookData>({
+  } = useForm<CreateBoxData>({
     resolver: zodResolver(schema),
   });
-  const { createBookMutation } = useCreateBook(tableTitle);
-  const formId = "createBookForm";
+  const { createBoxMutation } = useCreateBox(tableTitle);
+  const formId = "createBoxForm";
 
   return (
     <Modal
@@ -60,7 +53,11 @@ export default function CreateBook({
     >
       <Form
         id={formId}
-        onSubmit={handleSubmit(data => createBookMutation(nonNullData(data)))}
+        onSubmit={handleSubmit(data => {
+          delete (data as any).bookcase_id;
+
+          createBoxMutation(nonNullData(data))
+        })}
       >
         {columns.map(({ title, key }) => (
           <InputField
@@ -68,12 +65,13 @@ export default function CreateBook({
             id={key}
             label={title}
             type="text"
-            registration={register(key as keyof CreateBookData)}
-            error={errors[key as keyof CreateBookData]}
+            registration={register(key as keyof CreateBoxData)}
+            error={errors[key as keyof CreateBoxData]}
           />
         ))}
 
         <RelationshipFields
+          pick={["bookcase_id", "shelf_id"]}
           {...{ register, errors, getValues, setValue, trigger, resetField }}
         />
       </Form>

@@ -14,7 +14,7 @@ export default function useGetBooks({
   });
   const result = useQuery({
     ...queryOptions,
-    queryKey: ["books", queryParams.page, queryParams.items],
+    queryKey: ["books"],
     queryFn: () => request(),
   });
 

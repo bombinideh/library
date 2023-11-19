@@ -26,7 +26,7 @@ export default function useGetShelfs({
 
   useEffect(() => {
     if (queryOptions.enabled) result.refetch();
-  }, [queryParams.searchColumn, queryParams.searchQuery, queryParams.bookcase_id]);
+  }, [queryParams.bookcase_id]);
 
   return result;
 }

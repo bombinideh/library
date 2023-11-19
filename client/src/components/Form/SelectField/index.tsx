@@ -6,12 +6,12 @@ import { IField } from "../form";
 import * as Styled from "./styles";
 
 interface Option extends DropdownItem {
-  id: number;
+  value: string;
 }
 
 interface SelectFieldProps extends Omit<IField, "type"> {
   options?: Option[];
-  currentValueId: string;
+  currentValue: string;
 }
 
 export default function SelectField({
@@ -19,7 +19,7 @@ export default function SelectField({
   id,
   error,
   options = [],
-  currentValueId,
+  currentValue,
   disabled,
   ...rest
 }: SelectFieldProps) {
@@ -27,14 +27,14 @@ export default function SelectField({
   const [optionName, setOptionName] = useState(defaultOptionName);
 
   useEffect(() => {
-    if (currentValueId && options.length) {
+    if (currentValue && options.length) {
       const [currentOption] = options.filter(
-        option => option.id === +currentValueId,
+        option => option.value === currentValue,
       );
 
       setOptionName(currentOption ? currentOption.text : defaultOptionName);
     } else setOptionName(defaultOptionName);
-  }, [currentValueId, options]);
+  }, [currentValue, options]);
 
   return (
     <FieldWrapper label={label} id={id} error={error} disabled={disabled}>

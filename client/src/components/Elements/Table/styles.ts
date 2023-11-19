@@ -26,13 +26,16 @@ export const Options = styled.div`
 
 export const Table = styled.table`
   ${({ theme }) => css`
-    display: block;
     width: 100%;
+    display: block;
     font-size: ${theme.fontSizes.bodySm};
     text-align: left;
     overflow-x: auto;
     white-space: nowrap;
+    table-layout: fixed;
     ${theme.mixins.scrollbar()};
+    border-bottom: 1px solid ${theme.colors.stroke};
+
 
     thead {
       background-color: ${theme.colors.blockSupport1};
@@ -50,11 +53,16 @@ export const Table = styled.table`
       padding-bottom: ${theme.spacings[10]};
     }
     td {
-      max-width: 250px;
-      text-overflow: ellipsis;
-      overflow: hidden;
+      width: 1%;
       padding-top: ${theme.spacings[20]};
       padding-bottom: ${theme.spacings[20]};
+
+      > span {
+        display: block;
+        max-width: 300px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
     th:first-child,
     td:first-child {
