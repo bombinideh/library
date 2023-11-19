@@ -70,16 +70,20 @@ export default function Dropdown(props: DropdownProps) {
             transition={motionTransition(transitions.element)}
             {...transientProps({ contentPositionX, wrapperWidth })}
           >
-            {items.map(({ text, to, onClick }) => (
-              <Styled.Item
-                key={text}
-                {...(to && { as: NavLink, to })}
-                {...(onClick && { as: "button", type: "button", onClick })}
-                $wrapperWidth={wrapperWidth}
-              >
-                {text}
-              </Styled.Item>
-            ))}
+            {items.length ? (
+              items.map(({ text, to, onClick }) => (
+                <Styled.Item
+                  key={text}
+                  {...(to && { as: NavLink, to })}
+                  {...(onClick && { as: "button", type: "button", onClick })}
+                  $wrapperWidth={wrapperWidth}
+                >
+                  {text}
+                </Styled.Item>
+              ))
+            ) : (
+              <Styled.EmptyItems>Nenhuma opção disponível.</Styled.EmptyItems>
+            )}
           </Styled.Content>
         )}
       </AnimatePresence>

@@ -53,6 +53,7 @@ export default function SelectField({
           </Styled.SelectButton>
         ))}
         items={options}
+        wrapperWidth="100%"
       />
 
       <Styled.Field id={id} error={error} {...rest} type="text" />

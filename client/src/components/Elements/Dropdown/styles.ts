@@ -47,7 +47,9 @@ export const Content = styled(m.div)<ContentProps>`
     background-color: ${theme.colors.blockSupport1};
     border-radius: ${theme.borderRadius.block};
     border: ${theme.borders.block} solid ${theme.colors.stroke};
-    overflow: hidden;
+    max-height: 320px;
+    overflow: hidden auto;
+    ${theme.mixins.scrollbar()};
 
     ${$wrapperWidth &&
     css`
@@ -82,5 +84,14 @@ export const Item = styled.div<WrapperWidth>`
     css`
       white-space: nowrap;
     `}
+  `}
+`;
+
+export const EmptyItems = styled.span`
+  ${({ theme }) => css`
+    display: block;
+    padding: ${theme.spacings[20]} ${theme.spacings[12]};
+    color: ${theme.colors.textSupport1};
+    text-align: center;
   `}
 `;
