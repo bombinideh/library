@@ -36,7 +36,6 @@ export const Table = styled.table`
     ${theme.mixins.scrollbar()};
     border-bottom: 1px solid ${theme.colors.stroke};
 
-
     thead {
       background-color: ${theme.colors.blockSupport1};
       color: ${theme.colors.textSupport1};
@@ -59,7 +58,7 @@ export const Table = styled.table`
 
       > span {
         display: block;
-        max-width: 300px;
+        max-width: 350px;
         text-overflow: ellipsis;
         overflow: hidden;
       }

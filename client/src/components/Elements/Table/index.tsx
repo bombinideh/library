@@ -5,6 +5,7 @@ import { GetManyQueryResponse } from "@/types/api";
 import { RequestError } from "@/types/react-query";
 import { TableTitle } from "@/types/table";
 import { UseQueryResult } from "@tanstack/react-query";
+import moment from "moment";
 import { ReactNode, forwardRef, useEffect } from "react";
 import Spinner from "../Spinner";
 import Filter, { FilterState } from "./Filter";
@@ -128,6 +129,9 @@ export default function Table(props: TableProps) {
               {columns.map(({ key }, columnIndex) => {
                 const handleData = (data: any) => {
                   if (typeof data === "boolean") return data ? "Sim" : "Não";
+
+                  if (moment(data, "YYYY-MM-DDTHH:mm:ss.SSSZ", true).isValid())
+                    return new Date(data).toLocaleString("pt-BR");
 
                   return data;
                 };
