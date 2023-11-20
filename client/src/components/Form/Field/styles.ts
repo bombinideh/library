@@ -13,6 +13,7 @@ export const Input = styled.input<InputProps>`
     border-style: solid;
     border: ${theme.borders.block} solid ${theme.colors.stroke};
     background-color: ${theme.colors.block};
+    color: ${theme.colors.text};
     outline: none;
     ${theme.mixins.transition({ properties: ["border-color"], element: "form" })}
 

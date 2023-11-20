@@ -147,7 +147,6 @@ const Sidebar = forwardRef<HTMLDivElement>((...args) => {
         <Title
           level={3}
           text={appPrivateName}
-          isHeadingElement={false}
           title={appPrivateName}
         />
 

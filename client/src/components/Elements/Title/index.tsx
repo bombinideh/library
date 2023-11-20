@@ -11,22 +11,19 @@ export interface TitleProps extends HTMLMotionProps<Heading> {
   text: string;
   weight?: 400 | 500 | 700;
   align?: "left" | "center" | "right";
-  isHeadingElement?: boolean;
+  headingElement?: Heading;
   title?: string;
 }
 
-export type TitleDefaultProps = Required<
-  Pick<TitleProps, "weight" | "align" | "isHeadingElement">
->;
+export type TitleDefaultProps = Required<Pick<TitleProps, "weight" | "align">>;
 
 const defaultProps: TitleDefaultProps = {
   weight: 500,
   align: "left",
-  isHeadingElement: true,
 };
 
 export default function Title(props: TitleProps) {
-  const { className, level, text, weight, align, isHeadingElement, ...rest } = {
+  const { className, level, text, weight, align, headingElement, ...rest } = {
     ...defaultProps,
     ...props,
   };
@@ -34,7 +31,7 @@ export default function Title(props: TitleProps) {
   return (
     <Styled.Wrapper
       className={className}
-      {...(isHeadingElement && { as: m[`h${level}`] })}
+      {...(headingElement && { as: m[headingElement] })}
       {...transientProps({ level, weight, align })}
       {...rest}
     >

@@ -60,7 +60,7 @@ export default function Modal({
         transition={motionTransition(transitions.element)}
       >
         <Styled.Header>
-          <Title level={4} text={title} isHeadingElement={false} />
+          <Title level={4} text={title} />
 
           <Styled.CloseButton
             variant="support"

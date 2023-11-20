@@ -1,7 +1,14 @@
 import useGetUser from "@/features/auth/api/getAuthUser";
-import { AuthUserResponse, User } from "@/features/auth/types";
+import { AuthUserResponse, UserResponse } from "@/features/auth/types";
 import storage from "@/utils/storage";
-import { ReactNode, createContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 
 type SignIn = Omit<AuthUserResponse, "token"> &
@@ -9,7 +16,8 @@ type SignIn = Omit<AuthUserResponse, "token"> &
 
 interface AuthContextProps {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserResponse | null;
+  setUser: Dispatch<SetStateAction<UserResponse | null>>;
   token: AuthUserResponse["token"] | null;
   // signUp: () => void;
   signIn: (authUserResponse: SignIn) => void;
@@ -21,6 +29,7 @@ const token = storage.token.get();
 const defaultContextProps: AuthContextProps = {
   isAuthenticated: !!token,
   user: null,
+  setUser: () => {},
   token: token ? token : null,
   // signUp: () => {},
   signIn: () => {},
@@ -69,7 +78,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [isError, isSuccess]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, token, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, setUser, token, signIn, signOut }}
+    >
       {isLoading ? <>Carregando...</> : children}
     </AuthContext.Provider>
   );

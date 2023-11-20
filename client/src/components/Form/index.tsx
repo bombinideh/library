@@ -2,14 +2,15 @@ import { FormEventHandler, ReactNode } from "react";
 import * as Styled from "./styles";
 
 interface FormProps {
+  className?: string;
   children: ReactNode;
   onSubmit: FormEventHandler<HTMLFormElement>;
   id?: string;
 }
 
-export default function Form({ children, onSubmit, id }: FormProps) {
+export default function Form({ className, children, onSubmit, id }: FormProps) {
   return (
-    <Styled.Form onSubmit={onSubmit} id={id} noValidate>
+    <Styled.Form className={className} onSubmit={onSubmit} id={id} noValidate>
       {children}
     </Styled.Form>
   );
