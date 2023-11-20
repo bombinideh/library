@@ -3,6 +3,7 @@ import SVGUser from "@/assets/user.svg?react";
 import Dropdown from "@/components/Elements/Dropdown";
 import { appPrivateName } from "@/config";
 import useAuth from "@/hooks/useAuth";
+import useThemeMode from "@/hooks/useThemeMode";
 import motionTransition from "@/utils/motionTransition";
 import { forwardRef } from "react";
 import { useTheme } from "styled-components";
@@ -14,6 +15,7 @@ interface HeaderProps {
 
 export default function Header({ title }: HeaderProps) {
   const { user, signOut } = useAuth();
+  const { toggleThemeMode } = useThemeMode();
   const userOptions = [
     {
       text: "Minha conta",
@@ -21,7 +23,7 @@ export default function Header({ title }: HeaderProps) {
     },
     {
       text: "Alterar tema",
-      onClick: () => {},
+      onClick: toggleThemeMode,
     },
     {
       text: "Sair",

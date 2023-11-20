@@ -1,4 +1,6 @@
-import GlobalContextsProvider from "@/contexts";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
+import { ThemeModeProvider } from "@/contexts/ThemeModeContext";
 import { ReactNode } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter } from "react-router-dom";
@@ -12,16 +14,20 @@ interface AppProviderProps {
 
 export default function AppProvider({ children }: AppProviderProps) {
   return (
-    <StylesProvider>
-      <HelmetProvider>
+    <BrowserRouter>
+      <QueryProvider>
         <MotionProvider>
-          <QueryProvider>
-            <BrowserRouter>
-              <GlobalContextsProvider>{children}</GlobalContextsProvider>
-            </BrowserRouter>
-          </QueryProvider>
+          <AuthProvider>
+            <ThemeModeProvider>
+              <StylesProvider>
+                <NotificationProvider>
+                  <HelmetProvider>{children}</HelmetProvider>
+                </NotificationProvider>
+              </StylesProvider>
+            </ThemeModeProvider>
+          </AuthProvider>
         </MotionProvider>
-      </HelmetProvider>
-    </StylesProvider>
+      </QueryProvider>
+    </BrowserRouter>
   );
 }
