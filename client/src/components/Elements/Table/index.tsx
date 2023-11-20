@@ -6,7 +6,7 @@ import { RequestError } from "@/types/react-query";
 import { TableTitle } from "@/types/table";
 import { UseQueryResult } from "@tanstack/react-query";
 import moment from "moment";
-import { ReactNode, forwardRef, useEffect } from "react";
+import { ReactNode, forwardRef, memo, useEffect } from "react";
 import Spinner from "../Spinner";
 import Filter, { FilterState } from "./Filter";
 import Pagination, { PaginationState } from "./Pagination";
@@ -38,7 +38,7 @@ const defaultColumn = {
   orderButton: true,
 };
 
-export default function Table(props: TableProps) {
+function Tablea(props: TableProps) {
   const {
     tableTitle,
     queryResult,
@@ -157,3 +157,7 @@ export default function Table(props: TableProps) {
     </Styled.Wrapper>
   );
 }
+
+const Table = memo(Tablea);
+
+export default Table;

@@ -1,8 +1,7 @@
-import { UserResponse } from "@/features/auth/types";
 import useFetch from "@/hooks/useFetch";
 import { GetManyQueryPropsHook } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
-import { UsersResponse } from "../types";
+import { UserResponse, UsersResponse } from "../types";
 
 export default function useGetUsers({
   queryOptions = {},

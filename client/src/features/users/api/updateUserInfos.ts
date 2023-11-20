@@ -1,10 +1,10 @@
 import queryClient from "@/api";
-import { UserResponse } from "@/features/auth/types";
 import useAuth from "@/hooks/useAuth";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
 import { useMutation } from "@tanstack/react-query";
 import { UpdateUserInfosData } from "../components/UpdateUserInfosForm";
+import { UserResponse } from "../types";
 
 export default function useUpdateUserInfos() {
   const request = useFetch<UpdateUserInfosData, UserResponse>({
