@@ -18,22 +18,30 @@ export const bookcasesGetMany = async (req: Request, res: Response) => {
 };
 
 export const bookcasesPostOne = async (req: Request, res: Response) => {
-  const bookcase = req.body;
+  const body = req.body;
   const { user_id } = req;
 
   try {
+    const bookcase = await database<Bookcase>("bookcases")
+      .where("name", body.name)
+      .first();
+
+    if (bookcase)
+      return res.status(400).json({ error: "Uma estante com esse nome já existe" });
+
     const [insertedBookcase] = await database("bookcases")
-      .insert(bookcase)
+      .insert(body)
       .returning("*");
 
     await database("logs").insert({
       user_id,
-      description: `Estante ${bookcase.name} criada com sucesso`,
+      description: `Estante ${body.name} criada com sucesso`,
       method: "POST",
     });
 
     res.status(201).send(insertedBookcase);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Erro Interno no Servidor" });
   }
 };

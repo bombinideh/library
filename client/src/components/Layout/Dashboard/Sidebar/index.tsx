@@ -1,16 +1,17 @@
 import SVGBook from "@/assets/book.svg?react";
 import SVGBookcase from "@/assets/bookcase.svg?react";
-import SVGShelf from "@/assets/shelf.svg?react";
 import SVGBox from "@/assets/box.svg?react";
 import SVGDocument from "@/assets/document.svg?react";
 import SVGGear from "@/assets/gear.svg?react";
 import SVGHouse from "@/assets/house.svg?react";
+import SVGShelf from "@/assets/shelf.svg?react";
 import SVGSignOut from "@/assets/sign-out.svg?react";
 import SVGSun from "@/assets/sun.svg?react";
 import SVGUsers from "@/assets/users.svg?react";
 import Title from "@/components/Elements/Title";
 import { appPrivateName } from "@/config";
 import useAuth from "@/hooks/useAuth";
+import useThemeMode from "@/hooks/useThemeMode";
 import { FunctionComponent, MouseEventHandler, forwardRef } from "react";
 import { NavLink } from "react-router-dom";
 import * as Styled from "./styles";
@@ -106,6 +107,7 @@ const NavigationItems = ({ pick }: ItemsProps) => {
 
 const OptionItems = ({ pick }: ItemsProps) => {
   const { signOut } = useAuth();
+  const { toggleThemeMode } = useThemeMode();
   const items: Item[] = [
     {
       id: "account",
@@ -117,7 +119,7 @@ const OptionItems = ({ pick }: ItemsProps) => {
       id: "theme",
       SVG: SVGSun,
       text: "Alterar tema",
-      onClick: () => {},
+      onClick: toggleThemeMode,
     },
     {
       id: "sign-out",
@@ -144,11 +146,7 @@ const Sidebar = forwardRef<HTMLDivElement>((...args) => {
   return (
     <Styled.Wrapper ref={args[1]}>
       <Styled.Header>
-        <Title
-          level={3}
-          text={appPrivateName}
-          title={appPrivateName}
-        />
+        <Title level={3} text={appPrivateName} title={appPrivateName} />
 
         {/* <Styled.ResizeSidebar SVG={{ Component: SVGResize }} variant="support" /> */}
       </Styled.Header>

@@ -15,7 +15,7 @@ export default function useFetch<Body = null, Response = unknown>({
   queryParams,
 }: useFetchProps) {
   const { emitNotification, cancelNotification } = useNotification();
-  const notificationId = "fetchError";
+  const notificationId = method === "GET" ? "fetchErrorGet" : "fetchErrorMutation";
   const token = storage.token.get();
   const formatQueryParams = (
     queryParams: NonNullable<useFetchProps["queryParams"]>,

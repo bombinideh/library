@@ -1,7 +1,7 @@
 import Bookcases from "@/features/bookcases/routes";
 import Books from "@/features/books/routes";
 import Boxes from "@/features/boxes/routes";
-import Logs from "@/features/reports/routes";
+import Reports from "@/features/reports/routes";
 import Shelfs from "@/features/shelfs/routes";
 import Account from "@/features/users/routes/Account";
 import Users from "@/features/users/routes/Users";
@@ -14,7 +14,7 @@ const privateRoutes = [
   { path: "/prateleiras", element: <Shelfs /> },
   { path: "/caixas", element: <Boxes /> },
   { path: "/usuarios", element: <Users /> },
-  { path: "/relatorios", element: <Logs /> },
+  { path: "/relatorios", element: <Reports /> },
   { path: "/conta", element: <Account /> },
 ];
 

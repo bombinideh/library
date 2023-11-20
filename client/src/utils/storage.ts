@@ -8,6 +8,14 @@ const token = {
   clear: () => localStorage.removeItem(`${prefix}token`),
 };
 
-const storage = { token };
+const theme = {
+  set: (theme: string) => {
+    localStorage.setItem(`${prefix}theme`, JSON.stringify(theme));
+  },
+  get: () => JSON.parse(localStorage.getItem(`${prefix}theme`) as string),
+  clear: () => localStorage.removeItem(`${prefix}theme`),
+};
+
+const storage = { token, theme };
 
 export default storage;

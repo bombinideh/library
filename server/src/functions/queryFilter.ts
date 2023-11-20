@@ -14,6 +14,7 @@ interface PaginationProps {
 
 export async function queryFilter({ queryParams, table }: PaginationProps) {
   const { items, page, searchColumn, searchQuery } = queryParams;
+  const tableName = table.split(" ")[table.split(" ").length - 1];
   let query = database(table);
 
   if (items) query = query.limit(items);
@@ -21,7 +22,7 @@ export async function queryFilter({ queryParams, table }: PaginationProps) {
   if (items && page) query = query.offset(items * (page - 1));
 
   if (searchColumn && searchQuery)
-    query = query.whereILike(searchColumn, `%${searchQuery}%`);
+    query = query.whereILike(`${tableName}.${searchColumn}`, `%${searchQuery}%`);
 
   const totalItems = await database(table).count("*").first();
 

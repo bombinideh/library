@@ -1,3 +1,4 @@
+import useThemeMode from "@/hooks/useThemeMode";
 import GlobalStyle from "@/styles/GlobalStyle";
 import theme from "@/styles/theme";
 import { ReactNode } from "react";
@@ -8,10 +9,10 @@ interface StylesProviderProps {
 }
 
 export default function StylesProvider({ children }: StylesProviderProps) {
-  const mode = "light";
+  const { themeMode } = useThemeMode();
 
   return (
-    <ThemeProvider theme={theme(mode)}>
+    <ThemeProvider theme={theme(themeMode)}>
       <GlobalStyle />
 
       {children}

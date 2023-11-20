@@ -36,7 +36,6 @@ export const Table = styled.table`
     ${theme.mixins.scrollbar()};
     border-bottom: 1px solid ${theme.colors.stroke};
 
-
     thead {
       background-color: ${theme.colors.blockSupport1};
       color: ${theme.colors.textSupport1};
@@ -48,18 +47,21 @@ export const Table = styled.table`
     tr {
       border-top: 1px solid ${theme.colors.stroke};
     }
+    th,
+    td {
+      width: 1%;
+    }
     th {
       padding-top: ${theme.spacings[10]};
       padding-bottom: ${theme.spacings[10]};
     }
     td {
-      width: 1%;
       padding-top: ${theme.spacings[20]};
       padding-bottom: ${theme.spacings[20]};
 
       > span {
         display: block;
-        max-width: 300px;
+        max-width: 350px;
         text-overflow: ellipsis;
         overflow: hidden;
       }

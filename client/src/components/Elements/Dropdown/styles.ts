@@ -47,8 +47,7 @@ export const Content = styled(m.div)<ContentProps>`
     background-color: ${theme.colors.blockSupport1};
     border-radius: ${theme.borderRadius.block};
     border: ${theme.borders.block} solid ${theme.colors.stroke};
-    max-height: 320px;
-    overflow: hidden auto;
+    overflow: hidden;
     ${theme.mixins.scrollbar()};
 
     ${$wrapperWidth &&

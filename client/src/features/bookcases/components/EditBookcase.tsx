@@ -63,10 +63,7 @@ export default function EditBookcase({
     >
       <Form
         id={formId}
-        onSubmit={handleSubmit(data => {
-          console.log(nonNullData(data));
-          editBookcaseMutation(nonNullData(data));
-        })}
+        onSubmit={handleSubmit(data => editBookcaseMutation(nonNullData(data)))}
       >
         {columns.map(({ title, key }) => {
           if (key === "active")
