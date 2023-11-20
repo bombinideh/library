@@ -145,10 +145,9 @@ export const getAuthenticatedUser = async (req: Request, res: Response) => {
       .where("user_id", req.user_id)
       .first();
 
-    if (!user) {
-      res.status(404).send({ error: "Não encontrado" });
-      return;
-    }
+    if (!user) return res.status(404).send({ error: "Usuário não encontrado" });
+
+    delete (user as UserResponse).password;
 
     res.send(user);
   } catch {
