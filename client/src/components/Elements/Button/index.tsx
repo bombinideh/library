@@ -1,19 +1,20 @@
 import transientProps from "@/utils/transientProps";
 import { ComponentProps, FunctionComponent, forwardRef } from "react";
-import * as Styled from "./styles";
 import { DefaultTheme } from "styled-components";
+import * as Styled from "./styles";
 
 export interface ButtonProps {
   type?: "button" | "reset" | "submit";
   variant?: "primary" | "support" | "danger";
   SVG?: {
-    Component?: FunctionComponent;
+    Component?: FunctionComponent<React.SVGProps<SVGSVGElement>>;
     element?: string;
     shape?: string;
     color?: keyof DefaultTheme["colors"];
   };
   text?: string;
   align?: "left" | "center" | "right";
+  disabled?: boolean;
 }
 
 type ButtonComponentProps = ButtonProps & ComponentProps<"button">;
@@ -31,6 +32,7 @@ const defaultProps: ButtonDefaultProps = {
   },
   text: "",
   align: "left",
+  disabled: false,
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonComponentProps>((props, ref) => {

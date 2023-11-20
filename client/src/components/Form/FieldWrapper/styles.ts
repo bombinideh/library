@@ -1,5 +1,6 @@
 import { m } from "framer-motion";
 import styled, { css } from "styled-components";
+import { IField } from "../form";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -7,9 +8,22 @@ export const Wrapper = styled.div`
   align-items: flex-start;
 `;
 
-export const Label = styled.label`
-  display: block;
-  padding-bottom: ${({ theme }) => theme.spacings[8]};
+interface LabelProps {
+  $disabled: IField["disabled"];
+}
+
+export const Label = styled.label<LabelProps>`
+  ${({ theme, $disabled }) => css`
+    display: block;
+    padding-bottom: ${theme.spacings[8]};
+    ${theme.mixins.transition({ element: "form", properties: ["opacity"] })}
+
+    ${$disabled &&
+    css`
+      opacity: 0.5;
+      cursor: default;
+    `}
+  `}
 `;
 
 export const Error = styled(m.span)`

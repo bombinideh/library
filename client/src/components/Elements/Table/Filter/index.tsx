@@ -1,34 +1,37 @@
 import SVGChevronDown from "@/assets/chevron-down.svg?react";
 import SVGMagnifyingGlass from "@/assets/magnifying-glass.svg?react";
+import { GetManyQueryProps } from "@/types/api";
 import { forwardRef } from "react";
 import { Column } from "..";
+import { PaginationState } from "../Pagination";
 import * as Styled from "./styles";
 
-interface FilterStateData {
-  searchColumn: string;
-  searchQuery: string;
-}
+type Filter = Required<Pick<GetManyQueryProps, "searchColumn" | "searchQuery">>;
 
 export interface FilterState {
-  filter: FilterStateData;
-  setFilter: React.Dispatch<React.SetStateAction<FilterStateData>>;
+  filter: Filter;
+  setFilter: React.Dispatch<React.SetStateAction<Filter>>;
 }
 
 interface FilterProps {
   columns: Column[];
-  filter: FilterState;
+  filter: FilterState["filter"];
+  setFilter: FilterState["setFilter"];
+  pagination: PaginationState["pagination"];
+  setPagination: PaginationState["setPagination"];
 }
 
 export default function Filter({
   columns,
-  filter: { filter, setFilter },
+  filter,
+  setFilter,
+  pagination,
+  setPagination,
 }: FilterProps) {
-  const items = columns
-    .map(({ title, key }) => ({
-      text: title,
-      onClick: () => setFilter({ ...filter, searchColumn: key }),
-    }))
-    .slice(1);
+  const items = columns.map(({ title, key }) => ({
+    text: title,
+    onClick: () => setFilter({ ...filter, searchColumn: key }),
+  }));
   const { title: columnTitle } = columns.filter(
     ({ key }) => key === filter.searchColumn,
   )[0];
@@ -54,9 +57,10 @@ export default function Filter({
       <Styled.InputSearch
         id="search"
         placeholder={`Pesquisar por ${columnTitle.toLowerCase()}...`}
-        onChange={({ target }) =>
-          setFilter({ ...filter, searchQuery: target.value })
-        }
+        onChange={({ target }) => {
+          setPagination({ ...pagination, page: 1 });
+          setFilter({ ...filter, searchQuery: target.value });
+        }}
       />
     </Styled.Wrapper>
   );

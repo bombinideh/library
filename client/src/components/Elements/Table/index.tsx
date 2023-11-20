@@ -2,8 +2,13 @@ import SVGChevronUpDown from "@/assets/chevron-up-down.svg?react";
 import SVGEllipsisHorizontal from "@/assets/ellipsis-horizontal.svg?react";
 import useAuth from "@/hooks/useAuth";
 import { GetManyQueryResponse } from "@/types/api";
-import { ReactNode, forwardRef } from "react";
+import { RequestError } from "@/types/react-query";
+import { TableTitle } from "@/types/table";
+import { UseQueryResult } from "@tanstack/react-query";
+import { ReactNode, forwardRef, useEffect } from "react";
+import Spinner from "../Spinner";
 import Filter, { FilterState } from "./Filter";
+import Pagination, { PaginationState } from "./Pagination";
 import * as Styled from "./styles";
 
 export interface Column {
@@ -12,14 +17,19 @@ export interface Column {
   orderButton?: boolean;
 }
 
-interface TableProps<T> {
-  data: GetManyQueryResponse<any>;
+interface TableProps {
+  tableTitle: TableTitle;
+  queryResult: UseQueryResult<GetManyQueryResponse<any>, RequestError>;
   columns: Column[];
-  filter?: FilterState;
+  filterColumns: string[];
+  filter: FilterState["filter"];
+  setFilter: FilterState["setFilter"];
+  pagination: PaginationState["pagination"];
+  setPagination: PaginationState["setPagination"];
   CreateButton?: ReactNode;
   actions?: {
     text: string;
-    onClick: (item: T) => void;
+    onClick: (item: any) => void;
   }[];
 }
 
@@ -27,17 +37,46 @@ const defaultColumn = {
   orderButton: true,
 };
 
-export default function Table<T>(props: TableProps<T>) {
-  const { data, columns, filter, CreateButton, actions } = {
+export default function Table(props: TableProps) {
+  const {
+    tableTitle,
+    queryResult,
+    columns,
+    filterColumns,
+    filter,
+    setFilter,
+    pagination,
+    setPagination,
+    CreateButton,
+    actions,
+  } = {
     ...props,
     columns: props.columns.map(column => ({ ...defaultColumn, ...column })),
   };
   const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = queryResult;
+
+  useEffect(() => {
+    refetch();
+  }, [
+    { filter, setFilter },
+    { pagination, setPagination },
+  ]);
+
+  if (isLoading) return <Spinner padding="30px" />;
+
+  if (isError || !data) return <>Um erro ocorreu.</>;
 
   return (
     <Styled.Wrapper>
       <Styled.Options>
-        {filter && <Filter columns={columns} filter={filter} />}
+        <Filter
+          columns={columns.filter(({ key }) => filterColumns.includes(key))}
+          filter={filter}
+          setFilter={setFilter}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
 
         {CreateButton && isAuthenticated && CreateButton}
       </Styled.Options>
@@ -86,15 +125,31 @@ export default function Table<T>(props: TableProps<T>) {
                 </Styled.ActionTd>
               )}
 
-              {columns.map(({ key }, columnIndex) => (
-                <td key={columnIndex} title={item[key]}>
-                  {item[key] || "-"}
-                </td>
-              ))}
+              {columns.map(({ key }, columnIndex) => {
+                const handleData = (data: any) => {
+                  if (typeof data === "boolean") return data ? "Sim" : "Não";
+
+                  return data;
+                };
+
+                return (
+                  <td key={columnIndex} title={handleData(item[key]) || "Vazio"}>
+                    <span>{handleData(item[key]) || "-"}</span>
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
       </Styled.Table>
+
+      <Pagination
+        pagination={pagination}
+        setPagination={setPagination}
+        total={data.total}
+        currentItems={data.items.length}
+        tableTitle={tableTitle}
+      />
     </Styled.Wrapper>
   );
 }

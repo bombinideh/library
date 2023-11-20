@@ -6,17 +6,31 @@ import useNotification from "./useNotification";
 interface useFetchProps {
   URL: string;
   method: string;
+  queryParams?: Record<string, string | number>;
 }
 
 export default function useFetch<Body = null, Response = unknown>({
   URL,
   method,
+  queryParams,
 }: useFetchProps) {
   const { emitNotification, cancelNotification } = useNotification();
   const notificationId = "fetchError";
   const token = storage.token.get();
+  const formatQueryParams = (
+    queryParams: NonNullable<useFetchProps["queryParams"]>,
+  ) => {
+    const keys = Object.keys(queryParams);
+    const eachParam = keys.map(key => `${key}=${queryParams[key]}`);
+
+    return eachParam.join("&");
+  };
   const request = async (body: Body | null = null): Promise<Response> => {
-    const response = await fetch(`${apiURL}/${URL}`, {
+    const baseUrl = `${apiURL}/${URL}`;
+    const finalURL = queryParams
+      ? `${baseUrl}?${formatQueryParams(queryParams)}`
+      : baseUrl;
+    const response = await fetch(finalURL, {
       method,
       headers: {
         "Content-Type": "application/json",

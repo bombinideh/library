@@ -3,14 +3,18 @@ import { queryFilter } from "../functions/queryFilter";
 import { database } from "../knex";
 
 export const shelfsGetMany = async (req: Request, res: Response) => {
+  const { bookcase_id } = req.query;
+
   try {
     const { query, total } = await queryFilter({
       queryParams: req.query,
       table: "shelfs",
     });
-    const shelfs = await query;
+    let shelfs = query;
 
-    res.send({ items: shelfs, total });
+    if (bookcase_id) shelfs = query.where("bookcase_id", bookcase_id);
+
+    res.send({ items: await shelfs, total });
   } catch (error) {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }

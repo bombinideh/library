@@ -5,6 +5,10 @@ export const boxesPostOneValidation = Joi.object({
   shelf_id: Joi.number().required(),
 });
 
+export const boxesGetManyValidation = Joi.object({
+  shelf_id: Joi.number(),
+});
+
 export const boxesGetOneValidation = Joi.object({
   box_id: Joi.number().required(),
 });

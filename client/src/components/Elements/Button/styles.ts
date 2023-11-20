@@ -48,6 +48,11 @@ export const Wrapper = styled.button<WrapperProps>`
     border-style: solid;
     cursor: pointer;
 
+    &[disabled] {
+      opacity: 0.5;
+      cursor: default;
+    }
+
     svg {
       flex-shrink: 0;
     }
@@ -68,6 +73,10 @@ export const Wrapper = styled.button<WrapperProps>`
             properties: [$SVGShape],
             colors: [$SVGColor || text],
           },
+        })}
+        ${theme.mixins.transition({
+          element: "form",
+          properties: ["color", "background-color", "border-color", "opacity"],
         })}
       `;
     }};

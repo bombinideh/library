@@ -1,30 +1,39 @@
-import { Request, Response } from "express";
-import { IUser } from "../models/User";
-import { database } from "../knex";
 import bcrypt from "bcryptjs";
+import { Request, Response } from "express";
 import { existUser } from "../functions/existUser";
+import { queryFilter } from "../functions/queryFilter";
+import { database } from "../knex";
+import { IUser, UserResponse } from "../models/User";
 
 export const usersGetMany = async (req: Request, res: Response) => {
   try {
-    const users = await database("users").select("*");
+    const { query, total } = await queryFilter({
+      queryParams: req.query,
+      table: "users",
+    });
+    const users = await query;
 
-    res.send(users);
+    users.forEach(user => delete (user as UserResponse).password);
+
+    res.send({ items: users, total });
   } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
 
 export const usersGetOne = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { user_id } = req.params;
 
   try {
-    const user = await database("users").whereRaw(`user_id = ${id}`).first();
+    const user = await database<IUser>("users")
+      .whereRaw(`user_id = ${user_id}`)
+      .first();
 
-    if (user) {
-      res.send(user);
-    } else {
-      res.status(404).send({ error: "Usuário não encontrado" });
-    }
+    if (!user) return res.status(404).send({ error: "Usuário não encontrado" });
+
+    delete (user as UserResponse).password;
+
+    res.send(user);
   } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }
@@ -34,14 +43,12 @@ export const usersPostOne = async (req: Request, res: Response) => {
   const user: Pick<IUser, "email" | "name" | "password"> = req.body;
 
   try {
-    if (await existUser(user.email)) {
-      res.status(400).send({ error: "Email já existente" });
-      return;
-    }
+    if (await existUser(user.email))
+      return res.status(400).send({ error: "Email já existente" });
 
-    const passwordHash = await bcrypt.hash(user.password, 12);
+    const passwordHash = await bcrypt.hash(user.password, 10);
 
-    const [insertedUser] = await database("users")
+    const [insertedUser] = await database<IUser>("users")
       .insert({ ...user, password: passwordHash })
       .returning("*");
 
@@ -51,6 +58,8 @@ export const usersPostOne = async (req: Request, res: Response) => {
       method: "POST",
     });
 
+    delete (insertedUser as UserResponse).password;
+
     res.status(201).send(insertedUser);
   } catch (error) {
     res.status(500).json({ error: "Erro Interno no Servidor" });
@@ -58,32 +67,74 @@ export const usersPostOne = async (req: Request, res: Response) => {
 };
 
 export const usersPatchOne = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const newData: Pick<IUser, "email" | "name" | "password"> = req.body;
+  const { user_id } = req;
+  const body: Pick<IUser, "email" | "name" | "password"> = req.body;
 
   try {
-    const exist = await database("users").whereRaw(`user_id = ${id}`).first();
+    const user = await database<IUser>("users").where("user_id", user_id).first();
 
-    if (!exist) {
-      res.status(404).send({ error: "Usuário não encontrado" });
-      return;
-    }
+    if (!user) return res.status(404).send({ error: "Usuário não encontrado" });
 
-    if (newData.email && (await existUser(newData.email))) {
-      res.status(400).send({ error: "Email já existente" });
-      return;
-    }
+    if (body.email && (await existUser(body.email)))
+      return res.status(400).send({ error: "Email já existente" });
 
-    const [updatedUser] = await database("users")
-      .whereRaw(`user_id = ${id}`)
-      .update(newData)
+    const [updatedUser] = await database<IUser>("users")
+      .whereRaw(`user_id = ${user_id}`)
+      .update(body)
       .returning("*");
 
     await database("logs").insert({
-      user_id: id,
-      description: `user_id ${updatedUser.user_id} atualizado com sucesso`,
+      user_id,
+      description: `Usuário ${user.name} atualizado com sucesso`,
       method: "PATCH",
     });
+
+    delete (updatedUser as UserResponse).password;
+
+    res.send(updatedUser);
+  } catch {
+    res.status(500).send({ error: "Erro Interno no Servidor" });
+  }
+};
+
+export const usersPatchPasswordOne = async (req: Request, res: Response) => {
+  const {
+    currentPassword,
+    newPassword,
+    newPasswordConfirm,
+  }: {
+    currentPassword: string;
+    newPassword: string;
+    newPasswordConfirm: string;
+  } = req.body;
+  const { user_id } = req;
+
+  try {
+    const user = await database<IUser>("users").where({ user_id }).first();
+
+    if (!user) return res.status(404).send({ error: "Usuário não encontrado" });
+
+    const isCorrectPassword = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isCorrectPassword)
+      return res.status(400).send({ error: "A senha atual está incorreta" });
+
+    if (currentPassword === newPassword)
+      return res.status(400).send({ error: "Digite uma senha diferente da atual" });
+
+    if (newPassword !== newPasswordConfirm)
+      return res
+        .status(400)
+        .send({ error: "A confirmação da nova senha é inválida" });
+
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+
+    const [updatedUser] = await database<IUser>("users")
+      .where({ user_id })
+      .update({ password: passwordHash })
+      .returning("*");
+
+    delete (updatedUser as UserResponse).password;
 
     res.send(updatedUser);
   } catch {

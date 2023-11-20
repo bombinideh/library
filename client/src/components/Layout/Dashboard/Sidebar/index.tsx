@@ -1,4 +1,7 @@
 import SVGBook from "@/assets/book.svg?react";
+import SVGBookcase from "@/assets/bookcase.svg?react";
+import SVGShelf from "@/assets/shelf.svg?react";
+import SVGBox from "@/assets/box.svg?react";
 import SVGDocument from "@/assets/document.svg?react";
 import SVGGear from "@/assets/gear.svg?react";
 import SVGHouse from "@/assets/house.svg?react";
@@ -55,6 +58,24 @@ const NavigationItems = ({ pick }: ItemsProps) => {
       SVG: SVGBook,
       text: "Livros",
       to: "/livros",
+    },
+    {
+      id: "bookcases",
+      SVG: SVGBookcase,
+      text: "Estantes",
+      to: "/estantes",
+    },
+    {
+      id: "shelfs",
+      SVG: SVGShelf,
+      text: "Prateleiras",
+      to: "/prateleiras",
+    },
+    {
+      id: "boxes",
+      SVG: SVGBox,
+      text: "Caixas",
+      to: "/caixas",
     },
     {
       id: "users",

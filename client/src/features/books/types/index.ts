@@ -17,11 +17,11 @@ export interface Book {
   updated_at: Date;
 }
 
-export interface ResponseBook extends Book {
+export interface BookResponse extends Book {
   user_name: string;
   bookcase_name: string;
   shelf_name: string;
   box_name: string;
 }
 
-export type BooksResponse = GetManyQueryResponse<ResponseBook>;
+export type BooksResponse = GetManyQueryResponse<BookResponse>;

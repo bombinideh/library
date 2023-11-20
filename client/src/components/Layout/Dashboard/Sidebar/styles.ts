@@ -28,6 +28,7 @@ export const Wrapper = styled.div`
       padding: 0 ${theme.container.gutter};
       border-right: initial;
       border-top: ${theme.borders.block} solid ${theme.colors.stroke};
+      background-color: ${theme.colors.background};
     }
   `}
 `;
