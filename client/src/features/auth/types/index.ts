@@ -8,7 +8,9 @@ export interface User {
   updated_at: Date;
 }
 
+export type UserResponse = Omit<User, "password">;
+
 export interface AuthUserResponse {
-  user: User;
+  user: UserResponse;
   token: string;
 }

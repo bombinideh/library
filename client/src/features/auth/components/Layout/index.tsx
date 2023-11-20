@@ -36,7 +36,7 @@ export default function AuthLayout({
         <Styled.Main>
           {logo && <Styled.Logo />}
 
-          <Title level={4} text={title} align="center" />
+          <Title level={4} text={title} align="center" headingElement="h1" />
 
           {description && <Styled.Description>{description}</Styled.Description>}
 

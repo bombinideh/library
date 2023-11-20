@@ -8,7 +8,7 @@ export default function useGetUser(queryOptions: QueryOptions<User>) {
 
   return useQuery({
     ...queryOptions,
-    queryKey: ["user"],
+    queryKey: ["authUser"],
     queryFn: () => request(),
   });
 }

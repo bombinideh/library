@@ -38,13 +38,9 @@ export default function Header({ title }: HeaderProps) {
         exit={{ opacity: 0, y: -15 }}
         transition={motionTransition(transitions.route)}
       >
-        <Styled.Title level={3} text={title} title={title} />
+        <Styled.Title level={3} text={title} title={title} headingElement="h1" />
 
-        <Styled.MobileTitle
-          level={4}
-          text={appPrivateName}
-          isHeadingElement={false}
-        />
+        <Styled.MobileTitle level={4} text={appPrivateName} />
 
         <Dropdown
           Button={forwardRef<HTMLButtonElement>((props, ref) => (
