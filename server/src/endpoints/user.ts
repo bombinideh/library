@@ -83,12 +83,6 @@ export const usersPatchOne = async (req: Request, res: Response) => {
       .update(body)
       .returning("*");
 
-    await database("logs").insert({
-      user_id,
-      description: `Usuário ${user.name} atualizado com sucesso`,
-      method: "PATCH",
-    });
-
     delete (updatedUser as UserResponse).password;
 
     res.send(updatedUser);

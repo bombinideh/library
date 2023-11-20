@@ -24,9 +24,16 @@ export const boxesGetMany = async (req: Request, res: Response) => {
 
 export const boxesPostOne = async (req: Request, res: Response) => {
   const body = req.body;
+  const { user_id } = req;
 
   try {
     const [insertedBox] = await database("boxes").insert(body).returning("*");
+
+    await database("logs").insert({
+      user_id,
+      description: `Caixa ${body.name} criada com sucesso`,
+      method: "POST",
+    });
 
     res.send(insertedBox);
   } catch (error) {
@@ -37,6 +44,7 @@ export const boxesPostOne = async (req: Request, res: Response) => {
 export const boxesPatchOne = async (req: Request, res: Response) => {
   const { box_id } = req.params;
   const body = req.body;
+  const { user_id } = req;
 
   try {
     const existBox = await database("boxes").where({ box_id }).first();
@@ -50,6 +58,12 @@ export const boxesPatchOne = async (req: Request, res: Response) => {
       .where({ box_id })
       .update(body)
       .returning("*");
+
+    await database("logs").insert({
+      user_id,
+      description: `Caixa ${updatedBox.name} atualizada com sucesso`,
+      method: "POST",
+    });
 
     res.send(updatedBox);
   } catch (error) {

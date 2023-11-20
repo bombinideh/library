@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { queryFilter } from "../functions/queryFilter";
 import { database } from "../knex";
-import { Book, PostBook } from "../models/Book";
+import { Book } from "../models/Book";
 
 export const booksGetMany = async (req: Request, res: Response) => {
   try {
@@ -30,7 +30,7 @@ export const booksGetMany = async (req: Request, res: Response) => {
 };
 
 export const booksPostOne = async (req: Request, res: Response) => {
-  const body: PostBook = req.body;
+  const body: Book = req.body;
   const { user_id } = req;
 
   try {
@@ -60,7 +60,7 @@ export const booksPostOne = async (req: Request, res: Response) => {
 
 export const booksPatchOne = async (req: Request, res: Response) => {
   const { book_id } = req.params;
-  const book: Partial<PostBook> = req.body;
+  const book: Partial<Book> = req.body;
 
   try {
     const existBook = await database("books").where({ book_id }).first();

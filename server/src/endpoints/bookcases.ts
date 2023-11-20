@@ -19,11 +19,18 @@ export const bookcasesGetMany = async (req: Request, res: Response) => {
 
 export const bookcasesPostOne = async (req: Request, res: Response) => {
   const bookcase = req.body;
+  const { user_id } = req;
 
   try {
     const [insertedBookcase] = await database("bookcases")
       .insert(bookcase)
       .returning("*");
+
+    await database("logs").insert({
+      user_id,
+      description: `Estante ${bookcase.name} criada com sucesso`,
+      method: "POST",
+    });
 
     res.status(201).send(insertedBookcase);
   } catch (error) {
@@ -34,6 +41,7 @@ export const bookcasesPostOne = async (req: Request, res: Response) => {
 export const bookcasesPatchOne = async (req: Request, res: Response) => {
   const { bookcase_id } = req.params;
   const body: Partial<Bookcase> = req.body;
+  const { user_id } = req;
 
   try {
     const bookcase = await database<Bookcase>("bookcases")
@@ -46,6 +54,12 @@ export const bookcasesPatchOne = async (req: Request, res: Response) => {
       .where({ bookcase_id })
       .update(body)
       .returning("*");
+
+    await database("logs").insert({
+      user_id,
+      description: `Estante ${bookcase.name} atualizada com sucesso`,
+      method: "PATCH",
+    });
 
     res.send(updatedBookcase);
   } catch (error) {

@@ -22,9 +22,16 @@ export const shelfsGetMany = async (req: Request, res: Response) => {
 
 export const shelfsPostOne = async (req: Request, res: Response) => {
   const body = req.body;
+  const { user_id } = req;
 
   try {
     const [insertedShelf] = await database("shelfs").insert(body).returning("*");
+
+    await database("logs").insert({
+      user_id,
+      description: `Caixa ${body.name} criado com sucesso`,
+      method: "POST",
+    });
 
     res.send(insertedShelf);
   } catch (error) {
@@ -35,6 +42,7 @@ export const shelfsPostOne = async (req: Request, res: Response) => {
 export const shelfsPatchOne = async (req: Request, res: Response) => {
   const { shelf_id } = req.params;
   const body = req.body;
+  const { user_id } = req;
 
   try {
     const existShelf = await database("shelfs").where({ shelf_id }).first();
@@ -48,6 +56,12 @@ export const shelfsPatchOne = async (req: Request, res: Response) => {
       .where({ shelf_id })
       .update(body)
       .returning("*");
+
+    await database("logs").insert({
+      user_id,
+      description: `Prateleira ${updatedShelf.name} atualizada com sucesso`,
+      method: "PATCH",
+    });
 
     res.send(updatedShelf);
   } catch (error) {
