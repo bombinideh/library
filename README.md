@@ -49,22 +49,26 @@ cp server/.env.example server/.env
 ```
 
 Instale as dependências do front-end e back-end com:
-
 ```bash
 cd client && npm install && cd ../server && npm install
 ```
 
 Crie e inicialize o banco de dados:
-
 ```bash
 docker compose up -d && npm run migrate-latest
 ```
 
-Rode o projeto:
-
+Rode o servidor:
 ```bash
-npm run dev && cd ../client && npm run dev
+npm run dev
 ```
+
+Em outro terminal, rode o cliente:
+```bash
+cd ../client && npm run dev
+```
+
+Vá até **client/src/config/index.tsx** e coloque a porta da API mencionada no env na variável "apiURL".
 
 Você conseguirá acessar pelo seu navegador: [http://localhost:5173/](http://localhost:5173/)
 
