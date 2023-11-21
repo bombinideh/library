@@ -162,7 +162,7 @@ const Sidebar = forwardRef<HTMLDivElement>((...args) => {
       </Styled.DesktopNavigation>
 
       <Styled.MobileNavigation>
-        <NavigationItems pick={["home", "books", "users", "logs"]} />
+        <NavigationItems pick={["home", "books", "bookcases", "shelfs", "boxes", "users", "logs"]} />
 
         <OptionItems pick={["account"]} />
       </Styled.MobileNavigation>
