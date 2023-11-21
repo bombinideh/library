@@ -3,8 +3,7 @@
 Página inicial do projeto.
 
 <div align="center">
-	<img src="https://github.com/bombinideh/library/assets/72027449/e5699a3a-bfb9-4cfb-af91-16aa9820b22c
-"
+	<img src="https://github.com/bombinideh/library/assets/72027449/8fa29542-8f1c-4c2a-b84f-7a9ef888497c"
 	alt="Visualização da página inicial do projeto" />
 </div>
 
@@ -17,8 +16,7 @@ Este projeto tem como objetivo central organizar o acervo histórico do Centro E
 Confira pelo [DrawSQL](https://github.com/bombinideh/library/assets/72027449/47a6d7d1-3917-470b-8400-2a4591d068ae).
 
 <div align="center">
-	<img src="https://github.com/bombinideh/library/assets/72027449/47a6d7d1-3917-470b-8400-2a4591d068ae
-"
+	<img src="https://github.com/bombinideh/library/assets/72027449/47a6d7d1-3917-470b-8400-2a4591d068ae"
 	alt="Diagrama entidade relacionamento" />
 </div>
 
