@@ -45,25 +45,25 @@ Com o Docker aberto, abra um terminal bash / zsh na raiz do projeto.
 
 Define as variáveis de ambiente no arquivo "server/.env" recém criado utilizando os exemplos do arquivo copiado:
 ```bash
-  cp server/.env.example server/.env
+cp server/.env.example server/.env
 ```
 
 Instale as dependências do front-end e back-end com:
 
 ```bash
-  cd client && npm install && cd ../server && npm install
+cd client && npm install && cd ../server && npm install
 ```
 
 Crie e inicialize o banco de dados:
 
 ```bash
-  docker compose up -d && npm run migrate-latest
+docker compose up -d && npm run migrate-latest
 ```
 
 Rode o projeto:
 
 ```bash
-  npm run dev && cd ../client && npm run dev
+npm run dev && cd ../client && npm run dev
 ```
 
 Você conseguirá acessar pelo seu navegador: [http://localhost:5173/](http://localhost:5173/)
