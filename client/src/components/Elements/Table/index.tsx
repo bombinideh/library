@@ -79,7 +79,7 @@ function Tablea(props: TableProps) {
           setPagination={setPagination}
         />
 
-        {CreateButton && isAuthenticated && CreateButton}
+        {CreateButton}
       </Styled.Options>
 
       <Styled.Table>

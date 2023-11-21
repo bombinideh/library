@@ -1,10 +1,12 @@
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
 import Table from "@/components/Elements/Table";
+import useAuth from "@/hooks/useAuth";
 import useTable from "@/hooks/useTable";
 import { TableTitle } from "@/types/table";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useGetBooks from "../api/getBooks";
 import { BookResponse } from "../types";
 import CreateBook from "./CreateBook";
@@ -88,6 +90,8 @@ export default function BooksList() {
 
     return !ignore.includes(key);
   });
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -134,7 +138,10 @@ export default function BooksList() {
           <Button
             SVG={{ Component: SVGPlus }}
             text={`Cadastrar ${tableTitle.singular.toLowerCase()}`}
-            onClick={() => setCreateModal(true)}
+            onClick={() => {
+              if (isAuthenticated) setCreateModal(true);
+              else navigate("/");
+            }}
           />
         }
         actions={[
