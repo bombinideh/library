@@ -47,7 +47,7 @@ export const booksPostOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id,
-      description: `Livro ${body.title} criado com sucesso`,
+      description: `Livro "${body.title}" criado com sucesso`,
       method: "POST",
     });
 
@@ -77,7 +77,7 @@ export const booksPatchOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id: req.user_id,
-      description: `Livro ${book.title} atualizado com sucesso`,
+      description: `Livro "${book.title}" atualizado com sucesso`,
       method: "PATCH",
     });
 

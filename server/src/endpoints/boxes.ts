@@ -31,7 +31,7 @@ export const boxesPostOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id,
-      description: `Caixa ${body.name} criada com sucesso`,
+      description: `Caixa "${body.name}" criada com sucesso`,
       method: "POST",
     });
 
@@ -61,7 +61,7 @@ export const boxesPatchOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id,
-      description: `Caixa ${updatedBox.name} atualizada com sucesso`,
+      description: `Caixa "${updatedBox.name}" atualizada com sucesso`,
       method: "POST",
     });
 
