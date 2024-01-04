@@ -54,7 +54,7 @@ export const usersPostOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id: insertedUser.user_id,
-      description: `Usuário ${user.name} criado com sucesso`,
+      description: `Usuário "${user.name}" criado com sucesso`,
       method: "POST",
     });
 
@@ -62,6 +62,7 @@ export const usersPostOne = async (req: Request, res: Response) => {
 
     res.status(201).send(insertedUser);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Erro Interno no Servidor" });
   }
 };

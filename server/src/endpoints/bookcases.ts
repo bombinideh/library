@@ -35,7 +35,7 @@ export const bookcasesPostOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id,
-      description: `Estante ${body.name} criada com sucesso`,
+      description: `Estante "${body.name}" criada com sucesso`,
       method: "POST",
     });
 
@@ -65,7 +65,7 @@ export const bookcasesPatchOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id,
-      description: `Estante ${bookcase.name} atualizada com sucesso`,
+    description: `Estante "${bookcase.name}" atualizada com sucesso`,
       method: "PATCH",
     });
 

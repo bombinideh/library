@@ -29,7 +29,7 @@ export const shelfsPostOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id,
-      description: `Caixa ${body.name} criado com sucesso`,
+      description: `Prateleira "${body.name}" criado com sucesso`,
       method: "POST",
     });
 
@@ -59,7 +59,7 @@ export const shelfsPatchOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id,
-      description: `Prateleira ${updatedShelf.name} atualizada com sucesso`,
+      description: `Prateleira "${updatedShelf.name}" atualizada com sucesso`,
       method: "PATCH",
     });
 
