@@ -1,6 +1,5 @@
 import Express from "express";
 import "dotenv/config";
-import { database } from "./knex";
 import { readdirSync } from "fs";
 import { join } from "path";
 import cors from "cors";
