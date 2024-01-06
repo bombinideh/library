@@ -1,5 +1,4 @@
 import SVGX from "@/assets/x-mark.svg?react";
-import useClickOutside from "@/hooks/useClickOutside";
 import useEscapeKey from "@/hooks/useEscapeKey";
 import motionTransition from "@/utils/motionTransition";
 import {
@@ -7,6 +6,7 @@ import {
   MouseEventHandler,
   ReactNode,
   SetStateAction,
+  useEffect,
   useRef,
 } from "react";
 import { useTheme } from "styled-components";
@@ -37,13 +37,16 @@ export default function Modal({
   showState,
   setShowState,
 }: ModalProps) {
-  const dialogElement = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const closeModal = () => setShowState(false);
   const closeOptions = { state: showState, clearState: closeModal };
   const { transitions } = useTheme();
 
-  useClickOutside({ ...closeOptions, ref: dialogElement });
   useEscapeKey(closeOptions);
+
+  useEffect(() => {
+    contentRef.current?.scroll({ top: 100 });
+  }, []);
 
   return (
     <Styled.Wrapper
@@ -53,7 +56,6 @@ export default function Modal({
       transition={motionTransition(transitions.element)}
     >
       <Styled.Dialog
-        ref={dialogElement}
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -15 }}
@@ -69,7 +71,7 @@ export default function Modal({
           />
         </Styled.Header>
 
-        <Styled.Content>{children}</Styled.Content>
+        <Styled.Content ref={contentRef}>{children}</Styled.Content>
 
         <Styled.Footer>
           <Button text="Cancelar" variant="support" onClick={closeModal} />

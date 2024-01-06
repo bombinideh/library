@@ -14,3 +14,6 @@ export interface Book {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface BookRequestBody
+  extends Omit<Book, "book_id" | "user_id" | "created_at" | "updated_at"> {}
