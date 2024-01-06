@@ -1,4 +1,4 @@
-import { apiURL } from "@/config";
+import { appApiURL } from "@/config";
 import { RequestError } from "@/types/react-query";
 import storage from "@/utils/storage";
 import useNotification from "./useNotification";
@@ -26,7 +26,7 @@ export default function useFetch<Body = null, Response = unknown>({
     return eachParam.join("&");
   };
   const request = async (body: Body | null = null): Promise<Response> => {
-    const baseUrl = `${apiURL}/${URL}`;
+    const baseUrl = `${appApiURL}/${URL}`;
     const finalURL = queryParams
       ? `${baseUrl}?${formatQueryParams(queryParams)}`
       : baseUrl;

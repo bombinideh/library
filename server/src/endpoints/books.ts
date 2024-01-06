@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
+import { findUniqueBook } from "../functions/findUniqueBook";
 import { queryFilter } from "../functions/queryFilter";
 import { database } from "../knex";
-import { Book } from "../models/Book";
+import { Book, BookRequestBody } from "../models/Book";
+import { Bookcase } from "../models/Bookcase";
+import { Box } from "../models/Box";
+import { Log } from "../models/Log";
+import { Shelf } from "../models/Shelf";
 
 export const booksGetMany = async (req: Request, res: Response) => {
   try {
@@ -30,14 +35,11 @@ export const booksGetMany = async (req: Request, res: Response) => {
 };
 
 export const booksPostOne = async (req: Request, res: Response) => {
-  const body: Book = req.body;
+  const body: BookRequestBody = req.body;
   const { user_id } = req;
 
   try {
-    const book = await database<Book>("books")
-      .whereILike("title", `%${body.title}%`)
-      .andWhereILike("author", `%${body.author}%`)
-      .first();
+    const book = await findUniqueBook({ title: body.title, author: body.title });
 
     if (book) return res.status(400).send({ error: "Livro já existente" });
 
@@ -109,6 +111,86 @@ export const booksDeleteOne = async (req: Request, res: Response) => {
     });
 
     res.send(deletedBook);
+  } catch {
+    res.status(500).send({ error: "Erro Interno no Servidor" });
+  }
+};
+
+export const booksPostMany = async (req: Request, res: Response) => {
+  const {
+    bookcase_id,
+    shelf_id,
+    box_id,
+    books,
+  }: {
+    bookcase_id: Bookcase["bookcase_id"];
+    shelf_id: Shelf["shelf_id"];
+    box_id: Box["box_id"];
+    books: Omit<BookRequestBody, "bookcase_id" | "shelf_id" | "box_id">[];
+  } = req.body;
+  const { user_id } = req;
+
+  try {
+    const hasRepeteadBook = books
+      .map(({ title, author }) => title + author)
+      .some((item, index, array) => array.indexOf(item) !== index);
+
+    if (hasRepeteadBook)
+      return res.status(400).send({ error: "Os livros não podem ser repetidos." });
+
+    const checkBooksInDatabase = books.map(({ title, author }) => {
+      return findUniqueBook({ title, author });
+    });
+    const booksInDatabase = (await Promise.all(checkBooksInDatabase)).reduce(
+      (acc, book, index) => {
+        if (book) {
+          acc.total += 1;
+          acc.pages.push(index + 1);
+        }
+
+        return acc;
+      },
+      { total: 0, pages: [] as number[] },
+    );
+
+    if (booksInDatabase.total) {
+      const message = (pages: string) => {
+        if (booksInDatabase.total > 1)
+          return `Os livros das seguintes páginas já estão cadastrados: ${pages}.`;
+
+        return `O livro da página ${pages} já está cadastrado.`;
+      };
+
+      return res.status(409).send({
+        error: message(booksInDatabase.pages.join(", ")),
+      });
+    }
+
+    const insertedBooks = await database.transaction(async db => {
+      const _insertedBooks = await db<Book>("books")
+        .insert(
+          books.map(book => ({
+            user_id,
+            bookcase_id,
+            shelf_id,
+            box_id,
+            ...book,
+          })),
+        )
+        .returning("*");
+
+      await database<Log>("logs").insert(
+        _insertedBooks.map(book => ({
+          user_id,
+          description: `Livro "${book.title}" criado com sucesso`,
+          method: "POST",
+        })),
+      );
+
+      return _insertedBooks;
+    });
+
+    res.send({ books: insertedBooks });
   } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }

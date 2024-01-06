@@ -10,8 +10,5 @@
     "forceConsistentCasingInFileNames": true
   },
   "files": ["src/types/env.d.ts", "src/types/req.d.ts"],
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
-  "ts-node": {
-    "files": true
-  }
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
