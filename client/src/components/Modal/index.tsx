@@ -1,7 +1,13 @@
 import SVGX from "@/assets/x-mark.svg?react";
 import useEscapeKey from "@/hooks/useEscapeKey";
 import motionTransition from "@/utils/motionTransition";
-import { Dispatch, MouseEventHandler, ReactNode, SetStateAction } from "react";
+import {
+  Dispatch,
+  MouseEventHandler,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+} from "react";
 import { useTheme } from "styled-components";
 import Button, { ButtonProps } from "../Elements/Button";
 import Title from "../Elements/Title";
@@ -35,8 +41,40 @@ export default function Modal({
 }: ModalProps) {
   const closeOptions = { state: showModal, clearState: () => setShowModal(false) };
   const { transitions } = useTheme();
+  const { documentElement: root, body } = document;
+  const rootHasScrollbar = root.scrollHeight > root.clientHeight;
+  const modalOpenStyles = {
+    position: "fixed",
+    inlineSize: "100%",
+    top: `-${root.scrollTop}px`,
+    get overflowY() {
+      return rootHasScrollbar ? "scroll" : "hidden";
+    },
+  };
 
   useEscapeKey(closeOptions);
+
+  useEffect(() => {
+    const properties = Object.keys(modalOpenStyles);
+    const rootScroll = root.scrollTop;
+
+    properties.forEach(key => {
+      body.style[key as any] = modalOpenStyles[key as keyof typeof modalOpenStyles];
+    });
+
+    return () => {
+      properties.forEach(key => {
+        const propertyName = key.replace(
+          /[A-Z]/,
+          match => `-${match.toLowerCase()}`,
+        );
+
+        body.style.removeProperty(propertyName);
+      });
+
+      scrollTo({ top: rootScroll, behavior: "instant" });
+    };
+  }, []);
 
   return (
     <Styled.Wrapper
@@ -46,9 +84,9 @@ export default function Modal({
       transition={motionTransition(transitions.element)}
     >
       <Styled.Dialog
-        initial={{ opacity: 0, y: -15 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -15 }}
+        exit={{ opacity: 0, y: 15 }}
         transition={motionTransition(transitions.element)}
       >
         <Styled.Header>

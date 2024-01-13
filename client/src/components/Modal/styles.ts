@@ -7,6 +7,11 @@ const blockSpacing =
   ({ top }: { top: keyof DefaultTheme["spacings"] } = { top: 20 }) =>
   ({ theme }: { theme: DefaultTheme }) => css`
     padding: ${theme.spacings[top]} ${theme.spacings[30]};
+
+    ${theme.breakpoints.sm} {
+      padding-left: ${theme.container.gutter};
+      padding-right: ${theme.container.gutter};
+    }
   `;
 
 export const Wrapper = styled(m.div)`
@@ -19,6 +24,13 @@ export const Wrapper = styled(m.div)`
     z-index: ${theme.zIndexes.modal};
     background-color: ${transparentize(0.4, theme.colors.black)};
     padding: ${theme.spacings[30]} ${theme.container.gutter};
+
+    ${theme.breakpoints.sm} {
+      align-items: flex-end;
+      padding-left: initial;
+      padding-right: initial;
+      padding-bottom: 0;
+    }
   `}
 `;
 
@@ -61,7 +73,13 @@ export const Content = styled.div`
     flex-direction: column;
     overflow: hidden;
 
+    ${theme.breakpoints.sm} {
+      min-height: 250px;
+      justify-content: center;
+    }
+
     > *:first-child {
+      flex: 1;
       max-height: 100%;
       overflow-y: auto;
       ${theme.mixins.scrollbar()};
@@ -70,6 +88,7 @@ export const Content = styled.div`
 
     > p:first-child {
       text-align: center;
+      justify-self: center;
       color: ${theme.colors.textSupport1};
       ${blockSpacing({ top: 40 })};
     }
