@@ -30,5 +30,5 @@ export const booksPostManyValidation = Joi.object({
   bookcase_id: Joi.number().required(),
   shelf_id: Joi.number().required(),
   box_id: Joi.number().required(),
-  books: Joi.array().items(book),
+  books: Joi.array().items(book).min(1).required(),
 });
