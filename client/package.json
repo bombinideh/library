@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "postinstall": "cd .. && husky install client/.husky"
+    "lint": "eslint . --ext .ts,.tsx --max-warnings 0 --fix",
+    "format": "prettier . --write --cache",
+    "prepare": "cd .. && husky install client/.husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
