@@ -13,7 +13,7 @@ import {
 } from "react-hook-form";
 
 interface RelationshipFieldsProps {
-  pick?: ("bookcase_id" | "shelf_id" | "box_id")[],
+  pick?: ("bookcase_id" | "shelf_id" | "box_id")[];
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
   getValues: UseFormGetValues<any>;
@@ -64,10 +64,10 @@ export default function RelationshipFields({
       title: "Caixa",
       options: boxesResult.data?.items,
       disabled: !shelf_id,
-      resetDependency: () => {}
+      resetDependency: () => {},
     },
   ] as const;
-  const filteredFields = fields.filter(({ id }) => pick.includes(id))
+  const filteredFields = fields.filter(({ id }) => pick.includes(id));
 
   return (
     <>
@@ -81,7 +81,7 @@ export default function RelationshipFields({
             text: option.name,
             onClick: () => {
               setValue(id, String(option[id as keyof typeof option]));
-              trigger(id);
+              trigger(id, { shouldFocus: true });
 
               if (resetDependency) resetDependency();
             },

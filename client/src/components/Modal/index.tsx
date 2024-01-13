@@ -1,14 +1,7 @@
 import SVGX from "@/assets/x-mark.svg?react";
 import useEscapeKey from "@/hooks/useEscapeKey";
 import motionTransition from "@/utils/motionTransition";
-import {
-  Dispatch,
-  MouseEventHandler,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useRef,
-} from "react";
+import { Dispatch, MouseEventHandler, ReactNode, SetStateAction } from "react";
 import { useTheme } from "styled-components";
 import Button, { ButtonProps } from "../Elements/Button";
 import Title from "../Elements/Title";
@@ -20,6 +13,7 @@ export interface ModalStateProps {
 }
 
 interface ModalProps extends ModalStateProps {
+  header?: ReactNode;
   children?: ReactNode;
   title: string;
   action: {
@@ -27,26 +21,23 @@ interface ModalProps extends ModalStateProps {
     onClick?: MouseEventHandler<HTMLButtonElement>;
     form?: string;
     variant?: ButtonProps["variant"];
+    disabled?: boolean;
   };
 }
 
 export default function Modal({
+  header,
   children,
   title,
   action,
   showState,
   setShowState,
 }: ModalProps) {
-  const contentRef = useRef<HTMLDivElement>(null);
   const closeModal = () => setShowState(false);
   const closeOptions = { state: showState, clearState: closeModal };
   const { transitions } = useTheme();
 
   useEscapeKey(closeOptions);
-
-  useEffect(() => {
-    contentRef.current?.scroll({ top: 100 });
-  }, []);
 
   return (
     <Styled.Wrapper
@@ -62,16 +53,20 @@ export default function Modal({
         transition={motionTransition(transitions.element)}
       >
         <Styled.Header>
-          <Title level={4} text={title} />
+          <Styled.DefaultHeaderContent>
+            <Title level={4} text={title} />
 
-          <Styled.CloseButton
-            variant="support"
-            SVG={{ Component: SVGX, color: "textSupport1" }}
-            onClick={closeModal}
-          />
+            <Styled.CloseButton
+              variant="support"
+              SVG={{ Component: SVGX, color: "textSupport1" }}
+              onClick={closeModal}
+            />
+          </Styled.DefaultHeaderContent>
+
+          {header && header}
         </Styled.Header>
 
-        <Styled.Content ref={contentRef}>{children}</Styled.Content>
+        <Styled.Content>{children}</Styled.Content>
 
         <Styled.Footer>
           <Button text="Cancelar" variant="support" onClick={closeModal} />
@@ -82,6 +77,7 @@ export default function Modal({
               ? { type: "submit", form: action.form }
               : { onClick: action.onClick })}
             variant={action.variant || "primary"}
+            {...(action.disabled && { disabled: action.disabled })}
           />
         </Styled.Footer>
       </Styled.Dialog>
