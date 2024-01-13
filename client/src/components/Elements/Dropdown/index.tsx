@@ -25,21 +25,22 @@ export interface DropdownProps {
   items: DropdownItem[];
   contentPositionX?: "left" | "right";
   wrapperWidth?: string;
+  focusOnOpen?: boolean;
 }
 
-export type DropdownDefaultProps = Required<Pick<DropdownProps, "contentPositionX">>;
-
-const defaultProps: DropdownDefaultProps = {
+const defaultProps = {
   contentPositionX: "left",
-};
+  focusOnOpen: false,
+} as const;
 
 export default function Dropdown(props: DropdownProps) {
-  const { className, Button, items, contentPositionX, wrapperWidth } = {
+  const { className, Button, items, contentPositionX, wrapperWidth, focusOnOpen } = {
     ...defaultProps,
     ...props,
   };
   const [show, setShow] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const closeDropdown = () => setShow(false);
   const closeOptions = { state: show, clearState: closeDropdown };
   const { transitions } = useTheme();
@@ -57,12 +58,21 @@ export default function Dropdown(props: DropdownProps) {
         className={`${show ? "open" : ""}`}
         as={Button}
         type="button"
-        onClick={() => setShow(!show)}
+        onClick={() => {
+          setShow(!show);
+
+          if (focusOnOpen && !show) {
+            setTimeout(() => {
+              contentRef.current?.scrollIntoView({ behavior: "smooth" });
+            }, transitions.element.duration);
+          }
+        }}
       />
 
       <AnimatePresence>
         {show && (
           <Styled.Content
+            ref={contentRef}
             onClick={closeDropdown}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
