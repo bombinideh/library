@@ -76,7 +76,7 @@ export default function EditBox({
           delete (data as any).bookcase_id;
           delete (data as any).shelf_id;
 
-          editBoxMutation(nonNullData(data))
+          editBoxMutation(nonNullData(data));
         })}
       >
         {columns.map(({ title, key }) => {

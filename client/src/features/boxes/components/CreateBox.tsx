@@ -23,11 +23,7 @@ const schema = z.object({
 
 export type CreateBoxData = z.infer<typeof schema>;
 
-export default function CreateBox({
-  tableTitle,
-  columns,
-  ...rest
-}: CreateBoxProps) {
+export default function CreateBox({ tableTitle, columns, ...rest }: CreateBoxProps) {
   const {
     register,
     handleSubmit,
@@ -56,7 +52,7 @@ export default function CreateBox({
         onSubmit={handleSubmit(data => {
           delete (data as any).bookcase_id;
 
-          createBoxMutation(nonNullData(data))
+          createBoxMutation(nonNullData(data));
         })}
       >
         {columns.map(({ title, key }) => (

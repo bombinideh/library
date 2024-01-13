@@ -38,7 +38,10 @@ export default function CreateBookcase({
   return (
     <Modal
       title={`Cadastrar ${tableTitle.singular.toLowerCase()}`}
-      action={{ text: `Cadastrar ${tableTitle.singular.toLowerCase()}`, form: formId }}
+      action={{
+        text: `Cadastrar ${tableTitle.singular.toLowerCase()}`,
+        form: formId,
+      }}
       {...rest}
     >
       <Form

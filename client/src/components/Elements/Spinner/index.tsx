@@ -12,7 +12,7 @@ export interface SpinnerProps {
 const defaultProps = {
   size: "24px",
   padding: "0",
-  color: "textSupport1"
+  color: "textSupport1",
 };
 
 export default function Spinner(props: SpinnerProps) {
