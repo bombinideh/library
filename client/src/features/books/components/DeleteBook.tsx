@@ -11,13 +11,12 @@ interface DeleteBookProps extends ModalStateProps {
 export default function DeleteBook({
   tableTitle,
   book,
-  showState,
-  setShowState,
+  ...modalStates
 }: DeleteBookProps) {
   const { deleteBookMutation } = useDeleteBook({
     bookId: book.book_id,
-    setModalState: setShowState,
     tableTitle,
+    ...modalStates,
   });
 
   return (
@@ -28,8 +27,7 @@ export default function DeleteBook({
         variant: "danger",
         onClick: () => deleteBookMutation(null),
       }}
-      showState={showState}
-      setShowState={setShowState}
+      {...modalStates}
     >
       <p>Tem certeza que deseja excluir este livro? Essa ação é irreversível.</p>
     </Modal>

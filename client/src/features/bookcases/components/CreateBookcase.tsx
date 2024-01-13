@@ -23,7 +23,7 @@ export type CreateBookcaseData = z.infer<typeof schema>;
 export default function CreateBookcase({
   tableTitle,
   columns,
-  ...rest
+  ...modalStates
 }: CreateBookcaseProps) {
   const {
     register,
@@ -32,7 +32,10 @@ export default function CreateBookcase({
   } = useForm<CreateBookcaseData>({
     resolver: zodResolver(schema),
   });
-  const { createBookcaseMutation } = useCreateBookcase(tableTitle);
+  const { createBookcaseMutation } = useCreateBookcase({
+    tableTitle,
+    ...modalStates,
+  });
   const formId = "createBookcaseForm";
 
   return (
@@ -42,7 +45,7 @@ export default function CreateBookcase({
         text: `Cadastrar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

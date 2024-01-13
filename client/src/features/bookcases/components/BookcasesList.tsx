@@ -46,8 +46,8 @@ export default function BookcasesList() {
         {createModal && (
           <CreateBookcase
             tableTitle={tableTitle}
-            showState={createModal}
-            setShowState={setCreateModal}
+            showModal={createModal}
+            setShowModal={setCreateModal}
             columns={columns.filter(({ key }) => key === "name")}
           />
         )}
@@ -55,8 +55,8 @@ export default function BookcasesList() {
         {editModal && (
           <EditBookcase
             tableTitle={tableTitle}
-            showState={editModal}
-            setShowState={setEditModal}
+            showModal={editModal}
+            setShowModal={setEditModal}
             columns={columns.filter(({ key }) => ["name", "active"].includes(key))}
             bookcase={bookcaseToChange as Bookcase}
           />

@@ -31,7 +31,7 @@ export default function EditBox({
   tableTitle,
   box,
   columns,
-  ...rest
+  ...modalStates
 }: EditBoxProps) {
   const defaultValues = columns.reduce((data, { key }, index) => {
     data[key as keyof EditBoxData] = String(box[key as keyof BoxResponse]);
@@ -58,6 +58,7 @@ export default function EditBox({
   const { editBoxMutation } = useEditBox({
     box_id: box.box_id,
     tableTitle,
+    ...modalStates,
   });
   const formId = "editBoxForm";
 
@@ -68,7 +69,7 @@ export default function EditBox({
         text: `Editar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

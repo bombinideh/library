@@ -23,7 +23,11 @@ const schema = z.object({
 
 export type CreateBoxData = z.infer<typeof schema>;
 
-export default function CreateBox({ tableTitle, columns, ...rest }: CreateBoxProps) {
+export default function CreateBox({
+  tableTitle,
+  columns,
+  ...modalStates
+}: CreateBoxProps) {
   const {
     register,
     handleSubmit,
@@ -35,7 +39,7 @@ export default function CreateBox({ tableTitle, columns, ...rest }: CreateBoxPro
   } = useForm<CreateBoxData>({
     resolver: zodResolver(schema),
   });
-  const { createBoxMutation } = useCreateBox(tableTitle);
+  const { createBoxMutation } = useCreateBox({ tableTitle, ...modalStates });
   const formId = "createBoxForm";
 
   return (
@@ -45,7 +49,7 @@ export default function CreateBox({ tableTitle, columns, ...rest }: CreateBoxPro
         text: `Cadastrar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

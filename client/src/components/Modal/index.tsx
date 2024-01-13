@@ -8,8 +8,8 @@ import Title from "../Elements/Title";
 import * as Styled from "./styles";
 
 export interface ModalStateProps {
-  showState: boolean;
-  setShowState: Dispatch<SetStateAction<boolean>>;
+  showModal: boolean;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
 interface ModalProps extends ModalStateProps {
@@ -30,11 +30,10 @@ export default function Modal({
   children,
   title,
   action,
-  showState,
-  setShowState,
+  showModal,
+  setShowModal,
 }: ModalProps) {
-  const closeModal = () => setShowState(false);
-  const closeOptions = { state: showState, clearState: closeModal };
+  const closeOptions = { state: showModal, clearState: () => setShowModal(false) };
   const { transitions } = useTheme();
 
   useEscapeKey(closeOptions);
@@ -59,7 +58,7 @@ export default function Modal({
             <Styled.CloseButton
               variant="support"
               SVG={{ Component: SVGX, color: "textSupport1" }}
-              onClick={closeModal}
+              onClick={() => setShowModal(false)}
             />
           </Styled.DefaultHeaderContent>
 
@@ -69,7 +68,11 @@ export default function Modal({
         <Styled.Content>{children}</Styled.Content>
 
         <Styled.Footer>
-          <Button text="Cancelar" variant="support" onClick={closeModal} />
+          <Button
+            text="Cancelar"
+            variant="support"
+            onClick={() => setShowModal(false)}
+          />
 
           <Button
             text={action.text}

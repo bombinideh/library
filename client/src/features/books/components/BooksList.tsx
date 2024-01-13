@@ -99,8 +99,8 @@ export default function BooksList() {
         {createModal && (
           <CreateBook
             tableTitle={tableTitle}
-            showState={createModal}
-            setShowState={setCreateModal}
+            showModal={createModal}
+            setShowModal={setCreateModal}
             columns={manipulateColumns}
           />
         )}
@@ -108,8 +108,8 @@ export default function BooksList() {
         {editModal && (
           <EditBook
             tableTitle={tableTitle}
-            showState={editModal}
-            setShowState={setEditModal}
+            showModal={editModal}
+            setShowModal={setEditModal}
             columns={manipulateColumns}
             book={bookToChange as BookResponse}
           />
@@ -118,8 +118,8 @@ export default function BooksList() {
         {deleteModal && (
           <DeleteBook
             tableTitle={tableTitle}
-            showState={deleteModal}
-            setShowState={setDeleteModal}
+            showModal={deleteModal}
+            setShowModal={setDeleteModal}
             book={bookToChange as BookResponse}
           />
         )}

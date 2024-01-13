@@ -2,6 +2,7 @@ import Button from "@/components/Elements/Button";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
+import { ModalStateProps } from "@/components/Modal";
 import useCreateManyBook from "@/features/books/api/createManyBook";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
 import { TableTitle } from "@/types/table";
@@ -10,10 +11,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
-import { bookSchema, relationShipsSchema } from "../schemas";
+import { bookSchema, relationShipsSchema } from "../../../schemas";
 import * as Styled from "./styles";
 
-interface CreateManyBookProps {
+interface CreateManyBookProps extends ModalStateProps {
   tableTitle: TableTitle;
   formId: string;
   columns: Column[];
@@ -37,6 +38,7 @@ export default function CreateManyBook({
   columns,
   currentStep,
   setCurrentStep,
+  ...modalStates
 }: CreateManyBookProps) {
   const {
     register,
@@ -84,7 +86,10 @@ export default function CreateManyBook({
       setCurrentStep(currentStep + 1);
     }
   };
-  const { createManyBookMutation } = useCreateManyBook(tableTitle);
+  const { createManyBookMutation } = useCreateManyBook({
+    tableTitle,
+    ...modalStates,
+  });
 
   useEffect(() => {
     return () => {

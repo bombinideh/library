@@ -32,7 +32,7 @@ export type CreateUserData = z.infer<typeof schema>;
 export default function CreateUser({
   tableTitle,
   columns,
-  ...rest
+  ...modalStates
 }: CreateUserProps) {
   const {
     register,
@@ -41,7 +41,7 @@ export default function CreateUser({
   } = useForm<CreateUserData>({
     resolver: zodResolver(schema),
   });
-  const { createUserMutation } = useCreateUser(tableTitle);
+  const { createUserMutation } = useCreateUser({ tableTitle, ...modalStates });
   const formId = "createUserForm";
 
   return (
@@ -51,7 +51,7 @@ export default function CreateUser({
         text: `Cadastrar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

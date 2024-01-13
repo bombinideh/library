@@ -1,4 +1,5 @@
 import queryClient from "@/api";
+import { ModalStateProps } from "@/components/Modal";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
 import { TableTitle } from "@/types/table";
@@ -7,7 +8,14 @@ import { useMutation } from "@tanstack/react-query";
 import { CreateShelfData } from "../components/CreateShelf";
 import { Shelf } from "../types";
 
-export default function useCreateShelf(tableTitle: TableTitle) {
+interface UseCreateShelfProps extends ModalStateProps {
+  tableTitle: TableTitle;
+}
+
+export default function useCreateShelf({
+  tableTitle,
+  setShowModal,
+}: UseCreateShelfProps) {
   const request = useFetch<CreateShelfData, Shelf>({
     URL: "shelfs",
     method: "POST",
@@ -17,6 +25,8 @@ export default function useCreateShelf(tableTitle: TableTitle) {
     mutationFn: request,
     onSuccess: shelf => {
       queryClient.invalidateQueries({ queryKey: ["shelfs"] });
+
+      setShowModal(false);
 
       emitNotification({
         text: successMessage(tableTitle, shelf.name, "POST"),

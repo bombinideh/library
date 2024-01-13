@@ -30,7 +30,7 @@ export default function EditShelf({
   tableTitle,
   shelf,
   columns,
-  ...rest
+  ...modalStates
 }: EditShelfProps) {
   const defaultValues = columns.reduce((data, { key }, index) => {
     data[key as keyof EditShelfData] = String(shelf[key as keyof Shelf]);
@@ -54,6 +54,7 @@ export default function EditShelf({
   const { editShelfMutation } = useEditShelf({
     shelf_id: shelf.shelf_id,
     tableTitle,
+    ...modalStates,
   });
   const formId = "editShelfForm";
 
@@ -64,7 +65,7 @@ export default function EditShelf({
         text: `Editar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

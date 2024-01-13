@@ -28,7 +28,7 @@ export default function EditBookcase({
   tableTitle,
   bookcase,
   columns,
-  ...rest
+  ...modalStates
 }: EditBookcaseProps) {
   const defaultValues = columns.reduce((data, { key }) => {
     data[key as keyof EditBookcaseData] = String(bookcase[key as keyof Bookcase]);
@@ -49,6 +49,7 @@ export default function EditBookcase({
   const { editBookcaseMutation } = useEditBookcase({
     bookcase_id: bookcase.bookcase_id,
     tableTitle,
+    ...modalStates,
   });
   const formId = "editBookcaseForm";
 
@@ -59,7 +60,7 @@ export default function EditBookcase({
         text: `Editar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

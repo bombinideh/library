@@ -1,4 +1,5 @@
 import queryClient from "@/api";
+import { ModalStateProps } from "@/components/Modal";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
 import { TableTitle } from "@/types/table";
@@ -7,12 +8,16 @@ import { useMutation } from "@tanstack/react-query";
 import { EditShelfData } from "../components/EditShelf";
 import { Shelf } from "../types";
 
-interface UseEditShelfProps {
+interface UseEditShelfProps extends ModalStateProps {
   shelf_id: Shelf["shelf_id"];
   tableTitle: TableTitle;
 }
 
-export default function useEditShelf({ shelf_id, tableTitle }: UseEditShelfProps) {
+export default function useEditShelf({
+  shelf_id,
+  tableTitle,
+  setShowModal,
+}: UseEditShelfProps) {
   const request = useFetch<EditShelfData, Shelf>({
     URL: `shelfs/${shelf_id}`,
     method: "PATCH",
@@ -22,6 +27,8 @@ export default function useEditShelf({ shelf_id, tableTitle }: UseEditShelfProps
     mutationFn: request,
     onSuccess: shelf => {
       queryClient.invalidateQueries({ queryKey: ["shelfs"] });
+
+      setShowModal(false);
 
       emitNotification({
         text: successMessage(tableTitle, shelf.name, "PATCH"),

@@ -1,4 +1,5 @@
 import queryClient from "@/api";
+import { ModalStateProps } from "@/components/Modal";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
 import { TableTitle } from "@/types/table";
@@ -7,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { EditBookcaseData } from "../components/EditBookcase";
 import { Bookcase } from "../types";
 
-interface UseEditBookcaseProps {
+interface UseEditBookcaseProps extends ModalStateProps {
   bookcase_id: Bookcase["bookcase_id"];
   tableTitle: TableTitle;
 }
@@ -15,6 +16,7 @@ interface UseEditBookcaseProps {
 export default function useEditBookcase({
   bookcase_id,
   tableTitle,
+  setShowModal,
 }: UseEditBookcaseProps) {
   const request = useFetch<EditBookcaseData, Bookcase>({
     URL: `bookcases/${bookcase_id}`,
@@ -25,6 +27,8 @@ export default function useEditBookcase({
     mutationFn: request,
     onSuccess: bookcase => {
       queryClient.invalidateQueries({ queryKey: ["bookcases"] });
+
+      setShowModal(false);
 
       emitNotification({
         text: successMessage(tableTitle, bookcase.name, "PATCH"),

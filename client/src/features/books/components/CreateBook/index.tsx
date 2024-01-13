@@ -20,12 +20,14 @@ export default function CreateBook({
 }: CreateBookProps) {
   const [currentMethodName, setCurrentMethodName] = useState<Method>("unique");
   const [currentStepManyMethod, setCurrentStepManyMethod] = useState(0);
-  const table = { tableTitle, columns };
+  const mutationProps = { tableTitle, columns, ...modalStates };
   const createMethods = [
     {
       method: "unique",
       text: "Único livro",
-      formComponent: <CreateUniqueBook {...table} formId="createUniqueBookForm" />,
+      formComponent: (
+        <CreateUniqueBook {...mutationProps} formId="createUniqueBookForm" />
+      ),
       modalAction: {
         text: `Cadastrar ${tableTitle.plural.toLowerCase()}`,
         form: "createUniqueBookForm",
@@ -36,7 +38,7 @@ export default function CreateBook({
       text: "Múltiplos livros",
       formComponent: (
         <CreateManyBook
-          {...table}
+          {...mutationProps}
           formId="createManyBookForm"
           currentStep={currentStepManyMethod}
           setCurrentStep={setCurrentStepManyMethod}

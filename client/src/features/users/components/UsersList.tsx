@@ -46,8 +46,8 @@ export default function UsersList() {
         {createModal && (
           <CreateUser
             tableTitle={tableTitle}
-            showState={createModal}
-            setShowState={setCreateModal}
+            showModal={createModal}
+            setShowModal={setCreateModal}
             columns={columns.filter(({ key }) => ["name", "email"].includes(key))}
           />
         )}

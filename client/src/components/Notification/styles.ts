@@ -56,6 +56,7 @@ export const Wrapper = styled(m.div)<VariantProps>`
 
 export const Icon = styled.div<VariantProps>`
   ${({ theme, $variant }) => css`
+    flex-shrink: 0;
     width: 40px;
     height: 40px;
     display: flex;
@@ -86,7 +87,7 @@ export const Text = styled.p`
 export const TimeBar = styled(m.span)<VariantProps>`
   ${({ theme, $variant }) => css`
     display: block;
-    height: 5px;
+    height: 6px;
     position: absolute;
     right: 0;
     bottom: 0;
