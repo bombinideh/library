@@ -7,5 +7,3 @@ export const logsGetManyValidation = Joi.object({
 export const logsGetOneValidation = Joi.object({
   shelf_id: Joi.number().required(),
 });
-
-
