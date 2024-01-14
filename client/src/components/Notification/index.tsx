@@ -1,7 +1,7 @@
+import { INotification, defaultNotification } from "@/@types/notification";
 import SVGCheck from "@/assets/check.svg?react";
 import SVGExclamation from "@/assets/exclamation.svg?react";
 import SVGX from "@/assets/x-mark.svg?react";
-import { INotification, defaultNotification } from "@/types/notification";
 import motionTransition from "@/utils/motionTransition";
 import { ReactNode } from "react";
 import { useTheme } from "styled-components";

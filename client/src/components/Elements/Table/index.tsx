@@ -1,9 +1,9 @@
+import { GetManyQueryProps, GetManyQueryResponse } from "@/@types/api";
+import { RequestError } from "@/@types/react-query";
+import { Column, TableTitle } from "@/@types/table";
 import SVGChevronUpDown from "@/assets/chevron-up-down.svg?react";
 import SVGEllipsisHorizontal from "@/assets/ellipsis-horizontal.svg?react";
 import useAuth from "@/hooks/useAuth";
-import { GetManyQueryProps, GetManyQueryResponse } from "@/types/api";
-import { RequestError } from "@/types/react-query";
-import { TableTitle } from "@/types/table";
 import { UseQueryResult } from "@tanstack/react-query";
 import moment from "moment";
 import { ReactNode, forwardRef, useEffect } from "react";
@@ -19,14 +19,6 @@ type Ordering = Required<
 export interface OrderingState {
   ordering: Ordering;
   setOrdering: React.Dispatch<React.SetStateAction<Ordering>>;
-}
-
-export interface Column<T extends object> {
-  title: string;
-  key: keyof T;
-  order?: boolean;
-  filter?: boolean;
-  notManipulable?: boolean;
 }
 
 interface TableProps<T extends object> {

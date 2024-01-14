@@ -1,4 +1,4 @@
-import { GetManyQueryProps } from "@/types/api";
+import { GetManyQueryProps } from "@/@types/api";
 import { useState } from "react";
 
 interface UseTableProps extends Omit<GetManyQueryProps, "searchColumn"> {

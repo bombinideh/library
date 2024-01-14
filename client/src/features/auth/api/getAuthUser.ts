@@ -1,6 +1,6 @@
-import { UserResponse } from "@/features/users/types";
+import { QueryOptions } from "@/@types/react-query";
+import { UserResponse } from "@/features/users/@types";
 import useFetch from "@/hooks/useFetch";
-import { QueryOptions } from "@/types/react-query";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useGetUser(queryOptions: QueryOptions<UserResponse>) {

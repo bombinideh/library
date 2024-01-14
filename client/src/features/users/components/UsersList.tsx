@@ -1,13 +1,13 @@
+import { Column, TableTitle } from "@/@types/table";
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
-import Table, { Column } from "@/components/Elements/Table";
+import Table from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
-import { TableTitle } from "@/types/table";
 import { getManipulableTableColumns } from "@/utils/getManipulableTableColumns";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { UserResponse } from "../@types";
 import useGetUsers from "../api/getUsers";
-import { UserResponse } from "../types";
 import CreateUser from "./CreateUser";
 
 const columns: Column<UserResponse>[] = [

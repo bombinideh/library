@@ -1,4 +1,4 @@
-import { Column } from "@/components/Elements/Table";
+import { Column } from "@/@types/table";
 
 export function getManipulableTableColumns<T extends object>(columns: Column<T>[]) {
   const ignoreKeys = ["id", "created_at", "_name"];

@@ -1,4 +1,4 @@
-import { INotification } from "@/types/notification";
+import { INotification } from "@/@types/notification";
 import { m } from "framer-motion";
 import styled, { css } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";

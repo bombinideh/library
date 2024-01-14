@@ -1,5 +1,5 @@
+import { INotification, defaultNotification } from "@/@types/notification";
 import Notification from "@/components/Notification";
-import { INotification, defaultNotification } from "@/types/notification";
 import { AnimatePresence } from "framer-motion";
 import { ReactNode, createContext, useState } from "react";
 import { useTheme } from "styled-components";

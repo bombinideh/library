@@ -1,8 +1,8 @@
-import Table, { Column } from "@/components/Elements/Table";
+import { Column, TableTitle } from "@/@types/table";
+import Table from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
-import { TableTitle } from "@/types/table";
+import { ReportResponse } from "../@types";
 import useGetReports from "../api/getReports";
-import { ReportResponse } from "../types";
 
 const columns: Column<ReportResponse>[] = [
   {

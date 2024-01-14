@@ -1,12 +1,12 @@
+import { TableTitle } from "@/@types/table";
 import queryClient from "@/api";
 import { ModalStateProps } from "@/components/Modal";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
-import { TableTitle } from "@/types/table";
 import { successMessage } from "@/utils/mutationMessages";
 import { useMutation } from "@tanstack/react-query";
+import { Shelf } from "../@types";
 import { EditShelfData } from "../components/EditShelf";
-import { Shelf } from "../types";
 
 interface UseEditShelfProps extends ModalStateProps {
   shelf_id: Shelf["shelf_id"];

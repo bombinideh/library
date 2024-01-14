@@ -1,7 +1,7 @@
+import { TableTitle } from "@/@types/table";
 import Modal, { ModalStateProps } from "@/components/Modal";
-import { TableTitle } from "@/types/table";
+import { BookResponse } from "../@types";
 import useDeleteBook from "../api/deleteBook";
-import { BookResponse } from "../types";
 
 interface DeleteBookProps extends ModalStateProps {
   book: BookResponse;

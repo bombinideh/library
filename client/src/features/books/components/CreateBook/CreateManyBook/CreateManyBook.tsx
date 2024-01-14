@@ -1,3 +1,4 @@
+import { TableTitle } from "@/@types/table";
 import Button from "@/components/Elements/Button";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
@@ -5,7 +6,6 @@ import InputField from "@/components/Form/InputField";
 import { ModalStateProps } from "@/components/Modal";
 import useCreateManyBook from "@/features/books/api/createManyBook";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";

@@ -1,4 +1,4 @@
-import { GetManyQueryResponse } from "@/types/api";
+import { GetManyQueryResponse } from "@/@types/api";
 
 export interface Shelf {
   shelf_id: number;

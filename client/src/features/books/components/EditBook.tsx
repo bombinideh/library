@@ -1,16 +1,16 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { BookResponse } from "../@types";
 import useEditBook from "../api/editBook";
 import { bookSchema, relationShipsSchema } from "../schemas";
-import { BookResponse } from "../types";
 
 interface EditBookProps extends ModalStateProps {
   columns: Column[];

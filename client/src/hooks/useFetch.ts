@@ -1,5 +1,5 @@
+import { RequestError } from "@/@types/react-query";
 import { appApiURL } from "@/config";
-import { RequestError } from "@/types/react-query";
 import storage from "@/utils/storage";
 import useNotification from "./useNotification";
 

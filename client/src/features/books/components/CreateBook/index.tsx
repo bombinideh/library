@@ -1,6 +1,6 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Modal, { ModalStateProps } from "@/components/Modal";
-import { TableTitle } from "@/types/table";
 import { useState } from "react";
 import CreateManyBook from "./CreateManyBook/CreateManyBook";
 import CreateUniqueBook from "./CreateUniqueBook";

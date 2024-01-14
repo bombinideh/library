@@ -1,9 +1,9 @@
-import { Bookcase } from "@/features/bookcases/types";
+import { GetManyQueryPropsHook } from "@/@types/api";
+import { Bookcase } from "@/features/bookcases/@types";
 import useFetch from "@/hooks/useFetch";
-import { GetManyQueryPropsHook } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Shelf, ShelfsResponse } from "../types";
+import { Shelf, ShelfsResponse } from "../@types";
 
 interface UseGetShelfsProps extends GetManyQueryPropsHook<Shelf> {
   bookcase_id?: Bookcase["bookcase_id"];

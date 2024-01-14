@@ -1,8 +1,8 @@
+import { GetManyQueryProps } from "@/@types/api";
+import { Column } from "@/@types/table";
 import SVGChevronDown from "@/assets/chevron-down.svg?react";
 import SVGMagnifyingGlass from "@/assets/magnifying-glass.svg?react";
-import { GetManyQueryProps } from "@/types/api";
 import { forwardRef } from "react";
-import { Column } from "..";
 import { PaginationState } from "../Pagination";
 import * as Styled from "./styles";
 

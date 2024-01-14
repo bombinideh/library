@@ -1,15 +1,15 @@
+import { Column, TableTitle } from "@/@types/table";
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
-import Table, { Column } from "@/components/Elements/Table";
+import Table from "@/components/Elements/Table";
 import useAuth from "@/hooks/useAuth";
 import useTable from "@/hooks/useTable";
-import { TableTitle } from "@/types/table";
 import { getManipulableTableColumns } from "@/utils/getManipulableTableColumns";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BookResponse } from "../@types";
 import useGetBooks from "../api/getBooks";
-import { BookResponse } from "../types";
 import CreateBook from "./CreateBook";
 import DeleteBook from "./DeleteBook";
 import EditBook from "./EditBook";

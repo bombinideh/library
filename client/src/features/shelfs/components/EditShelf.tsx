@@ -1,16 +1,16 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import ActiveField from "@/features/misc/components/ActiveField";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Shelf } from "../@types";
 import useEditShelf from "../api/editShelf";
-import { Shelf } from "../types";
 
 interface EditShelfProps extends ModalStateProps {
   columns: Column[];

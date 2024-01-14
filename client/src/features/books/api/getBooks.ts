@@ -1,7 +1,7 @@
+import { GetManyQueryPropsHook } from "@/@types/api";
 import useFetch from "@/hooks/useFetch";
-import { GetManyQueryPropsHook } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
-import { BookResponse, BooksResponse } from "../types";
+import { BookResponse, BooksResponse } from "../@types";
 
 export default function useGetBooks({
   queryOptions = {},

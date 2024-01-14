@@ -1,7 +1,7 @@
+import { GetManyQueryPropsHook } from "@/@types/api";
 import useFetch from "@/hooks/useFetch";
-import { GetManyQueryPropsHook } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
-import { ReportResponse, ReportsResponse } from "../types";
+import { ReportResponse, ReportsResponse } from "../@types";
 
 export default function useGetReports({
   queryOptions = {},

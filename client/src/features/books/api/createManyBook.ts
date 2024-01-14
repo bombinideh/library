@@ -1,11 +1,11 @@
+import { TableTitle } from "@/@types/table";
 import queryClient from "@/api";
 import { ModalStateProps } from "@/components/Modal";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
-import { TableTitle } from "@/types/table";
 import { useMutation } from "@tanstack/react-query";
+import { Book } from "../@types";
 import { CreateManyBookData } from "../components/CreateBook/CreateManyBook/CreateManyBook";
-import { Book } from "../types";
 
 interface UseCreateManyBookProps extends ModalStateProps {
   tableTitle: TableTitle;

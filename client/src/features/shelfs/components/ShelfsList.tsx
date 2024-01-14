@@ -1,12 +1,12 @@
+import { Column, TableTitle } from "@/@types/table";
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
-import Table, { Column } from "@/components/Elements/Table";
+import Table from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
-import { TableTitle } from "@/types/table";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { Shelf, ShelfResponse } from "../@types";
 import useGetShelfs from "../api/getShelfs";
-import { Shelf, ShelfResponse } from "../types";
 import CreateShelf from "./CreateShelf";
 import EditShelf from "./EditShelf";
 

@@ -1,15 +1,15 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import ActiveField from "@/features/misc/components/ActiveField";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Bookcase } from "../@types";
 import useEditBookcase from "../api/editBookcase";
-import { Bookcase } from "../types";
 
 interface EditBookcaseProps extends ModalStateProps {
   columns: Column[];
