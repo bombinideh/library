@@ -1,4 +1,4 @@
-import { User } from "@/features/auth/types";
+import { User } from "@/features/users/types";
 import { GetManyQueryResponse } from "@/types/api";
 
 export interface Report {

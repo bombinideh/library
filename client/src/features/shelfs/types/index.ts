@@ -9,4 +9,8 @@ export interface Shelf {
   updated_at: Date;
 }
 
+export interface ShelfResponse extends Shelf {
+  bookcase_name: string;
+}
+
 export type ShelfsResponse = GetManyQueryResponse<Shelf>;

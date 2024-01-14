@@ -1,9 +1,10 @@
-import Table from "@/components/Elements/Table";
+import Table, { Column } from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
 import { TableTitle } from "@/types/table";
 import useGetReports from "../api/getReports";
+import { ReportResponse } from "../types";
 
-const columns = [
+const columns: Column<ReportResponse>[] = [
   {
     title: "#",
     key: "log_id",
@@ -23,10 +24,9 @@ const columns = [
 ];
 
 export default function ReportsList() {
-  const { filter, setFilter, pagination, setPagination, getManyQueryProps } =
-    useTable({
-      searchColumn: "description",
-    });
+  const { getManyQueryProps, ...tableStates } = useTable({
+    searchColumn: "user_name",
+  });
 
   const result = useGetReports(getManyQueryProps);
   const tableTitle: TableTitle = {
@@ -36,15 +36,11 @@ export default function ReportsList() {
   };
 
   return (
-    <Table
+    <Table<ReportResponse>
+      {...tableStates}
       tableTitle={tableTitle}
       queryResult={result}
       columns={columns}
-      filterColumns={["description"]}
-      filter={filter}
-      setFilter={setFilter}
-      pagination={pagination}
-      setPagination={setPagination}
     />
   );
 }

@@ -85,8 +85,12 @@ export const Table = styled.table`
   `}
 `;
 
-export const OrderButton = styled.button`
-  ${({ theme }) => css`
+interface OrderButtonProps {
+  $active: boolean;
+}
+
+export const OrderButton = styled.button<OrderButtonProps>`
+  ${({ theme, $active }) => css`
     display: flex;
     align-items: center;
     column-gap: ${theme.spacings[8]};
@@ -96,6 +100,14 @@ export const OrderButton = styled.button`
       properties: ["color"],
       colors: ["textSupport1"],
     })}
+
+    ${$active &&
+    css`
+      ${theme.mixins.buttonColorState({
+        properties: ["color"],
+        colors: ["text"],
+      })}
+    `}
   `}
 `;
 

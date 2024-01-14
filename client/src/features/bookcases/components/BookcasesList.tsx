@@ -1,16 +1,16 @@
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
-import Table from "@/components/Elements/Table";
+import Table, { Column } from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
 import { TableTitle } from "@/types/table";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import useGetBookcases from "../api/getBookcases";
-import { Bookcase } from "../types";
+import { Bookcase, BookcaseResponse } from "../types";
 import CreateBookcase from "./CreateBookcase";
 import EditBookcase from "./EditBookcase";
 
-const columns = [
+const columns: Column<BookcaseResponse>[] = [
   {
     title: "#",
     key: "bookcase_id",
@@ -23,13 +23,16 @@ const columns = [
     title: "Ativo",
     key: "active",
   },
+  {
+    title: "Data do cadastro",
+    key: "created_at",
+  },
 ];
 
 export default function BookcasesList() {
-  const { filter, setFilter, pagination, setPagination, getManyQueryProps } =
-    useTable({
-      searchColumn: "name",
-    });
+  const { getManyQueryProps, ...tableStates } = useTable({
+    searchColumn: "name",
+  });
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [bookcaseToChange, setBookcaseToChange] = useState({});
@@ -63,15 +66,11 @@ export default function BookcasesList() {
         )}
       </AnimatePresence>
 
-      <Table
+      <Table<BookcaseResponse>
+        {...tableStates}
         tableTitle={tableTitle}
         queryResult={result}
         columns={columns}
-        filterColumns={["name"]}
-        filter={filter}
-        setFilter={setFilter}
-        pagination={pagination}
-        setPagination={setPagination}
         CreateButton={
           <Button
             SVG={{ Component: SVGPlus }}

@@ -1,6 +1,6 @@
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
-import Table from "@/components/Elements/Table";
+import Table, { Column } from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
 import { TableTitle } from "@/types/table";
 import { AnimatePresence } from "framer-motion";
@@ -10,7 +10,7 @@ import { BoxResponse } from "../types";
 import CreateBox from "./CreateBox";
 import EditBox from "./EditBox";
 
-const columns = [
+const columns: Column<BoxResponse>[] = [
   {
     title: "#",
     key: "box_id",
@@ -20,16 +20,27 @@ const columns = [
     key: "name",
   },
   {
+    title: "Estante",
+    key: "bookcase_name",
+  },
+  {
+    title: "Prateleira",
+    key: "shelf_name",
+  },
+  {
     title: "Ativo",
     key: "active",
+  },
+  {
+    title: "Data do cadastro",
+    key: "created_at",
   },
 ];
 
 export default function BoxesList() {
-  const { filter, setFilter, pagination, setPagination, getManyQueryProps } =
-    useTable({
-      searchColumn: "name",
-    });
+  const { getManyQueryProps, ...tableStates } = useTable({
+    searchColumn: "name",
+  });
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [boxToChange, setBoxToChange] = useState({});
@@ -63,15 +74,11 @@ export default function BoxesList() {
         )}
       </AnimatePresence>
 
-      <Table
+      <Table<BoxResponse>
+        {...tableStates}
         tableTitle={tableTitle}
         queryResult={result}
         columns={columns}
-        filterColumns={["name"]}
-        filter={filter}
-        setFilter={setFilter}
-        pagination={pagination}
-        setPagination={setPagination}
         CreateButton={
           <Button
             SVG={{ Component: SVGPlus }}

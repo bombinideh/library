@@ -1,16 +1,16 @@
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
-import Table from "@/components/Elements/Table";
+import Table, { Column } from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
 import { TableTitle } from "@/types/table";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import useGetShelfs from "../api/getShelfs";
-import { Shelf } from "../types";
+import { Shelf, ShelfResponse } from "../types";
 import CreateShelf from "./CreateShelf";
 import EditShelf from "./EditShelf";
 
-const columns = [
+const columns: Column<ShelfResponse>[] = [
   {
     title: "#",
     key: "shelf_id",
@@ -20,16 +20,23 @@ const columns = [
     key: "name",
   },
   {
+    title: "Estante",
+    key: "bookcase_name",
+  },
+  {
     title: "Ativo",
     key: "active",
+  },
+  {
+    title: "Data do cadastro",
+    key: "created_at",
   },
 ];
 
 export default function ShelfsList() {
-  const { filter, setFilter, pagination, setPagination, getManyQueryProps } =
-    useTable({
-      searchColumn: "name",
-    });
+  const { getManyQueryProps, ...tableStates } = useTable({
+    searchColumn: "name",
+  });
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [shelfToChange, setShelfToChange] = useState({});
@@ -63,15 +70,11 @@ export default function ShelfsList() {
         )}
       </AnimatePresence>
 
-      <Table
+      <Table<ShelfResponse>
+        {...tableStates}
         tableTitle={tableTitle}
         queryResult={result}
         columns={columns}
-        filterColumns={["name"]}
-        filter={filter}
-        setFilter={setFilter}
-        pagination={pagination}
-        setPagination={setPagination}
         CreateButton={
           <Button
             SVG={{ Component: SVGPlus }}

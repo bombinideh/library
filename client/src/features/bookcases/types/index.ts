@@ -8,4 +8,6 @@ export interface Bookcase {
   updated_at: Date;
 }
 
+export interface BookcaseResponse extends Bookcase {}
+
 export type BookcasesResponse = GetManyQueryResponse<Bookcase>;
