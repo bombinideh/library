@@ -5,4 +5,6 @@ export const getManyValidation = Joi.object({
   page: Joi.string(),
   searchColumn: Joi.string(),
   searchQuery: Joi.string(),
+  orderColumn: Joi.string(),
+  orderOrientation: Joi.string().valid("ASC", "DESC"),
 });

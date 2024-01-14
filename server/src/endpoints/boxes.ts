@@ -1,22 +1,29 @@
 import { Request, Response } from "express";
-import { queryFilter } from "../functions/queryFilter";
+import { processQueryThatFindMany } from "../functions/processQueryThatFindMany";
 import { database } from "../knex";
 
 export const boxesGetMany = async (req: Request, res: Response) => {
   const { shelf_id } = req.query;
 
   try {
-    const { query, total } = await queryFilter({
+    let query = database("boxes as bx")
+      .leftJoin("shelfs as s", "bx.shelf_id", "s.shelf_id")
+      .leftJoin("bookcases as bc", "s.bookcase_id", "bc.bookcase_id")
+      .select(
+        "bc.name as bookcase_name",
+        "s.name as shelf_name",
+        "bc.bookcase_id",
+        "bx.*",
+      );
+
+    if (shelf_id) query = query.where("bx.shelf_id", shelf_id);
+
+    const result = await processQueryThatFindMany({
+      queryBuilder: query,
       queryParams: req.query,
-      table: "boxes as bx",
     });
-    let boxes = query
-      .leftJoin("shelfs as s", "s.shelf_id", "bx.shelf_id")
-      .select("bx.*", "s.bookcase_id");
 
-    if (shelf_id) boxes = boxes.where("bx.shelf_id", shelf_id);
-
-    res.send({ items: await boxes, total });
+    res.send(result);
   } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }

@@ -1,21 +1,24 @@
 import { Request, Response } from "express";
-import { queryFilter } from "../functions/queryFilter";
+import { processQueryThatFindMany } from "../functions/processQueryThatFindMany";
 import { database } from "../knex";
 
 export const shelfsGetMany = async (req: Request, res: Response) => {
   const { bookcase_id } = req.query;
 
   try {
-    const { query, total } = await queryFilter({
+    let query = database("shelfs as s")
+      .leftJoin("bookcases as bc", "s.bookcase_id", "bc.bookcase_id")
+      .select("bc.name as bookcase_name", "s.*");
+
+    if (bookcase_id) query = query.where("s.bookcase_id", bookcase_id);
+
+    const result = await processQueryThatFindMany({
+      queryBuilder: query,
       queryParams: req.query,
-      table: "shelfs",
     });
-    let shelfs = query;
 
-    if (bookcase_id) shelfs = query.where("bookcase_id", bookcase_id);
-
-    res.send({ items: await shelfs, total });
-  } catch (error) {
+    res.send(result);
+  } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }
 };
