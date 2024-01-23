@@ -1,9 +1,9 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -25,7 +25,7 @@ export type CreateShelfData = z.infer<typeof schema>;
 export default function CreateShelf({
   tableTitle,
   columns,
-  ...rest
+  ...modalStates
 }: CreateShelfProps) {
   const {
     register,
@@ -38,7 +38,7 @@ export default function CreateShelf({
   } = useForm<CreateShelfData>({
     resolver: zodResolver(schema),
   });
-  const { createShelfMutation } = useCreateShelf(tableTitle);
+  const { createShelfMutation } = useCreateShelf({ tableTitle, ...modalStates });
   const formId = "createShelfForm";
 
   return (
@@ -48,7 +48,7 @@ export default function CreateShelf({
         text: `Cadastrar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

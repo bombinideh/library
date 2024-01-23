@@ -6,7 +6,7 @@ import * as Styled from "./styles";
 interface InputSearchProps
   extends Pick<IField, "id" | "autoComplete" | "autoFocus"> {
   placeholder: string;
-  onChange: ChangeEventHandler<HTMLInputElement>
+  onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
 export default function InputSearch({ id, ...rest }: InputSearchProps) {

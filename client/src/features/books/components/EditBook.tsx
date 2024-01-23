@@ -1,15 +1,16 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { BookResponse } from "../@types";
 import useEditBook from "../api/editBook";
-import { BookResponse } from "../types";
+import { bookSchema, relationShipsSchema } from "../schemas";
 
 interface EditBookProps extends ModalStateProps {
   columns: Column[];
@@ -17,18 +18,7 @@ interface EditBookProps extends ModalStateProps {
   tableTitle: TableTitle;
 }
 
-const schema = z.object({
-  title: z.string().min(1, "O título é obrigatório."),
-  author: z.string().min(1, "O autor é obrigatório."),
-  publisher: z.string().min(1, "A editora é obrigatória."),
-  number_pages: z.string().min(1, "O nº de páginas é obrigatório."),
-  year_publication: z.string(),
-  amount: z.string(),
-  observation: z.string(),
-  bookcase_id: z.string().min(1, "Uma estante é obrigatória."),
-  shelf_id: z.string().min(1, "Uma prateleira é obrigatória."),
-  box_id: z.string().min(1, "Uma caixa é obrigatória."),
-});
+const schema = bookSchema.merge(relationShipsSchema);
 
 export type EditBookData = z.infer<typeof schema>;
 
@@ -36,7 +26,7 @@ export default function EditBook({
   tableTitle,
   book,
   columns,
-  ...rest
+  ...modalStates
 }: EditBookProps) {
   const defaultValues = columns.reduce((data, { key }, index) => {
     const value = book[key as keyof BookResponse];
@@ -68,14 +58,18 @@ export default function EditBook({
     resolver: zodResolver(schema),
     defaultValues,
   });
-  const { editBookMutation } = useEditBook({ book_id: book.book_id, tableTitle });
+  const { editBookMutation } = useEditBook({
+    book_id: book.book_id,
+    tableTitle,
+    ...modalStates,
+  });
   const formId = "editBookForm";
 
   return (
     <Modal
       title={`Editar ${tableTitle.singular.toLowerCase()} #${book.book_id}`}
       action={{ text: `Editar ${tableTitle.singular.toLowerCase()}`, form: formId }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

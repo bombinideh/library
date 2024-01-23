@@ -1,16 +1,16 @@
+import { Column, TableTitle } from "@/@types/table";
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
 import Table from "@/components/Elements/Table";
 import useTable from "@/hooks/useTable";
-import { TableTitle } from "@/types/table";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { BoxResponse } from "../@types";
 import useGetBoxes from "../api/getBoxes";
-import { BoxResponse } from "../types";
 import CreateBox from "./CreateBox";
 import EditBox from "./EditBox";
 
-const columns = [
+const columns: Column<BoxResponse>[] = [
   {
     title: "#",
     key: "box_id",
@@ -20,16 +20,27 @@ const columns = [
     key: "name",
   },
   {
+    title: "Estante",
+    key: "bookcase_name",
+  },
+  {
+    title: "Prateleira",
+    key: "shelf_name",
+  },
+  {
     title: "Ativo",
     key: "active",
+  },
+  {
+    title: "Data do cadastro",
+    key: "created_at",
   },
 ];
 
 export default function BoxesList() {
-  const { filter, setFilter, pagination, setPagination, getManyQueryProps } =
-    useTable({
-      searchColumn: "name",
-    });
+  const { getManyQueryProps, ...tableStates } = useTable({
+    searchColumn: "name",
+  });
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [boxToChange, setBoxToChange] = useState({});
@@ -46,8 +57,8 @@ export default function BoxesList() {
         {createModal && (
           <CreateBox
             tableTitle={tableTitle}
-            showState={createModal}
-            setShowState={setCreateModal}
+            showModal={createModal}
+            setShowModal={setCreateModal}
             columns={columns.filter(({ key }) => key === "name")}
           />
         )}
@@ -55,23 +66,19 @@ export default function BoxesList() {
         {editModal && (
           <EditBox
             tableTitle={tableTitle}
-            showState={editModal}
-            setShowState={setEditModal}
+            showModal={editModal}
+            setShowModal={setEditModal}
             columns={columns.filter(({ key }) => ["name", "active"].includes(key))}
             box={boxToChange as BoxResponse}
           />
         )}
       </AnimatePresence>
 
-      <Table
+      <Table<BoxResponse>
+        {...tableStates}
         tableTitle={tableTitle}
         queryResult={result}
         columns={columns}
-        filterColumns={["name"]}
-        filter={filter}
-        setFilter={setFilter}
-        pagination={pagination}
-        setPagination={setPagination}
         CreateButton={
           <Button
             SVG={{ Component: SVGPlus }}

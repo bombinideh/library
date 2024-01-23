@@ -1,19 +1,20 @@
+import { Column, TableTitle } from "@/@types/table";
 import SVGPlus from "@/assets/plus.svg?react";
 import Button from "@/components/Elements/Button";
 import Table from "@/components/Elements/Table";
 import useAuth from "@/hooks/useAuth";
 import useTable from "@/hooks/useTable";
-import { TableTitle } from "@/types/table";
+import { getManipulableTableColumns } from "@/utils/getManipulableTableColumns";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BookResponse } from "../@types";
 import useGetBooks from "../api/getBooks";
-import { BookResponse } from "../types";
 import CreateBook from "./CreateBook";
 import DeleteBook from "./DeleteBook";
 import EditBook from "./EditBook";
 
-const columns = [
+const columns: Column<BookResponse>[] = [
   {
     title: "#",
     key: "book_id",
@@ -62,13 +63,16 @@ const columns = [
     title: "Autor do cadastro",
     key: "user_name",
   },
+  {
+    title: "Data do cadastro",
+    key: "created_at",
+  },
 ];
 
 export default function BooksList() {
-  const { filter, setFilter, pagination, setPagination, getManyQueryProps } =
-    useTable({
-      searchColumn: "title",
-    });
+  const { getManyQueryProps, ...tableStates } = useTable({
+    searchColumn: "title",
+  });
   const [createModal, setCreateModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -79,17 +83,6 @@ export default function BooksList() {
     plural: "Livros",
     gender: "O",
   };
-  const manipulateColumns = columns.filter(({ key }) => {
-    const ignore = [
-      "book_id",
-      "user_name",
-      "bookcase_name",
-      "shelf_name",
-      "box_name",
-    ];
-
-    return !ignore.includes(key);
-  });
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -99,18 +92,18 @@ export default function BooksList() {
         {createModal && (
           <CreateBook
             tableTitle={tableTitle}
-            showState={createModal}
-            setShowState={setCreateModal}
-            columns={manipulateColumns}
+            showModal={createModal}
+            setShowModal={setCreateModal}
+            columns={getManipulableTableColumns(columns)}
           />
         )}
 
         {editModal && (
           <EditBook
             tableTitle={tableTitle}
-            showState={editModal}
-            setShowState={setEditModal}
-            columns={manipulateColumns}
+            showModal={editModal}
+            setShowModal={setEditModal}
+            columns={getManipulableTableColumns(columns)}
             book={bookToChange as BookResponse}
           />
         )}
@@ -118,22 +111,18 @@ export default function BooksList() {
         {deleteModal && (
           <DeleteBook
             tableTitle={tableTitle}
-            showState={deleteModal}
-            setShowState={setDeleteModal}
+            showModal={deleteModal}
+            setShowModal={setDeleteModal}
             book={bookToChange as BookResponse}
           />
         )}
       </AnimatePresence>
 
       <Table
+        {...tableStates}
         tableTitle={tableTitle}
         queryResult={result}
         columns={columns}
-        filterColumns={["title", "author", "publisher", "observation"]}
-        filter={filter}
-        setFilter={setFilter}
-        pagination={pagination}
-        setPagination={setPagination}
         CreateButton={
           <Button
             SVG={{ Component: SVGPlus }}

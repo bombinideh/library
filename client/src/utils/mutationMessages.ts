@@ -1,4 +1,4 @@
-import { TableTitle } from "@/types/table";
+import { TableTitle } from "@/@types/table";
 
 export const successMessage = (
   tableTitle: TableTitle,

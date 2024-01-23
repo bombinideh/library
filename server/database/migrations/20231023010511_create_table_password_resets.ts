@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable("password_resets", (table) => {
+  return knex.schema.createTable("password_resets", table => {
     table.integer("user_id").notNullable();
     table.string("token").notNullable();
     table.timestamp("token_expires").notNullable();

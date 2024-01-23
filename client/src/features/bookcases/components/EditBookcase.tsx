@@ -1,15 +1,15 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import ActiveField from "@/features/misc/components/ActiveField";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Bookcase } from "../@types";
 import useEditBookcase from "../api/editBookcase";
-import { Bookcase } from "../types";
 
 interface EditBookcaseProps extends ModalStateProps {
   columns: Column[];
@@ -28,7 +28,7 @@ export default function EditBookcase({
   tableTitle,
   bookcase,
   columns,
-  ...rest
+  ...modalStates
 }: EditBookcaseProps) {
   const defaultValues = columns.reduce((data, { key }) => {
     data[key as keyof EditBookcaseData] = String(bookcase[key as keyof Bookcase]);
@@ -49,6 +49,7 @@ export default function EditBookcase({
   const { editBookcaseMutation } = useEditBookcase({
     bookcase_id: bookcase.bookcase_id,
     tableTitle,
+    ...modalStates,
   });
   const formId = "editBookcaseForm";
 
@@ -59,7 +60,7 @@ export default function EditBookcase({
         text: `Editar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

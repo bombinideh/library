@@ -1,32 +1,36 @@
+import { GetManyQueryProps, GetManyQueryResponse } from "@/@types/api";
+import { RequestError } from "@/@types/react-query";
+import { Column, TableTitle } from "@/@types/table";
 import SVGChevronUpDown from "@/assets/chevron-up-down.svg?react";
 import SVGEllipsisHorizontal from "@/assets/ellipsis-horizontal.svg?react";
 import useAuth from "@/hooks/useAuth";
-import { GetManyQueryResponse } from "@/types/api";
-import { RequestError } from "@/types/react-query";
-import { TableTitle } from "@/types/table";
 import { UseQueryResult } from "@tanstack/react-query";
 import moment from "moment";
-import { ReactNode, forwardRef, memo, useEffect } from "react";
+import { ReactNode, forwardRef, useEffect } from "react";
 import Spinner from "../Spinner";
 import Filter, { FilterState } from "./Filter";
 import Pagination, { PaginationState } from "./Pagination";
 import * as Styled from "./styles";
 
-export interface Column {
-  title: string;
-  key: string;
-  orderButton?: boolean;
+type Ordering = Required<
+  Pick<GetManyQueryProps, "orderColumn" | "orderOrientation">
+>;
+
+export interface OrderingState {
+  ordering: Ordering;
+  setOrdering: React.Dispatch<React.SetStateAction<Ordering>>;
 }
 
-interface TableProps {
+interface TableProps<T extends object> {
   tableTitle: TableTitle;
   queryResult: UseQueryResult<GetManyQueryResponse<any>, RequestError>;
-  columns: Column[];
-  filterColumns: string[];
+  columns: Column<T>[];
   filter: FilterState["filter"];
   setFilter: FilterState["setFilter"];
   pagination: PaginationState["pagination"];
   setPagination: PaginationState["setPagination"];
+  ordering: OrderingState["ordering"];
+  setOrdering: OrderingState["setOrdering"];
   CreateButton?: ReactNode;
   actions?: {
     text: string;
@@ -35,19 +39,21 @@ interface TableProps {
 }
 
 const defaultColumn = {
-  orderButton: true,
-};
+  order: true,
+  filter: true,
+} as const;
 
-function Tablea(props: TableProps) {
+export default function Table<T extends object>(props: TableProps<T>) {
   const {
     tableTitle,
     queryResult,
     columns,
-    filterColumns,
     filter,
     setFilter,
     pagination,
     setPagination,
+    ordering,
+    setOrdering,
     CreateButton,
     actions,
   } = {
@@ -62,6 +68,7 @@ function Tablea(props: TableProps) {
   }, [
     { filter, setFilter },
     { pagination, setPagination },
+    { ordering, setOrdering },
   ]);
 
   if (isLoading) return <Spinner padding="30px" />;
@@ -72,7 +79,14 @@ function Tablea(props: TableProps) {
     <Styled.Wrapper>
       <Styled.Options>
         <Filter
-          columns={columns.filter(({ key }) => filterColumns.includes(key))}
+          columns={columns.filter(({ key, filter }) => {
+            const ignoreKeys = ["id", "active", "created_at"];
+
+            return (
+              filter &&
+              ignoreKeys.every(ignoreKey => !(key as string).includes(ignoreKey))
+            );
+          })}
           filter={filter}
           setFilter={setFilter}
           pagination={pagination}
@@ -87,10 +101,20 @@ function Tablea(props: TableProps) {
           <tr>
             {actions && isAuthenticated && <th>Ação</th>}
 
-            {columns.map(({ title, orderButton }) => (
+            {columns.map(({ key, title, order }) => (
               <th key={title}>
-                {orderButton ? (
-                  <Styled.OrderButton type="button">
+                {order ? (
+                  <Styled.OrderButton
+                    type="button"
+                    onClick={() => {
+                      setOrdering({
+                        orderColumn: key as string,
+                        orderOrientation:
+                          ordering.orderOrientation === "ASC" ? "DESC" : "ASC",
+                      });
+                    }}
+                    $active={ordering.orderColumn === key}
+                  >
                     {title}
 
                     <SVGChevronUpDown />
@@ -157,7 +181,3 @@ function Tablea(props: TableProps) {
     </Styled.Wrapper>
   );
 }
-
-const Table = memo(Tablea);
-
-export default Table;

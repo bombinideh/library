@@ -10,7 +10,7 @@ interface FieldWrapperProps {
   label?: string;
   id: IField["id"];
   error?: IField["error"];
-  disabled?: IField["disabled"]
+  disabled?: IField["disabled"];
 }
 
 export default function FieldWrapper({
@@ -18,13 +18,17 @@ export default function FieldWrapper({
   label,
   id,
   error,
-  disabled
+  disabled,
 }: FieldWrapperProps) {
   const { transitions } = useTheme();
 
   return (
     <Styled.Wrapper>
-      {label && <Styled.Label htmlFor={id} $disabled={disabled}>{label}</Styled.Label>}
+      {label && (
+        <Styled.Label htmlFor={id} $disabled={disabled}>
+          {label}
+        </Styled.Label>
+      )}
 
       {children}
 

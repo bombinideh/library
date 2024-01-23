@@ -1,8 +1,8 @@
 import useAuth from "@/hooks/useAuth";
 import useFetch from "@/hooks/useFetch";
 import { useMutation } from "@tanstack/react-query";
+import { AuthUserResponse } from "../@types";
 import { SignInData } from "../components/SignInForm";
-import { AuthUserResponse } from "../types";
 
 export default function useSignIn() {
   const request = useFetch<SignInData, AuthUserResponse>({

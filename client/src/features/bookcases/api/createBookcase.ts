@@ -1,13 +1,21 @@
+import { TableTitle } from "@/@types/table";
 import queryClient from "@/api";
+import { ModalStateProps } from "@/components/Modal";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
-import { TableTitle } from "@/types/table";
 import { successMessage } from "@/utils/mutationMessages";
 import { useMutation } from "@tanstack/react-query";
+import { Bookcase } from "../@types";
 import { CreateBookcaseData } from "../components/CreateBookcase";
-import { Bookcase } from "../types";
 
-export default function useCreateBookcase(tableTitle: TableTitle) {
+interface UseCreateBookcaseProps extends ModalStateProps {
+  tableTitle: TableTitle;
+}
+
+export default function useCreateBookcase({
+  tableTitle,
+  setShowModal,
+}: UseCreateBookcaseProps) {
   const request = useFetch<CreateBookcaseData, Bookcase>({
     URL: "bookcases",
     method: "POST",
@@ -17,6 +25,8 @@ export default function useCreateBookcase(tableTitle: TableTitle) {
     mutationFn: request,
     onSuccess: bookcase => {
       queryClient.invalidateQueries({ queryKey: ["bookcases"] });
+
+      setShowModal(false);
 
       emitNotification({
         text: successMessage(tableTitle, bookcase.name, "POST"),

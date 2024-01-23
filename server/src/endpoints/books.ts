@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { findUniqueBook } from "../functions/findUniqueBook";
-import { queryFilter } from "../functions/queryFilter";
+import { processQueryThatFindMany } from "../functions/processQueryThatFindMany";
 import { database } from "../knex";
 import { Book, BookRequestBody } from "../models/Book";
 import { Bookcase } from "../models/Bookcase";
@@ -10,12 +10,7 @@ import { Shelf } from "../models/Shelf";
 
 export const booksGetMany = async (req: Request, res: Response) => {
   try {
-    const { query, total } = await queryFilter({
-      queryParams: req.query,
-      table: "books as b",
-    });
-
-    const finalQuery = await query
+    const query = database("books as b")
       .leftJoin("users as u", "b.user_id", "u.user_id")
       .leftJoin("bookcases as bc", "b.bookcase_id", "bc.bookcase_id")
       .leftJoin("shelfs as s", "b.shelf_id", "s.shelf_id")
@@ -28,7 +23,12 @@ export const booksGetMany = async (req: Request, res: Response) => {
         "b.*",
       );
 
-    res.send({ items: finalQuery, total });
+    const result = await processQueryThatFindMany({
+      queryBuilder: query,
+      queryParams: req.query,
+    });
+
+    res.send(result);
   } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }
@@ -39,7 +39,7 @@ export const booksPostOne = async (req: Request, res: Response) => {
   const { user_id } = req;
 
   try {
-    const book = await findUniqueBook({ title: body.title, author: body.title });
+    const book = await findUniqueBook({ title: body.title, author: body.author });
 
     if (book) return res.status(400).send({ error: "Livro já existente" });
 

@@ -1,9 +1,9 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import InputPassword from "@/components/Form/InputPassword";
 import Modal, { ModalStateProps } from "@/components/Modal";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -32,7 +32,7 @@ export type CreateUserData = z.infer<typeof schema>;
 export default function CreateUser({
   tableTitle,
   columns,
-  ...rest
+  ...modalStates
 }: CreateUserProps) {
   const {
     register,
@@ -41,7 +41,7 @@ export default function CreateUser({
   } = useForm<CreateUserData>({
     resolver: zodResolver(schema),
   });
-  const { createUserMutation } = useCreateUser(tableTitle);
+  const { createUserMutation } = useCreateUser({ tableTitle, ...modalStates });
   const formId = "createUserForm";
 
   return (
@@ -51,7 +51,7 @@ export default function CreateUser({
         text: `Cadastrar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

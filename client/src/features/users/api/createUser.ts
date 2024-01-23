@@ -1,13 +1,21 @@
+import { TableTitle } from "@/@types/table";
 import queryClient from "@/api";
+import { ModalStateProps } from "@/components/Modal";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
-import { TableTitle } from "@/types/table";
 import { successMessage } from "@/utils/mutationMessages";
 import { useMutation } from "@tanstack/react-query";
+import { UserResponse } from "../@types";
 import { CreateUserData } from "../components/CreateUser";
-import { UserResponse } from "../types";
 
-export default function useCreateUser(tableTitle: TableTitle) {
+interface UseCreateUserProps extends ModalStateProps {
+  tableTitle: TableTitle;
+}
+
+export default function useCreateUser({
+  tableTitle,
+  setShowModal,
+}: UseCreateUserProps) {
   const request = useFetch<CreateUserData, UserResponse>({
     URL: "users",
     method: "POST",
@@ -17,6 +25,8 @@ export default function useCreateUser(tableTitle: TableTitle) {
     mutationFn: request,
     onSuccess: user => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+
+      setShowModal(false);
 
       emitNotification({
         text: successMessage(tableTitle, user.name, "POST"),

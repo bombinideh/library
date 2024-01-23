@@ -1,3 +1,4 @@
 {
-  "*.ts": ["eslint --max-warnings 0 --fix", "prettier --write"]
+  "*.{ts,json,yaml,yml,md}": "prettier --write --cache",
+  "*.ts": "eslint --max-warnings 0 --fix --cache"
 }

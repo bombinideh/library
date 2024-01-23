@@ -1,17 +1,19 @@
 import { Request, Response } from "express";
-import { queryFilter } from "../functions/queryFilter";
+import { processQueryThatFindMany } from "../functions/processQueryThatFindMany";
+import { database } from "../knex";
 
 export const logsGetMany = async (req: Request, res: Response) => {
   try {
-    const { query, total } = await queryFilter({
-      queryParams: req.query,
-      table: "logs as l",
-    });
-    const logs = await query
+    const query = database("logs as l")
       .leftJoin("users as u", "l.user_id", "u.user_id")
-      .select("l.*", "u.name as user_name");
+      .select("u.name as user_name", "l.*");
 
-    res.send({ items: logs, total });
+    const result = await processQueryThatFindMany({
+      queryBuilder: query,
+      queryParams: req.query,
+    });
+
+    res.send(result);
   } catch (error) {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }

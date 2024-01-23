@@ -1,21 +1,24 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import { existUser } from "../functions/existUser";
-import { queryFilter } from "../functions/queryFilter";
+import { processQueryThatFindMany } from "../functions/processQueryThatFindMany";
 import { database } from "../knex";
 import { IUser, UserResponse } from "../models/User";
 
 export const usersGetMany = async (req: Request, res: Response) => {
   try {
-    const { query, total } = await queryFilter({
+    const query = database("users as u");
+    const result = await processQueryThatFindMany({
+      queryBuilder: query,
       queryParams: req.query,
-      table: "users",
     });
-    const users = await query;
 
-    users.forEach(user => delete (user as UserResponse).password);
+    result.items = result.items.map(user => {
+      delete (user as UserResponse).password;
+      return user;
+    });
 
-    res.send({ items: users, total });
+    res.send(result);
   } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }

@@ -1,8 +1,8 @@
+import { GetManyQueryProps } from "@/@types/api";
+import { Column } from "@/@types/table";
 import SVGChevronDown from "@/assets/chevron-down.svg?react";
 import SVGMagnifyingGlass from "@/assets/magnifying-glass.svg?react";
-import { GetManyQueryProps } from "@/types/api";
 import { forwardRef } from "react";
-import { Column } from "..";
 import { PaginationState } from "../Pagination";
 import * as Styled from "./styles";
 
@@ -14,7 +14,7 @@ export interface FilterState {
 }
 
 interface FilterProps {
-  columns: Column[];
+  columns: Column<any>[];
   filter: FilterState["filter"];
   setFilter: FilterState["setFilter"];
   pagination: PaginationState["pagination"];
@@ -30,7 +30,7 @@ export default function Filter({
 }: FilterProps) {
   const items = columns.map(({ title, key }) => ({
     text: title,
-    onClick: () => setFilter({ ...filter, searchColumn: key }),
+    onClick: () => setFilter({ ...filter, searchColumn: key as string }),
   }));
   const { title: columnTitle } = columns.filter(
     ({ key }) => key === filter.searchColumn,
@@ -56,7 +56,7 @@ export default function Filter({
 
       <Styled.InputSearch
         id="search"
-        placeholder={`Pesquisar por ${columnTitle.toLowerCase()}...`}
+        placeholder={`Pesquisar por ${columnTitle.toLowerCase()}`}
         onChange={({ target }) => {
           setPagination({ ...pagination, page: 1 });
           setFilter({ ...filter, searchQuery: target.value });

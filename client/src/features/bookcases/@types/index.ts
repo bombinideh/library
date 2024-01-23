@@ -1,4 +1,4 @@
-import { GetManyQueryResponse } from "@/types/api";
+import { GetManyQueryResponse } from "@/@types/api";
 
 export interface Bookcase {
   bookcase_id: number;
@@ -7,5 +7,7 @@ export interface Bookcase {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface BookcaseResponse extends Bookcase {}
 
 export type BookcasesResponse = GetManyQueryResponse<Bookcase>;

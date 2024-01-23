@@ -48,9 +48,13 @@ export const Wrapper = styled.button<WrapperProps>`
     border-style: solid;
     cursor: pointer;
 
+    ${theme.breakpoints.sm} {
+      line-height: 1.2;
+    }
+
     &[disabled] {
       opacity: 0.5;
-      cursor: default;
+      pointer-events: none;
     }
 
     svg {

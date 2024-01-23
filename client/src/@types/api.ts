@@ -6,10 +6,12 @@ export interface GetManyQueryResponse<T> {
 }
 
 export interface GetManyQueryProps {
-  items?: number;
-  page?: number;
   searchColumn?: string;
   searchQuery?: string;
+  items?: number;
+  page?: number;
+  orderColumn?: string;
+  orderOrientation?: "ASC" | "DESC";
 }
 
 export interface GetManyQueryPropsHook<T> extends GetManyQueryProps {

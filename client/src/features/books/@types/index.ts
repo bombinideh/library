@@ -1,4 +1,4 @@
-import { GetManyQueryResponse } from "@/types/api";
+import { GetManyQueryResponse } from "@/@types/api";
 
 export interface Book {
   book_id: number;
@@ -9,10 +9,10 @@ export interface Book {
   title: string;
   author: string;
   publisher: string;
-  year_publication: number;
+  year_publication: number | null;
   number_pages: number;
   amount: number;
-  observation: string;
+  observation: string | null;
   created_at: Date;
   updated_at: Date;
 }

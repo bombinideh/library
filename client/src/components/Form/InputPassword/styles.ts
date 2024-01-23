@@ -43,6 +43,7 @@ export const ToggleShowPassword = styled.button<ToggleShowPasswordProps>`
     border-radius: 0 ${theme.borderRadius.block} ${theme.borderRadius.block} 0;
     font-weight: 500;
     border-color: ${$error ? theme.colors.danger : theme.colors.stroke};
+    background-color: ${theme.colors.block};
     cursor: pointer;
     ${theme.mixins.buttonColorState({
       properties: ["color"],

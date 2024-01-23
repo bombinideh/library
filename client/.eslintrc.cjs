@@ -6,7 +6,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "prettier",
-    "plugin:@tanstack/eslint-plugin-query/recommended"
+    "plugin:@tanstack/eslint-plugin-query/recommended",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
@@ -14,6 +14,6 @@ module.exports = {
   rules: {
     "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
     "react-hooks/exhaustive-deps": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
   },
 };

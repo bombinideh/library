@@ -1,4 +1,4 @@
-import { GetManyQueryResponse } from "@/types/api";
+import { GetManyQueryResponse } from "@/@types/api";
 export interface User {
   user_id: number;
   name: string;

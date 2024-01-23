@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { queryFilter } from "../functions/queryFilter";
+import { processQueryThatFindMany } from "../functions/processQueryThatFindMany";
 import { database } from "../knex";
 import { Bookcase } from "../models/Bookcase";
 
 export const bookcasesGetMany = async (req: Request, res: Response) => {
   try {
-    const { query, total } = await queryFilter({
+    const query = database("bookcases as bc");
+    const result = await processQueryThatFindMany({
+      queryBuilder: query,
       queryParams: req.query,
-      table: "bookcases",
     });
-    const bookcases = await query;
 
-    res.send({ items: bookcases, total });
+    res.send(result);
   } catch {
     res.status(500).send({ error: "Erro Interno no Servidor" });
   }
@@ -65,7 +65,7 @@ export const bookcasesPatchOne = async (req: Request, res: Response) => {
 
     await database("logs").insert({
       user_id,
-    description: `Estante "${bookcase.name}" atualizada com sucesso`,
+      description: `Estante "${bookcase.name}" atualizada com sucesso`,
       method: "PATCH",
     });
 

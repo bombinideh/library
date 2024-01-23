@@ -1,5 +1,5 @@
-import { User } from "@/features/auth/types";
-import { GetManyQueryResponse } from "@/types/api";
+import { GetManyQueryResponse } from "@/@types/api";
+import { User } from "@/features/users/@types";
 
 export interface Report {
   log_id: number;

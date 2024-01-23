@@ -1,6 +1,6 @@
+import { AuthUserResponse } from "@/features/auth/@types";
 import useGetUser from "@/features/auth/api/getAuthUser";
-import { AuthUserResponse } from "@/features/auth/types";
-import { UserResponse } from "@/features/users/types";
+import { UserResponse } from "@/features/users/@types";
 import storage from "@/utils/storage";
 import {
   Dispatch,

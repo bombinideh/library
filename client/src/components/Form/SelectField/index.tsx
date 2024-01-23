@@ -54,6 +54,7 @@ export default function SelectField({
         ))}
         items={options}
         wrapperWidth="100%"
+        focusOnOpen
       />
 
       <Styled.Field id={id} error={error} {...rest} type="text" />

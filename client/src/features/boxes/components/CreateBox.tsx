@@ -1,9 +1,9 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,7 +26,7 @@ export type CreateBoxData = z.infer<typeof schema>;
 export default function CreateBox({
   tableTitle,
   columns,
-  ...rest
+  ...modalStates
 }: CreateBoxProps) {
   const {
     register,
@@ -39,7 +39,7 @@ export default function CreateBox({
   } = useForm<CreateBoxData>({
     resolver: zodResolver(schema),
   });
-  const { createBoxMutation } = useCreateBox(tableTitle);
+  const { createBoxMutation } = useCreateBox({ tableTitle, ...modalStates });
   const formId = "createBoxForm";
 
   return (
@@ -49,14 +49,14 @@ export default function CreateBox({
         text: `Cadastrar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}
         onSubmit={handleSubmit(data => {
           delete (data as any).bookcase_id;
 
-          createBoxMutation(nonNullData(data))
+          createBoxMutation(nonNullData(data));
         })}
       >
         {columns.map(({ title, key }) => (

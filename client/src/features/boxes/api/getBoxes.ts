@@ -1,9 +1,9 @@
-import { Shelf } from "@/features/shelfs/types";
+import { GetManyQueryPropsHook } from "@/@types/api";
+import { Shelf } from "@/features/shelfs/@types";
 import useFetch from "@/hooks/useFetch";
-import { GetManyQueryPropsHook } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { BoxResponse, BoxesResponse } from "../types";
+import { BoxResponse, BoxesResponse } from "../@types";
 
 interface UseGetBoxesProps extends GetManyQueryPropsHook<BoxResponse> {
   shelf_id?: Shelf["shelf_id"];

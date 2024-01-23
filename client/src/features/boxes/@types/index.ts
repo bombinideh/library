@@ -1,4 +1,4 @@
-import { GetManyQueryResponse } from "@/types/api";
+import { GetManyQueryResponse } from "@/@types/api";
 
 export interface Box {
   box_id: number;
@@ -11,6 +11,8 @@ export interface Box {
 
 export interface BoxResponse extends Box {
   bookcase_id: number;
+  bookcase_name: string;
+  shelf_name: string;
 }
 
 export type BoxesResponse = GetManyQueryResponse<BoxResponse>;

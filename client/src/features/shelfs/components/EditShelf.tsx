@@ -1,16 +1,16 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import ActiveField from "@/features/misc/components/ActiveField";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Shelf } from "../@types";
 import useEditShelf from "../api/editShelf";
-import { Shelf } from "../types";
 
 interface EditShelfProps extends ModalStateProps {
   columns: Column[];
@@ -30,7 +30,7 @@ export default function EditShelf({
   tableTitle,
   shelf,
   columns,
-  ...rest
+  ...modalStates
 }: EditShelfProps) {
   const defaultValues = columns.reduce((data, { key }, index) => {
     data[key as keyof EditShelfData] = String(shelf[key as keyof Shelf]);
@@ -54,6 +54,7 @@ export default function EditShelf({
   const { editShelfMutation } = useEditShelf({
     shelf_id: shelf.shelf_id,
     tableTitle,
+    ...modalStates,
   });
   const formId = "editShelfForm";
 
@@ -64,7 +65,7 @@ export default function EditShelf({
         text: `Editar ${tableTitle.singular.toLowerCase()}`,
         form: formId,
       }}
-      {...rest}
+      {...modalStates}
     >
       <Form
         id={formId}

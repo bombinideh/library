@@ -1,10 +1,10 @@
-import { User } from "@/features/users/types";
+import { User } from "@/features/users/@types";
 import useAuth from "@/hooks/useAuth";
 import useFetch from "@/hooks/useFetch";
 import useNotification from "@/hooks/useNotification";
 import { useMutation } from "@tanstack/react-query";
+import { AuthUserResponse } from "../@types";
 import { ResetPasswordData } from "../components/ResetPasswordForm";
-import { AuthUserResponse } from "../types";
 
 interface RequestBody extends ResetPasswordData {
   user_id: User["user_id"];

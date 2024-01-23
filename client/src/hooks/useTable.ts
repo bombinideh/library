@@ -1,27 +1,45 @@
-import { GetManyQueryProps } from "@/types/api";
+import { GetManyQueryProps } from "@/@types/api";
 import { useState } from "react";
 
 interface UseTableProps extends Omit<GetManyQueryProps, "searchColumn"> {
   searchColumn: NonNullable<GetManyQueryProps["searchColumn"]>;
 }
 
-const defaultProps = {
+const defaultProps: Required<GetManyQueryProps> = {
+  searchColumn: "",
+  searchQuery: "",
   items: 10,
   page: 1,
-  searchQuery: "",
-} as const;
+  orderColumn: "created_at",
+  orderOrientation: "DESC",
+};
 
 export default function useTable(props: UseTableProps) {
-  const { items, page, searchColumn, searchQuery } = { ...defaultProps, ...props };
-  const [pagination, setPagination] = useState({ items, page });
+  const { items, page, searchColumn, searchQuery, orderColumn, orderOrientation } = {
+    ...defaultProps,
+    ...props,
+  };
   const [filter, setFilter] = useState({ searchColumn, searchQuery });
+  const [pagination, setPagination] = useState({ items, page });
+  const [ordering, setOrdering] = useState({ orderColumn, orderOrientation });
 
-  const applyPagination = pagination.items && pagination.page;
   const applyFilter = filter.searchColumn && filter.searchQuery;
+  const applyPagination = pagination.items && pagination.page;
+  const applyOrdering = ordering.orderColumn && ordering.orderOrientation;
+
   const getManyQueryProps: GetManyQueryProps = {
-    ...(applyPagination && pagination),
     ...(applyFilter && filter),
+    ...(applyPagination && pagination),
+    ...(applyOrdering && ordering),
   };
 
-  return { filter, setFilter, pagination, setPagination, getManyQueryProps };
+  return {
+    filter,
+    setFilter,
+    pagination,
+    setPagination,
+    ordering,
+    setOrdering,
+    getManyQueryProps,
+  };
 }

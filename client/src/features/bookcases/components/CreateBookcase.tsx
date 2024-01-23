@@ -1,8 +1,8 @@
+import { TableTitle } from "@/@types/table";
 import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
-import { TableTitle } from "@/types/table";
 import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,7 +23,7 @@ export type CreateBookcaseData = z.infer<typeof schema>;
 export default function CreateBookcase({
   tableTitle,
   columns,
-  ...rest
+  ...modalStates
 }: CreateBookcaseProps) {
   const {
     register,
@@ -32,14 +32,20 @@ export default function CreateBookcase({
   } = useForm<CreateBookcaseData>({
     resolver: zodResolver(schema),
   });
-  const { createBookcaseMutation } = useCreateBookcase(tableTitle);
+  const { createBookcaseMutation } = useCreateBookcase({
+    tableTitle,
+    ...modalStates,
+  });
   const formId = "createBookcaseForm";
 
   return (
     <Modal
       title={`Cadastrar ${tableTitle.singular.toLowerCase()}`}
-      action={{ text: `Cadastrar ${tableTitle.singular.toLowerCase()}`, form: formId }}
-      {...rest}
+      action={{
+        text: `Cadastrar ${tableTitle.singular.toLowerCase()}`,
+        form: formId,
+      }}
+      {...modalStates}
     >
       <Form
         id={formId}

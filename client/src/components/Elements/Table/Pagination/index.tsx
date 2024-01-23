@@ -1,12 +1,12 @@
+import { GetManyQueryProps } from "@/@types/api";
+import { TableTitle } from "@/@types/table";
 import SVGChevronDown from "@/assets/chevron-down.svg?react";
 import SVGNext from "@/assets/next.svg?react";
 import SVGPrev from "@/assets/prev.svg?react";
-import { GetManyQueryProps } from "@/types/api";
 import { forwardRef } from "react";
 import Button from "../../Button";
 import Dropdown from "../../Dropdown";
 import * as Styled from "./styles";
-import { TableTitle } from "@/types/table";
 
 type Pagination = Required<Pick<GetManyQueryProps, "items" | "page">>;
 

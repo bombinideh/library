@@ -8,6 +8,7 @@ import { Navigate } from "react-router-dom";
 
 const privateRoutes = [
   { path: "/", element: <Navigate to="/livros" /> },
+  { path: "*", element: <Navigate to="/livros" /> },
   { path: "/estantes", element: <Bookcases /> },
   { path: "/prateleiras", element: <Shelfs /> },
   { path: "/caixas", element: <Boxes /> },

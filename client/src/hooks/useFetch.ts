@@ -1,5 +1,5 @@
+import { RequestError } from "@/@types/react-query";
 import { appApiURL } from "@/config";
-import { RequestError } from "@/types/react-query";
 import storage from "@/utils/storage";
 import useNotification from "./useNotification";
 
@@ -43,12 +43,19 @@ export default function useFetch<Body = null, Response = unknown>({
     if (!response.ok) {
       const message = data.error || "Desculpe, um erro desconhecido ocorreu";
       const requestError: RequestError = { message, statusCode: response.status };
+      const dynamicDuration = () => {
+        if (message.length < 20) return 4000;
+
+        if (message.length < 40) return 6000;
+
+        return 8000;
+      };
 
       if (method !== "GET")
         emitNotification({
           text: message,
           variant: "error",
-          duration: 4000,
+          duration: dynamicDuration(),
           id: notificationId,
         });
 
