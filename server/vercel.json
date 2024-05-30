@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "github": {
-    "enabled": false
-  },
-  "builds": [{ "src": "server/dist/src/index.js", "use": "@vercel/node" }],
-  "rewrites": [{ "source": "/api/(.*)", "destination": "server/dist/src/index.js" }]
+  "builds": [
+    {
+      "src": "dist/src/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "(.*)",
+      "destination": "dist/src/index.js"
+    }
+  ]
 }
