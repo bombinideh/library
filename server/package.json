@@ -14,7 +14,9 @@
     "migrate-make": "knex --knexfile ./database/knexfile.ts migrate:make",
     "migrate-rollback": "knex --knexfile ./database/knexfile.ts migrate:rollback",
     "migrate-up": "knex --knexfile ./database/knexfile.ts migrate:up",
-    "vercel-build": "knex --knexfile ./dist/database/knexfile.js migrate:latest"
+    "seed-make": "knex --knexfile ./database/knexfile.ts seed:make",
+    "seed-run": "knex --knexfile ./database/knexfile.ts seed:run",
+    "vercel-build": "knex --knexfile ./dist/database/knexfile.js migrate:latest && knex --knexfile ./dist/database/knexfile.js seed:run"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.4",
