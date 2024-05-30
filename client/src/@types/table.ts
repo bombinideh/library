@@ -4,7 +4,7 @@ export interface TableTitle {
   gender: "A" | "O";
 }
 
-export interface Column<T extends object> {
+export interface Column<T extends object = object> {
   title: string;
   key: keyof T;
   order?: boolean;

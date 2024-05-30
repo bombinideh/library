@@ -1,6 +1,6 @@
 import { m } from "framer-motion";
 import styled, { css } from "styled-components";
-import { DropdownDefaultProps, DropdownProps } from ".";
+import { DropdownProps } from ".";
 
 interface WrapperProps {
   $wrapperWidth: DropdownProps["wrapperWidth"];
@@ -35,7 +35,7 @@ export const Button = styled.button`
 `;
 
 interface ContentProps extends WrapperWidth {
-  $contentPositionX: DropdownDefaultProps["contentPositionX"];
+  $contentPositionX: DropdownProps["contentPositionX"];
 }
 
 export const Content = styled(m.div)<ContentProps>`

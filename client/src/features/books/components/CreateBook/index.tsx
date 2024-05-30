@@ -1,13 +1,13 @@
-import { TableTitle } from "@/@types/table";
-import { Column } from "@/components/Elements/Table";
+import { Column, TableTitle } from "@/@types/table";
 import Modal, { ModalStateProps } from "@/components/Modal";
 import { useState } from "react";
+import { BookResponse } from "../../@types";
 import CreateManyBook from "./CreateManyBook/CreateManyBook";
 import CreateUniqueBook from "./CreateUniqueBook";
 import * as Styled from "./styles";
 
 interface CreateBookProps extends ModalStateProps {
-  columns: Column[];
+  columns: Column<BookResponse>[];
   tableTitle: TableTitle;
 }
 

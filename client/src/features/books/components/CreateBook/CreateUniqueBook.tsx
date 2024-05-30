@@ -1,5 +1,4 @@
-import { TableTitle } from "@/@types/table";
-import { Column } from "@/components/Elements/Table";
+import { Column, TableTitle } from "@/@types/table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import { ModalStateProps } from "@/components/Modal";
@@ -9,12 +8,13 @@ import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { BookResponse } from "../../@types";
 import { bookSchema, relationShipsSchema } from "../../schemas";
 
 interface CreateUniqueBookProps extends ModalStateProps {
   tableTitle: TableTitle;
   formId: string;
-  columns: Column[];
+  columns: Column<BookResponse>[];
 }
 
 const schema = bookSchema.merge(relationShipsSchema);

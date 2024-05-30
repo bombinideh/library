@@ -1,9 +1,9 @@
-import { TableTitle } from "@/@types/table";
+import { Column, TableTitle } from "@/@types/table";
 import Button from "@/components/Elements/Button";
-import { Column } from "@/components/Elements/Table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import { ModalStateProps } from "@/components/Modal";
+import { BookResponse } from "@/features/books/@types";
 import useCreateManyBook from "@/features/books/api/createManyBook";
 import RelationshipFields from "@/features/misc/components/RelationshipFields";
 import nonNullData from "@/utils/nonNullData";
@@ -17,7 +17,7 @@ import * as Styled from "./styles";
 interface CreateManyBookProps extends ModalStateProps {
   tableTitle: TableTitle;
   formId: string;
-  columns: Column[];
+  columns: Column<BookResponse>[];
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 }

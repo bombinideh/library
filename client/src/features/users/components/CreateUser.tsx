@@ -1,5 +1,4 @@
-import { TableTitle } from "@/@types/table";
-import { Column } from "@/components/Elements/Table";
+import { Column, TableTitle } from "@/@types/table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import InputPassword from "@/components/Form/InputPassword";
@@ -8,10 +7,11 @@ import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { UserResponse } from "../@types";
 import useCreateUser from "../api/createUser";
 
 interface CreateUserProps extends ModalStateProps {
-  columns: Column[];
+  columns: Column<UserResponse>[];
   tableTitle: TableTitle;
 }
 

@@ -1,5 +1,4 @@
-import { TableTitle } from "@/@types/table";
-import { Column } from "@/components/Elements/Table";
+import { Column, TableTitle } from "@/@types/table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
@@ -7,10 +6,11 @@ import nonNullData from "@/utils/nonNullData";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { BookcaseResponse } from "../@types";
 import useCreateBookcase from "../api/createBookcase";
 
 interface CreateBookcaseProps extends ModalStateProps {
-  columns: Column[];
+  columns: Column<BookcaseResponse>[];
   tableTitle: TableTitle;
 }
 

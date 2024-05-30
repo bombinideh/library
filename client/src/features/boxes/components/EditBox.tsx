@@ -1,5 +1,4 @@
-import { TableTitle } from "@/@types/table";
-import { Column } from "@/components/Elements/Table";
+import { Column, TableTitle } from "@/@types/table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
@@ -13,7 +12,7 @@ import { BoxResponse } from "../@types";
 import useEditBox from "../api/editBox";
 
 interface EditBoxProps extends ModalStateProps {
-  columns: Column[];
+  columns: Column<BoxResponse>[];
   box: BoxResponse;
   tableTitle: TableTitle;
 }
@@ -81,7 +80,7 @@ export default function EditBox({
         })}
       >
         {columns.map(({ title, key }) => {
-          if (key === "active")
+          if ((key as string) === "active")
             return (
               <ActiveField
                 key={key}
