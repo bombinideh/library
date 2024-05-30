@@ -37,15 +37,16 @@ var import_express = require("express");
 
 // src/knex.ts
 var import_knex = __toESM(require("knex"));
+var connection = process.env.POSTGRES_URL ? process.env.POSTGRES_URL : {
+  host: process.env.POSTGRES_HOST,
+  port: Number(process.env.POSTGRES_PORT),
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB
+};
 var database = (0, import_knex.default)({
   client: "pg",
-  connection: {
-    host: process.env.POSTGRES_HOST,
-    port: +process.env.POSTGRES_PORT,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB
-  }
+  connection
 });
 
 // src/functions/processQueryThatFindMany.ts

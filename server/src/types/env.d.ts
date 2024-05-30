@@ -12,6 +12,8 @@ declare namespace NodeJS {
 
     POSTGRES_DB: string;
 
+    POSTGRES_URL: string;
+
     JWT_SECRET: string;
 
     JWT_EXPIRES_IN: string;
@@ -25,5 +27,6 @@ declare namespace NodeJS {
     MAIL_PASS: string;
 
     MAIL_FROM: string;
+
   }
 }

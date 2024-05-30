@@ -26,14 +26,15 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var import_dotenv = __toESM(require("dotenv"));
 var import_path = require("path");
 import_dotenv.default.config({ path: (0, import_path.resolve)(__dirname, "../.env") });
+var connection = process.env.POSTGRES_URL ? process.env.POSTGRES_URL : {
+  host: process.env.POSTGRES_HOST,
+  port: Number(process.env.POSTGRES_PORT),
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB
+};
 var config = {
   client: "pg",
-  connection: {
-    host: process.env.POSTGRES_HOST,
-    port: Number(process.env.POSTGRES_PORT),
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB
-  }
+  connection
 };
 module.exports = config;
