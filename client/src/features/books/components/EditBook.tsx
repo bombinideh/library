@@ -1,5 +1,4 @@
-import { TableTitle } from "@/@types/table";
-import { Column } from "@/components/Elements/Table";
+import { Column, TableTitle } from "@/@types/table";
 import Form from "@/components/Form";
 import InputField from "@/components/Form/InputField";
 import Modal, { ModalStateProps } from "@/components/Modal";
@@ -13,7 +12,7 @@ import useEditBook from "../api/editBook";
 import { bookSchema, relationShipsSchema } from "../schemas";
 
 interface EditBookProps extends ModalStateProps {
-  columns: Column[];
+  columns: Column<BookResponse>[];
   book: BookResponse;
   tableTitle: TableTitle;
 }
