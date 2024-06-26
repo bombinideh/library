@@ -125,9 +125,10 @@ async function processQueryThatFindMany({
       query = query.whereRaw(`${searchColumn}::TEXT ILIKE '%${searchQuery}%'`);
   }
   query = query.orderBy(orderColumn, orderOrientation);
-  if (items)
+  const mustApplyPagination = Number(items) !== 0;
+  if (mustApplyPagination && items)
     query = query.limit(Number(items));
-  if (items && page)
+  if (mustApplyPagination && items && page)
     query = query.offset(Number(items) * (Number(page) - 1));
   const count = await database(queryBuilder._single.table).count("*", { as: "total" }).first();
   return { items: await query, total: Number(count?.total) };
