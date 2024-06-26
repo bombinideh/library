@@ -32,14 +32,16 @@ export default function RelationshipFields({
   resetField,
 }: RelationshipFieldsProps) {
   const { bookcase_id, shelf_id } = getValues();
-  const bookcasesResult = useGetBookcases();
+  const bookcasesResult = useGetBookcases({ items: 0 });
   const shelfsResult = useGetShelfs({
     queryOptions: { enabled: pick.includes("shelf_id") && !!bookcase_id },
     bookcase_id: +bookcase_id,
+    items: 0,
   });
   const boxesResult = useGetBoxes({
     queryOptions: { enabled: pick.includes("box_id") && !!shelf_id },
     shelf_id: +shelf_id,
+    items: 0,
   });
   const fields = [
     {

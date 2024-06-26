@@ -43,9 +43,12 @@ export async function processQueryThatFindMany({
 
   query = query.orderBy(orderColumn, orderOrientation);
 
-  if (items) query = query.limit(Number(items));
+  const mustApplyPagination = Number(items) !== 0;
 
-  if (items && page) query = query.offset(Number(items) * (Number(page) - 1));
+  if (mustApplyPagination && items) query = query.limit(Number(items));
+
+  if (mustApplyPagination && items && page)
+    query = query.offset(Number(items) * (Number(page) - 1));
 
   const count = await database((queryBuilder as InternalQueryBuilder)._single.table)
     .count("*", { as: "total" })
