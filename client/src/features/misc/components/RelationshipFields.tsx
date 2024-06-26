@@ -53,6 +53,7 @@ export default function RelationshipFields({
         resetField("shelf_id", { defaultValue: "" });
         resetField("box_id", { defaultValue: "" });
       },
+      zIndex: 3,
     },
     {
       id: "shelf_id",
@@ -60,6 +61,7 @@ export default function RelationshipFields({
       options: shelfsResult.data?.items,
       disabled: !bookcase_id,
       resetDependency: () => resetField("box_id", { defaultValue: "" }),
+      zIndex: 2,
     },
     {
       id: "box_id",
@@ -67,33 +69,37 @@ export default function RelationshipFields({
       options: boxesResult.data?.items,
       disabled: !shelf_id,
       resetDependency: () => {},
+      zIndex: 1,
     },
   ] as const;
   const filteredFields = fields.filter(({ id }) => pick.includes(id));
 
   return (
     <>
-      {filteredFields.map(({ id, title, options, disabled, resetDependency }) => (
-        <SelectField
-          key={id}
-          id={id}
-          label={title}
-          options={options?.map(option => ({
-            value: String(option[id as keyof typeof option]),
-            text: option.name,
-            onClick: () => {
-              setValue(id, String(option[id as keyof typeof option]));
-              trigger(id, { shouldFocus: true });
+      {filteredFields.map(
+        ({ id, title, options, disabled, resetDependency, zIndex }) => (
+          <SelectField
+            key={id}
+            id={id}
+            label={title}
+            options={options?.map(option => ({
+              value: String(option[id as keyof typeof option]),
+              text: option.name,
+              onClick: () => {
+                setValue(id, String(option[id as keyof typeof option]));
+                trigger(id, { shouldFocus: true });
 
-              if (resetDependency) resetDependency();
-            },
-          }))}
-          registration={register(id)}
-          error={errors[id] as FieldError}
-          currentValue={getValues(id)}
-          disabled={disabled}
-        />
-      ))}
+                if (resetDependency) resetDependency();
+              },
+            }))}
+            registration={register(id)}
+            error={errors[id] as FieldError}
+            currentValue={getValues(id)}
+            disabled={disabled}
+            zIndex={zIndex}
+          />
+        ),
+      )}
     </>
   );
 }

@@ -25,6 +25,7 @@ export interface DropdownProps {
   items: DropdownItem[];
   contentPositionX?: "left" | "right";
   wrapperWidth?: string;
+  zIndex?: number;
   focusOnOpen?: boolean;
   closeOnClickOutside?: boolean;
 }
@@ -42,6 +43,7 @@ export default function Dropdown(props: DropdownProps) {
     items,
     contentPositionX,
     wrapperWidth,
+    zIndex,
     focusOnOpen,
     closeOnClickOutside,
   } = {
@@ -88,7 +90,7 @@ export default function Dropdown(props: DropdownProps) {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={motionTransition(transitions.element)}
-            {...transientProps({ contentPositionX, wrapperWidth })}
+            {...transientProps({ contentPositionX, wrapperWidth, zIndex })}
           >
             {items.length ? (
               items.map(({ text, to, onClick }) => (

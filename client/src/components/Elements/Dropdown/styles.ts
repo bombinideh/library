@@ -36,13 +36,14 @@ export const Button = styled.button`
 
 interface ContentProps extends WrapperWidth {
   $contentPositionX: DropdownProps["contentPositionX"];
+  $zIndex: DropdownProps["zIndex"];
 }
 
 export const Content = styled(m.div)<ContentProps>`
-  ${({ theme, $contentPositionX, $wrapperWidth }) => css`
+  ${({ theme, $contentPositionX, $wrapperWidth, $zIndex }) => css`
     position: absolute;
     ${$contentPositionX}: 0;
-    z-index: ${theme.zIndexes.dropdown};
+    z-index: ${$zIndex ?? theme.zIndexes.dropdown};
     margin-top: ${theme.spacings[8]};
     background-color: ${theme.colors.blockSupport1};
     border-radius: ${theme.borderRadius.block};

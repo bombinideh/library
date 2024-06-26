@@ -12,6 +12,7 @@ interface Option extends DropdownItem {
 interface SelectFieldProps extends Omit<IField, "type"> {
   options?: Option[];
   currentValue: string;
+  zIndex?: number;
 }
 
 export default function SelectField({
@@ -21,6 +22,7 @@ export default function SelectField({
   options = [],
   currentValue,
   disabled,
+  zIndex,
   ...rest
 }: SelectFieldProps) {
   const defaultOptionName = "Selecionar";
@@ -54,6 +56,7 @@ export default function SelectField({
         ))}
         items={options}
         wrapperWidth="100%"
+        zIndex={zIndex}
         closeOnClickOutside={false}
         focusOnOpen
       />
