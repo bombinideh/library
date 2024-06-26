@@ -5,14 +5,16 @@ interface UseClickOutsideProps {
   clearState: () => void;
   ref: RefObject<Element>;
   close?: "inElement" | "outElement";
+  active?: boolean;
 }
 
-const defaultProps: Required<Pick<UseClickOutsideProps, "close">> = {
+const defaultProps: Required<Pick<UseClickOutsideProps, "close" | "active">> = {
   close: "outElement",
+  active: true,
 };
 
 export default function useClickOutside(props: UseClickOutsideProps) {
-  const { state, clearState, ref, close } = { ...defaultProps, ...props };
+  const { state, clearState, ref, close, active } = { ...defaultProps, ...props };
   const callback = useCallback((event: Event) => {
     const target = event.target as Node;
     const options = {
@@ -33,7 +35,7 @@ export default function useClickOutside(props: UseClickOutsideProps) {
       clickEvents.forEach(type => document.removeEventListener(type, callback));
     };
 
-    if (state)
+    if (active && state)
       clickEvents.forEach(type => document.addEventListener(type, callback));
     else removeEvents();
 

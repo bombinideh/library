@@ -26,15 +26,25 @@ export interface DropdownProps {
   contentPositionX?: "left" | "right";
   wrapperWidth?: string;
   focusOnOpen?: boolean;
+  closeOnClickOutside?: boolean;
 }
 
 const defaultProps = {
   contentPositionX: "left",
   focusOnOpen: false,
+  closeOnClickOutside: true,
 } as const;
 
 export default function Dropdown(props: DropdownProps) {
-  const { className, Button, items, contentPositionX, wrapperWidth, focusOnOpen } = {
+  const {
+    className,
+    Button,
+    items,
+    contentPositionX,
+    wrapperWidth,
+    focusOnOpen,
+    closeOnClickOutside,
+  } = {
     ...defaultProps,
     ...props,
   };
@@ -45,7 +55,7 @@ export default function Dropdown(props: DropdownProps) {
   const closeOptions = { state: show, clearState: closeDropdown };
   const { transitions } = useTheme();
 
-  useClickOutside({ ...closeOptions, ref: wrapperRef });
+  useClickOutside({ ...closeOptions, ref: wrapperRef, active: closeOnClickOutside });
   useEscapeKey(closeOptions);
 
   return (
